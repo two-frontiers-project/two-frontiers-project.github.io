@@ -13,7 +13,7 @@ REPO_GROUPS = {
     "Handbook": [],
     "Field Protocols": ["2FP-fieldKitsAndProtocols", "2FP-fieldworkToolsGeneral"],
     "Lab Protocols": [],  # No lab protocol repos exist yet
-    "Hardware": ["2FP-PUMA", "2FP-cuvette_holder", "2FP-open_colorimeter"],
+    "Hardware": ["2FP-PUMA", "2FP-cuvette_holder", "2FP-open_colorimeter", "2FP-3dPrinting"],
     "Software": ["2FP-XTree", "2FP_MAGUS"],
     "Templates": ["2FP-expedition-template"]
 }
@@ -44,36 +44,97 @@ def get_all_repos():
         page += 1
     return sorted([r for r in repos if r not in EXCLUDE])
 
-def download_readme(repo):
-    """Download and process README from a repository."""
-    # Try both main and master branches
-    branches = ['main', 'master']
-    
-    for branch in branches:
-        url = f"https://raw.githubusercontent.com/{ORG}/{repo}/{branch}/README.md"
-        try:
+def get_repo_structure(repo, branch='main'):
+    """Get the directory structure of a repository."""
+    try:
+        # Try main branch first, then master
+        branches_to_try = ['main', 'master'] if branch == 'main' else [branch]
+        
+        for br in branches_to_try:
+            url = f"https://api.github.com/repos/{ORG}/{repo}/contents?ref={br}"
             response = requests.get(url)
-            response.raise_for_status()
-            
-            # Process the markdown to fix relative links
-            content = response.text
-            
-            # Fix image links to point to GitHub raw content
+            if response.status_code == 200:
+                contents = response.json()
+                
+                # Find directories and check if they have READMEs
+                subdirs = []
+                for item in contents:
+                    if item['type'] == 'dir':
+                        # Check if this directory has a README
+                        readme_url = f"https://api.github.com/repos/{ORG}/{repo}/contents/{item['name']}/README.md?ref={br}"
+                        readme_response = requests.get(readme_url)
+                        if readme_response.status_code == 200:
+                            subdirs.append({
+                                'name': item['name'],
+                                'branch': br
+                            })
+                
+                return {'branch': br, 'subdirs': subdirs}
+        
+        return {'branch': 'main', 'subdirs': []}
+        
+    except Exception as e:
+        print(f"⚠️  Could not get structure for {repo}: {e}")
+        return {'branch': 'main', 'subdirs': []}
+
+def download_readme(repo, subdir=None, branch='main'):
+    """Download and process README from a repository or subdirectory."""
+    # Build the URL path
+    if subdir:
+        path = f"{subdir}/README.md"
+        display_path = f"{repo}/{subdir}"
+    else:
+        path = "README.md"
+        display_path = repo
+    
+    url = f"https://raw.githubusercontent.com/{ORG}/{repo}/{branch}/{path}"
+    
+    try:
+        response = requests.get(url)
+        response.raise_for_status()
+        
+        # Process the markdown to fix relative links
+        content = response.text
+        
+        # Fix image links to point to GitHub raw content
+        if subdir:
+            # For subdirectory READMEs, images might be relative to the subdir
+            content = re.sub(
+                r'!\[([^\]]*)\]\((?!https?://)([^)]+)\)',
+                f'![\\1](https://raw.githubusercontent.com/{ORG}/{repo}/{branch}/{subdir}/\\2)',
+                content
+            )
+            # Fix relative links to point to GitHub repository subdir
+            content = re.sub(
+                r'\[([^\]]+)\]\((?!https?://|mailto:|#)([^)]+)\)',
+                f'[\\1](https://github.com/{ORG}/{repo}/blob/{branch}/{subdir}/\\2)',
+                content
+            )
+        else:
+            # For main READMEs, standard processing
             content = re.sub(
                 r'!\[([^\]]*)\]\((?!https?://)([^)]+)\)',
                 f'![\\1](https://raw.githubusercontent.com/{ORG}/{repo}/{branch}/\\2)',
                 content
             )
-            
-            # Fix relative links to point to GitHub repository
-            # Fix markdown links that aren't already absolute URLs
             content = re.sub(
                 r'\[([^\]]+)\]\((?!https?://|mailto:|#)([^)]+)\)',
                 f'[\\1](https://github.com/{ORG}/{repo}/blob/{branch}/\\2)',
                 content
             )
-            
-            # Add repository header
+        
+        # Add repository header
+        if subdir:
+            display_name = f"{CUSTOM_NAMES.get(repo, repo.replace('2FP-', '').replace('2FP_', '').replace('-', ' ').replace('_', ' ').title())} - {subdir.replace('-', ' ').replace('_', ' ').title()}"
+            header = f"""# {display_name}
+
+> **Repository:** [{repo}](https://github.com/{ORG}/{repo})  
+> **Subdirectory:** [{subdir}](https://github.com/{ORG}/{repo}/tree/{branch}/{subdir})
+
+---
+
+"""
+        else:
             display_name = CUSTOM_NAMES.get(repo, repo.replace("2FP-", "").replace("2FP_", "").replace("-", " ").replace("_", " ").title())
             header = f"""# {display_name}
 
@@ -82,15 +143,12 @@ def download_readme(repo):
 ---
 
 """
-            
-            print(f"✅ Found README for {repo} on {branch} branch")
-            return header + content
-            
-        except requests.RequestException as e:
-            continue  # Try next branch
-    
-    print(f"⚠️  Could not download README for {repo}: No README.md found on main or master branch")
-    return None
+        
+        return header + content
+        
+    except requests.RequestException as e:
+        print(f"⚠️  Could not download README for {display_path}: {e}")
+        return None
 
 def create_external_structure():
     """Create the external directory structure and download READMEs."""
@@ -102,31 +160,60 @@ def create_external_structure():
     os.makedirs(EXTERNAL_DIR, exist_ok=True)
     
     repos = get_all_repos()
-    downloaded_repos = []
+    downloaded_content = {}
     
     for repo in repos:
-        print(f"📥 Downloading README for {repo}...")
-        content = download_readme(repo)
+        print(f"📥 Analyzing repository structure for {repo}...")
         
-        if content:
+        # Get repository structure
+        structure = get_repo_structure(repo)
+        branch = structure['branch']
+        subdirs = structure['subdirs']
+        
+        # Download main README
+        print(f"📥 Downloading main README for {repo}...")
+        main_content = download_readme(repo, branch=branch)
+        
+        if main_content:
             # Create repo directory
             repo_dir = os.path.join(EXTERNAL_DIR, repo)
             os.makedirs(repo_dir, exist_ok=True)
             
-            # Write README.md
+            # Write main README.md
             readme_path = os.path.join(repo_dir, "README.md")
             with open(readme_path, 'w', encoding='utf-8') as f:
-                f.write(content)
+                f.write(main_content)
             
-            downloaded_repos.append(repo)
-            print(f"✅ Downloaded README for {repo}")
+            downloaded_content[repo] = {'main': True, 'subdirs': []}
+            print(f"✅ Downloaded main README for {repo}")
+            
+            # Download subdirectory READMEs
+            for subdir_info in subdirs:
+                subdir = subdir_info['name']
+                print(f"📥 Downloading README for {repo}/{subdir}...")
+                
+                subdir_content = download_readme(repo, subdir, branch)
+                if subdir_content:
+                    # Create subdirectory
+                    subdir_path = os.path.join(repo_dir, subdir)
+                    os.makedirs(subdir_path, exist_ok=True)
+                    
+                    # Write subdirectory README.md
+                    subdir_readme_path = os.path.join(subdir_path, "README.md")
+                    with open(subdir_readme_path, 'w', encoding='utf-8') as f:
+                        f.write(subdir_content)
+                    
+                    downloaded_content[repo]['subdirs'].append(subdir)
+                    print(f"✅ Downloaded README for {repo}/{subdir}")
+                else:
+                    print(f"❌ Failed to download README for {repo}/{subdir}")
         else:
-            print(f"❌ Failed to download README for {repo}")
+            print(f"❌ Failed to download main README for {repo}")
     
-    return downloaded_repos
+    return downloaded_content
 
-def generate_sidebar(downloaded_repos):
-    """Generate the sidebar markdown with direct relative paths to README.md files."""
+def generate_sidebar(downloaded_content):
+    """Generate the sidebar markdown with hierarchical structure for subdirectories."""
     lines = ["## Overview", "- [Home](/README.md)", ""]
     
     for section, repo_list in REPO_GROUPS.items():
@@ -135,15 +222,22 @@ def generate_sidebar(downloaded_repos):
             
         lines.append(f"## {section}")
         for repo in repo_list:
-            if repo in downloaded_repos:
+            if repo in downloaded_content:
                 # Use custom name if available, otherwise generate from repo name
                 if repo in CUSTOM_NAMES:
                     title = CUSTOM_NAMES[repo]
                 else:
                     title = repo.replace("2FP-", "").replace("2FP_", "").replace("-", " ").replace("_", " ").title()
                 
-                # Create direct relative path to README.md file
+                # Add main repository link
                 lines.append(f"- [{title}](external/{repo}/README.md)")
+                
+                # Add subdirectory links if they exist
+                if downloaded_content[repo]['subdirs']:
+                    for subdir in downloaded_content[repo]['subdirs']:
+                        subdir_title = subdir.replace('-', ' ').replace('_', ' ').title()
+                        lines.append(f"  - [{subdir_title}](external/{repo}/{subdir}/README.md)")
+        
         lines.append("")
     
     return "\n".join(lines)
@@ -168,16 +262,23 @@ if __name__ == "__main__":
         print(f"⚠️  Uncategorized repositories found: {uncategorized}")
         print("   Consider adding these to REPO_GROUPS in the script")
     
-    print(f"\n📁 Creating external directory structure...")
-    downloaded_repos = create_external_structure()
+    print(f"\n📁 Creating external directory structure with subdirectories...")
+    downloaded_content = create_external_structure()
     
-    print(f"\n🔗 Generating sidebar with local external links...")
-    sidebar_content = generate_sidebar(downloaded_repos)
+    print(f"\n🔗 Generating hierarchical sidebar...")
+    sidebar_content = generate_sidebar(downloaded_content)
     
     with open("_sidebar.md", "w") as f:
         f.write(sidebar_content)
     
-    print("✅ _sidebar.md has been generated with local repository links.")
-    print(f"✅ Downloaded {len(downloaded_repos)} repository READMEs to {EXTERNAL_DIR}/ directory.")
+    # Count total downloaded files
+    total_files = 0
+    for repo, content in downloaded_content.items():
+        if content['main']:
+            total_files += 1
+        total_files += len(content['subdirs'])
+    
+    print("✅ _sidebar.md has been generated with hierarchical repository structure.")
+    print(f"✅ Downloaded {total_files} README files from {len(downloaded_content)} repositories.")
     print("\n📄 Generated sidebar:")
     print(sidebar_content)
