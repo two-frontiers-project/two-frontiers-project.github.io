@@ -1,7 +1,6 @@
 # Field Kits & Protocols
 
-> **Repository:** [2FP-fieldKitsAndProtocols](https://github.com/two-frontiers-project/2FP-fieldKitsAndProtocols)  
-> **Edit on GitHub:** [README.md](https://github.com/two-frontiers-project/2FP-fieldKitsAndProtocols/edit/main/README.md)
+> **Repository:** [2FP-fieldKitsAndProtocols](https://github.com/two-frontiers-project/2FP-fieldKitsAndProtocols)
 
 ---
 

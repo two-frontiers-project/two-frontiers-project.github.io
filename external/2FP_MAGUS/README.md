@@ -1,7 +1,6 @@
 # MAGUS
 
-> **Repository:** [2FP_MAGUS](https://github.com/two-frontiers-project/2FP_MAGUS)  
-> **Edit on GitHub:** [README.md](https://github.com/two-frontiers-project/2FP_MAGUS/edit/main/README.md)
+> **Repository:** [2FP_MAGUS](https://github.com/two-frontiers-project/2FP_MAGUS)
 
 ---
 

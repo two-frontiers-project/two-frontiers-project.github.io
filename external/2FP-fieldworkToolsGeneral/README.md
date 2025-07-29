@@ -1,7 +1,6 @@
 # In-Field Geochemistry Tools
 
-> **Repository:** [2FP-fieldworkToolsGeneral](https://github.com/two-frontiers-project/2FP-fieldworkToolsGeneral)  
-> **Edit on GitHub:** [README.md](https://github.com/two-frontiers-project/2FP-fieldworkToolsGeneral/edit/main/README.md)
+> **Repository:** [2FP-fieldworkToolsGeneral](https://github.com/two-frontiers-project/2FP-fieldworkToolsGeneral)
 
 ---
 

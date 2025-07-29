@@ -1,7 +1,6 @@
 # Expedition Template
 
-> **Repository:** [2FP-expedition-template](https://github.com/two-frontiers-project/2FP-expedition-template)  
-> **Edit on GitHub:** [README.md](https://github.com/two-frontiers-project/2FP-expedition-template/edit/main/README.md)
+> **Repository:** [2FP-expedition-template](https://github.com/two-frontiers-project/2FP-expedition-template)
 
 ---
 

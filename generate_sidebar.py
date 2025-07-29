@@ -77,8 +77,7 @@ def download_readme(repo):
             display_name = CUSTOM_NAMES.get(repo, repo.replace("2FP-", "").replace("2FP_", "").replace("-", " ").replace("_", " ").title())
             header = f"""# {display_name}
 
-> **Repository:** [{repo}](https://github.com/{ORG}/{repo})  
-> **Edit on GitHub:** [README.md](https://github.com/{ORG}/{repo}/edit/{branch}/README.md)
+> **Repository:** [{repo}](https://github.com/{ORG}/{repo})
 
 ---
 

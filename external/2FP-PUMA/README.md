@@ -1,7 +1,6 @@
 # PUMA Scope
 
-> **Repository:** [2FP-PUMA](https://github.com/two-frontiers-project/2FP-PUMA)  
-> **Edit on GitHub:** [README.md](https://github.com/two-frontiers-project/2FP-PUMA/edit/main/README.md)
+> **Repository:** [2FP-PUMA](https://github.com/two-frontiers-project/2FP-PUMA)
 
 ---
 

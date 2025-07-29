@@ -1,7 +1,6 @@
 # Open Colorimeter
 
-> **Repository:** [2FP-open_colorimeter](https://github.com/two-frontiers-project/2FP-open_colorimeter)  
-> **Edit on GitHub:** [README.md](https://github.com/two-frontiers-project/2FP-open_colorimeter/edit/master/README.md)
+> **Repository:** [2FP-open_colorimeter](https://github.com/two-frontiers-project/2FP-open_colorimeter)
 
 ---
 

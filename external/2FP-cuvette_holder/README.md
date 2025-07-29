@@ -1,7 +1,6 @@
 # Cuvette Holder
 
-> **Repository:** [2FP-cuvette_holder](https://github.com/two-frontiers-project/2FP-cuvette_holder)  
-> **Edit on GitHub:** [README.md](https://github.com/two-frontiers-project/2FP-cuvette_holder/edit/main/README.md)
+> **Repository:** [2FP-cuvette_holder](https://github.com/two-frontiers-project/2FP-cuvette_holder)
 
 ---
 

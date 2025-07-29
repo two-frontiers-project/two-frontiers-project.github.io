@@ -1,7 +1,6 @@
 # XTree
 
-> **Repository:** [2FP-XTree](https://github.com/two-frontiers-project/2FP-XTree)  
-> **Edit on GitHub:** [README.md](https://github.com/two-frontiers-project/2FP-XTree/edit/master/README.md)
+> **Repository:** [2FP-XTree](https://github.com/two-frontiers-project/2FP-XTree)
 
 ---
 
