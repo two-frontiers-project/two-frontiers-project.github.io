@@ -1,7 +1,12 @@
 import requests
+import os
+import shutil
+import re
+from pathlib import Path
 
 ORG = "two-frontiers-project"
 EXCLUDE = {"two-frontiers-project.github.io"}
+EXTERNAL_DIR = "external"
 
 # Map actual existing repositories to sections
 REPO_GROUPS = {
@@ -39,17 +44,83 @@ def get_all_repos():
         page += 1
     return sorted([r for r in repos if r not in EXCLUDE])
 
-def check_readme_exists(repo):
-    """Check if a repository has a README.md file."""
+def download_readme(repo):
+    """Download and process README from a repository."""
     url = f"https://raw.githubusercontent.com/{ORG}/{repo}/main/README.md"
     try:
-        response = requests.head(url)
-        return response.status_code == 200
-    except:
-        return False
+        response = requests.get(url)
+        response.raise_for_status()
+        
+        # Process the markdown to fix relative links
+        content = response.text
+        
+        # Fix image links to point to GitHub raw content
+        content = re.sub(
+            r'!\[([^\]]*)\]\((?!https?://)([^)]+)\)',
+            f'![\\1](https://raw.githubusercontent.com/{ORG}/{repo}/main/\\2)',
+            content
+        )
+        
+        # Fix relative links to point to GitHub repository
+        # Fix markdown links that aren't already absolute URLs
+        content = re.sub(
+            r'\[([^\]]+)\]\((?!https?://|mailto:|#)([^)]+)\)',
+            f'[\\1](https://github.com/{ORG}/{repo}/blob/main/\\2)',
+            content
+        )
+        
+        # Add repository header
+        display_name = CUSTOM_NAMES.get(repo, repo.replace("2FP-", "").replace("2FP_", "").replace("-", " ").replace("_", " ").title())
+        header = f"""# {display_name}
 
-def generate_sidebar(repos):
-    """Generate the sidebar markdown with direct GitHub raw links."""
+> **Repository:** [{repo}](https://github.com/{ORG}/{repo})  
+> **Edit on GitHub:** [README.md](https://github.com/{ORG}/{repo}/edit/main/README.md)
+
+---
+
+"""
+        
+        return header + content
+        
+    except requests.RequestException as e:
+        print(f"⚠️  Could not download README for {repo}: {e}")
+        return None
+
+def create_external_structure():
+    """Create the external directory structure and download READMEs."""
+    # Remove existing external directory
+    if os.path.exists(EXTERNAL_DIR):
+        shutil.rmtree(EXTERNAL_DIR)
+    
+    # Create external directory
+    os.makedirs(EXTERNAL_DIR, exist_ok=True)
+    
+    repos = get_all_repos()
+    downloaded_repos = []
+    
+    for repo in repos:
+        print(f"📥 Downloading README for {repo}...")
+        content = download_readme(repo)
+        
+        if content:
+            # Create repo directory
+            repo_dir = os.path.join(EXTERNAL_DIR, repo)
+            os.makedirs(repo_dir, exist_ok=True)
+            
+            # Write README.md
+            readme_path = os.path.join(repo_dir, "README.md")
+            with open(readme_path, 'w', encoding='utf-8') as f:
+                f.write(content)
+            
+            downloaded_repos.append(repo)
+            print(f"✅ Downloaded README for {repo}")
+        else:
+            print(f"❌ Failed to download README for {repo}")
+    
+    return downloaded_repos
+
+def generate_sidebar(downloaded_repos):
+    """Generate the sidebar markdown with local external links."""
     lines = ["# 2FP Open Tools", "", "## Overview", "- [Home](/README.md)", ""]
     
     for section, repo_list in REPO_GROUPS.items():
@@ -58,20 +129,15 @@ def generate_sidebar(repos):
             
         lines.append(f"## {section}")
         for repo in repo_list:
-            if repo in repos:
+            if repo in downloaded_repos:
                 # Use custom name if available, otherwise generate from repo name
                 if repo in CUSTOM_NAMES:
                     title = CUSTOM_NAMES[repo]
                 else:
                     title = repo.replace("2FP-", "").replace("2FP_", "").replace("-", " ").replace("_", " ").title()
                 
-                # Check if README exists before adding link
-                if check_readme_exists(repo):
-                    # Create direct GitHub raw link
-                    github_url = f"https://raw.githubusercontent.com/{ORG}/{repo}/main/README.md"
-                    lines.append(f"- [{title}]({github_url})")
-                else:
-                    print(f"⚠️  No README.md found for {repo}")
+                # Create link to local external file
+                lines.append(f"- [{title}](external/{repo}/README.md)")
         lines.append("")
     
     return "\n".join(lines)
@@ -96,12 +162,16 @@ if __name__ == "__main__":
         print(f"⚠️  Uncategorized repositories found: {uncategorized}")
         print("   Consider adding these to REPO_GROUPS in the script")
     
-    print("\n🔗 Generating sidebar with direct GitHub links...")
-    sidebar_content = generate_sidebar(repos)
+    print(f"\n📁 Creating external directory structure...")
+    downloaded_repos = create_external_structure()
+    
+    print(f"\n🔗 Generating sidebar with local external links...")
+    sidebar_content = generate_sidebar(downloaded_repos)
     
     with open("_sidebar.md", "w") as f:
         f.write(sidebar_content)
     
-    print("✅ _sidebar.md has been generated with direct GitHub repository links.")
+    print("✅ _sidebar.md has been generated with local repository links.")
+    print(f"✅ Downloaded {len(downloaded_repos)} repository READMEs to {EXTERNAL_DIR}/ directory.")
     print("\n📄 Generated sidebar:")
     print(sidebar_content)

@@ -15,66 +15,7 @@
       search: 'auto',
       alias: {
         '/.*/_sidebar.md': '/_sidebar.md'
-      },
-      plugins: [
-        // Plugin to fetch external markdown files from GitHub repositories
-        function(hook, vm) {
-          hook.beforeEach(function(content, next) {
-            const route = vm.route.path;
-            
-            // Check if this is an external repository route
-            if (route.startsWith('/external/')) {
-              // Extract repo name from route like /external/2FP-expedition-template/
-              const repoMatch = route.match(/^\/external\/([^\/]+)/);
-              if (repoMatch) {
-                const repo = repoMatch[1];
-                
-                // Fetch the README from the GitHub repository
-                const url = `https://raw.githubusercontent.com/two-frontiers-project/${repo}/main/README.md`;
-                
-                fetch(url)
-                  .then(response => {
-                    if (!response.ok) {
-                      throw new Error(`HTTP ${response.status}: ${response.statusText}`);
-                    }
-                    return response.text();
-                  })
-                  .then(markdown => {
-                    // Clean up the repo name for display
-                    const displayName = repo.replace('2FP-', '').replace('2FP_', '').replace('-', ' ').replace('_', ' ');
-                    
-                    // Add a header with repo info and link
-                    const header = `# ${displayName}\n\n> **Repository:** [${repo}](https://github.com/two-frontiers-project/${repo})\n> **Raw README:** [View on GitHub](https://github.com/two-frontiers-project/${repo}/blob/main/README.md)\n\n---\n\n`;
-                    next(header + markdown);
-                  })
-                  .catch(error => {
-                    console.error('Error fetching external content:', error);
-                    const errorContent = `# Error Loading ${repo}\n\n⚠️ **Could not load content from repository: ${repo}**\n\nPossible reasons:\n- Repository does not exist\n- Repository is private\n- No README.md file in the main branch\n- Network connection issue\n\n**Try visiting the repository directly:** [${repo}](https://github.com/two-frontiers-project/${repo})\n\nError details: ${error.message}`;
-                    next(errorContent);
-                  });
-                return; // Don't call next() here since we're handling it in the promise
-              }
-            }
-            
-            // For non-external routes, proceed normally
-            next(content);
-          });
-          
-          // Handle route changes to external repos
-          hook.doneEach(function() {
-            const route = vm.route.path;
-            if (route.startsWith('/external/')) {
-              // Update the page title
-              const repoMatch = route.match(/^\/external\/([^\/]+)/);
-              if (repoMatch) {
-                const repo = repoMatch[1];
-                const displayName = repo.replace('2FP-', '').replace('2FP_', '').replace('-', ' ').replace('_', ' ');
-                document.title = `${displayName} - 2FP Open Tools`;
-              }
-            }
-          });
-        }
-      ]
+      }
     }
   </script>
   <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css" />
@@ -84,9 +25,10 @@
     }
     .markdown-section blockquote {
       border-left: 4px solid var(--theme-color, #42b883);
-      background: #f8f8f8;
+      background: #f0f9ff;
       padding: 1rem;
       margin: 1rem 0;
+      border-radius: 4px;
     }
     .research-notice {
       background: #fff3cd;
@@ -95,20 +37,6 @@
       padding: 1rem;
       margin: 1rem 0;
       color: #856404;
-    }
-    /* Style for external content headers */
-    .markdown-section blockquote {
-      border-left: 4px solid #42b883;
-      background: #f0f9ff;
-      padding: 1rem;
-      margin: 1rem 0;
-      border-radius: 4px;
-    }
-    /* Loading indicator */
-    .external-loading {
-      text-align: center;
-      padding: 2rem;
-      color: #666;
     }
   </style>
 </head>

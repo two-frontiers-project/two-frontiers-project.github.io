@@ -4,18 +4,18 @@
 - [Home](/README.md)
 
 ## Handbook
-- [Field Kits & Protocols](https://raw.githubusercontent.com/two-frontiers-project/2FP-fieldKitsAndProtocols/main/README.md)
+- [Field Kits & Protocols](external/2FP-fieldKitsAndProtocols/README.md)
 
 ## Field Protocols
-- [Field Kits & Protocols](https://raw.githubusercontent.com/two-frontiers-project/2FP-fieldKitsAndProtocols/main/README.md)
-- [In-Field Geochemistry Tools](https://raw.githubusercontent.com/two-frontiers-project/2FP-fieldworkToolsGeneral/main/README.md)
+- [Field Kits & Protocols](external/2FP-fieldKitsAndProtocols/README.md)
+- [In-Field Geochemistry Tools](external/2FP-fieldworkToolsGeneral/README.md)
 
 ## Hardware
-- [PUMA Scope](https://raw.githubusercontent.com/two-frontiers-project/2FP-PUMA/main/README.md)
-- [Cuvette Holder](https://raw.githubusercontent.com/two-frontiers-project/2FP-cuvette_holder/main/README.md)
+- [PUMA Scope](external/2FP-PUMA/README.md)
+- [Cuvette Holder](external/2FP-cuvette_holder/README.md)
 
 ## Software
-- [MAGUS](https://raw.githubusercontent.com/two-frontiers-project/2FP_MAGUS/main/README.md)
+- [MAGUS](external/2FP_MAGUS/README.md)
 
 ## Templates
-- [Expedition Template](https://raw.githubusercontent.com/two-frontiers-project/2FP-expedition-template/main/README.md)
+- [Expedition Template](external/2FP-expedition-template/README.md)
