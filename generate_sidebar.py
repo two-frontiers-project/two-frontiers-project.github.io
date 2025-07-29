@@ -10,7 +10,7 @@ EXTERNAL_DIR = "external"
 
 # Map actual existing repositories to sections
 REPO_GROUPS = {
-    "Handbook": ["2FP-fieldKitsAndProtocols"],
+    "Handbook": [],
     "Field Protocols": ["2FP-fieldKitsAndProtocols", "2FP-fieldworkToolsGeneral"],
     "Lab Protocols": [],  # No lab protocol repos exist yet
     "Hardware": ["2FP-PUMA", "2FP-cuvette_holder", "2FP-open_colorimeter"],
@@ -120,7 +120,7 @@ def create_external_structure():
     return downloaded_repos
 
 def generate_sidebar(downloaded_repos):
-    """Generate the sidebar markdown with Docsify-compatible routes."""
+    """Generate the sidebar markdown with direct relative paths to README.md files."""
     lines = ["# 2FP Open Tools", "", "## Overview", "- [Home](/README.md)", ""]
     
     for section, repo_list in REPO_GROUPS.items():
@@ -136,8 +136,8 @@ def generate_sidebar(downloaded_repos):
                 else:
                     title = repo.replace("2FP-", "").replace("2FP_", "").replace("-", " ").replace("_", " ").title()
                 
-                # Create Docsify route pointing to directory - Docsify will find README.md automatically
-                lines.append(f"- [{title}](/external/{repo}/)")
+                # Create direct relative path to README.md file
+                lines.append(f"- [{title}](external/{repo}/README.md)")
         lines.append("")
     
     return "\n".join(lines)
