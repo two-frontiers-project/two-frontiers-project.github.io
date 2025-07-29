@@ -5,60 +5,18 @@
   <title>2FP Open Tools & Protocols</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
   <meta name="description" content="Two Frontiers Project - Open source research tools and protocols">
+
   <script>
-    // This plugin surgically removes duplicate category headings from the generated sidebar ToC
-    const sidebarCleanupPlugin = function(hook) {
-      const cleanup = () => {
-        // These are the exact titles of your main navigation sections that should be removed
-        // if they appear as sub-items.
-        const topLevelCategories = [
-          'Overview',
-          'Speciality Kits',
-          'Hardware',
-          'Software',
-          'Templates',
-          'Handbook',
-          'Field Protocols',
-          'Lab Protocols'
-        ];
-
-        // This selector specifically targets links inside the auto-generated table of contents
-        const tocLinks = document.querySelectorAll('.sidebar-nav > ul > li > ul > li a');
-
-        tocLinks.forEach(link => {
-          const linkText = link.textContent.trim();
-          if (topLevelCategories.includes(linkText)) {
-            const parentLi = link.closest('li');
-            if (parentLi) {
-              // This is a duplicate heading inside a ToC, so we hide it.
-              parentLi.style.display = 'none';
-            }
-          }
-        });
-      };
-
-      hook.doneEach(function() {
-        // Docsify can be slow to render the ToC, so we check repeatedly after a page loads.
-        // This ensures the cleanup runs after the ToC is available.
-        setTimeout(cleanup, 100);
-        setTimeout(cleanup, 500);
-        setTimeout(cleanup, 1000);
-      });
-    };
-
     window.$docsify = {
       name: '2FP Open Tools',
       repo: 'https://github.com/two-frontiers-project',
       loadSidebar: true,
-      subMaxLevel: 3, // This generates the table of contents from H2, H3, H4 headings
+      subMaxLevel: 3,
       auto2top: true,
       search: 'auto',
       alias: {
         '/.*/_sidebar.md': '/_sidebar.md'
-      },
-      plugins: [
-        sidebarCleanupPlugin
-      ]
+      }
     }
   </script>
   <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css" />

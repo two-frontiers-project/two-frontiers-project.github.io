@@ -9,16 +9,6 @@ ORG = "two-frontiers-project"
 EXCLUDE = {"two-frontiers-project.github.io"}
 EXTERNAL_DIR = "external"
 
-# Map actual existing repositories to sections
-REPO_GROUPS = {
-    "Handbook": [],
-    "Speciality Kits": ["2FP-fieldKitsAndProtocols"],
-    "Lab Protocols": [],  # No lab protocol repos exist yet
-    "Hardware": ["2FP-fieldworkToolsGeneral","2FP-PUMA", "2FP-cuvette_holder", "2FP-open_colorimeter", "2FP-3dPrinting"],
-    "Software": ["2FP-XTree", "2FP_MAGUS"],
-    "Templates": ["2FP-expedition-template"]
-}
-
 # Custom names for repos that don't follow the standard pattern
 CUSTOM_NAMES = {
     "2FP-fieldKitsAndProtocols": "Speciality Kits",
@@ -152,14 +142,7 @@ def download_readme(repo, subdir=None, branch='main'):
         print(f"⚠️  Could not download README for {display_path}: {e}")
         return None
 
-def get_configured_repos():
-    """Get list of repositories from REPO_GROUPS configuration."""
-    repos = set()
-    for repo_list in REPO_GROUPS.values():
-        repos.update(repo_list)
-    return sorted(repos)
-
-def create_external_structure(no_download=False):
+def create_external_structure(repos, no_download=False):
     """Create the external directory structure and download READMEs."""
     # Remove existing external directory
     if os.path.exists(EXTERNAL_DIR):
@@ -167,13 +150,6 @@ def create_external_structure(no_download=False):
     
     # Create external directory
     os.makedirs(EXTERNAL_DIR, exist_ok=True)
-    
-    if no_download:
-        # Use configured repos to avoid API calls
-        repos = get_configured_repos()
-        print(f"📚 Using configured repositories: {repos}")
-    else:
-        repos = get_all_repos()
     
     downloaded_content = {}
     
@@ -251,43 +227,30 @@ def create_external_structure(no_download=False):
     return downloaded_content
 
 def generate_sidebar(downloaded_content):
-    """Generate the sidebar markdown with hierarchical structure for subdirectories."""
+    """Generate the sidebar markdown with all repositories listed alphabetically."""
     lines = ["## Overview", "- [Home](/README.md)", ""]
     
-    for section, repo_list in REPO_GROUPS.items():
-        if not repo_list:  # Skip empty sections
-            continue
+    # Sort repos alphabetically
+    sorted_repos = sorted(downloaded_content.keys())
+    
+    for repo in sorted_repos:
+        if repo in downloaded_content:
+            # Use custom name if available, otherwise generate from repo name
+            if repo in CUSTOM_NAMES:
+                title = CUSTOM_NAMES[repo]
+            else:
+                title = repo.replace("2FP-", "").replace("2FP_", "").replace("-", " ").replace("_", " ").title()
             
-        lines.append(f"## {section}")
-        for repo in repo_list:
-            if repo in downloaded_content:
-                # Use custom name if available, otherwise generate from repo name
-                if repo in CUSTOM_NAMES:
-                    title = CUSTOM_NAMES[repo]
-                else:
-                    title = repo.replace("2FP-", "").replace("2FP_", "").replace("-", " ").replace("_", " ").title()
-                
-                # Add main repository link
-                lines.append(f"- [{title}](external/{repo}/README.md)")
-                
-                # Add subdirectory links if they exist
-                if downloaded_content[repo]['subdirs']:
-                    for subdir in downloaded_content[repo]['subdirs']:
-                        subdir_title = subdir.replace('-', ' ').replace('_', ' ').title()
-                        lines.append(f"  - [{subdir_title}](external/{repo}/{subdir}/README.md)")
-        
-        lines.append("")
+            # Add main repository link
+            lines.append(f"- [{title}](external/{repo}/README.md)")
+            
+            # Add subdirectory links if they exist
+            if downloaded_content[repo]['subdirs']:
+                for subdir in downloaded_content[repo]['subdirs']:
+                    subdir_title = subdir.replace('-', ' ').replace('_', ' ').title()
+                    lines.append(f"  - [{subdir_title}](external/{repo}/{subdir}/README.md)")
     
     return "\n".join(lines)
-
-def find_uncategorized_repos(repos):
-    """Find repos that exist but aren't categorized yet."""
-    categorized = set()
-    for repo_list in REPO_GROUPS.values():
-        categorized.update(repo_list)
-    
-    uncategorized = set(repos) - categorized
-    return sorted(uncategorized)
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Generate sidebar for 2FP documentation site')
@@ -295,29 +258,18 @@ if __name__ == "__main__":
                        help='Skip subdirectory discovery to avoid GitHub API rate limits')
     args = parser.parse_args()
     
-    if args.no_download:
-        print("🔍 Using configured repositories (avoiding API calls)...")
-        repos = get_configured_repos()
-        print(f"📚 Found {len(repos)} configured repositories: {repos}")
-    else:
-        print("🔍 Fetching repositories from GitHub organization...")
-        repos = get_all_repos()
-        print(f"📚 Found {len(repos)} repositories: {repos}")
-        
-        # Check for uncategorized repos
-        uncategorized = find_uncategorized_repos(repos)
-        if uncategorized:
-            print(f"⚠️  Uncategorized repositories found: {uncategorized}")
-            print("   Consider adding these to REPO_GROUPS in the script")
+    print("🔍 Fetching repositories from GitHub organization...")
+    repos = get_all_repos()
+    print(f"📚 Found {len(repos)} repositories: {repos}")
     
     if args.no_download:
         print(f"\n📁 Creating external directory structure (no subdirectory discovery)...")
     else:
         print(f"\n📁 Creating external directory structure with subdirectories...")
     
-    downloaded_content = create_external_structure(no_download=args.no_download)
+    downloaded_content = create_external_structure(repos, no_download=args.no_download)
     
-    print(f"\n🔗 Generating hierarchical sidebar...")
+    print(f"\n🔗 Generating alphabetical sidebar...")
     sidebar_content = generate_sidebar(downloaded_content)
     
     with open("_sidebar.md", "w") as f:
@@ -330,7 +282,7 @@ if __name__ == "__main__":
             total_files += 1
         total_files += len(content['subdirs'])
     
-    print("✅ _sidebar.md has been generated with hierarchical repository structure.")
+    print("✅ _sidebar.md has been generated with alphabetical repository listing.")
     print(f"✅ Downloaded {total_files} README files from {len(downloaded_content)} repositories.")
     
     if args.no_download:
