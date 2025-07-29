@@ -7,9 +7,9 @@
 
 ## Hardware
 - [PUMA Scope](external/2FP-PUMA/README.md)
-  - [Freecad](external/2FP-PUMA/FreeCAD/README.md)
 - [Cuvette Holder](external/2FP-cuvette_holder/README.md)
-- [3Dprinting](external/2FP-3dPrinting/README.md)
+- [Open Colorimeter](external/2FP-open_colorimeter/README.md)
+- [3D Printing](external/2FP-3dPrinting/README.md)
 
 ## Software
 - [XTree](external/2FP-XTree/README.md)
@@ -17,6 +17,3 @@
 
 ## Templates
 - [Expedition Template](external/2FP-expedition-template/README.md)
-  - [Additional Data](external/2FP-expedition-template/ADDITIONAL_DATA/README.md)
-  - [Background Research](external/2FP-expedition-template/BACKGROUND_RESEARCH/README.md)
-  - [Forms](external/2FP-expedition-template/FORMS/README.md)

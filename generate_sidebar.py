@@ -2,6 +2,7 @@ import requests
 import os
 import shutil
 import re
+import argparse
 from pathlib import Path
 
 ORG = "two-frontiers-project"
@@ -26,6 +27,7 @@ CUSTOM_NAMES = {
     "2FP-PUMA": "PUMA Scope",
     "2FP-cuvette_holder": "Cuvette Holder",
     "2FP-open_colorimeter": "Open Colorimeter",
+    "2FP-3dPrinting": "3D Printing",
     "2FP-XTree": "XTree",
     "2FP_MAGUS": "MAGUS"
 }
@@ -150,7 +152,14 @@ def download_readme(repo, subdir=None, branch='main'):
         print(f"⚠️  Could not download README for {display_path}: {e}")
         return None
 
-def create_external_structure():
+def get_configured_repos():
+    """Get list of repositories from REPO_GROUPS configuration."""
+    repos = set()
+    for repo_list in REPO_GROUPS.values():
+        repos.update(repo_list)
+    return sorted(repos)
+
+def create_external_structure(no_download=False):
     """Create the external directory structure and download READMEs."""
     # Remove existing external directory
     if os.path.exists(EXTERNAL_DIR):
@@ -159,56 +168,85 @@ def create_external_structure():
     # Create external directory
     os.makedirs(EXTERNAL_DIR, exist_ok=True)
     
-    repos = get_all_repos()
+    if no_download:
+        # Use configured repos to avoid API calls
+        repos = get_configured_repos()
+        print(f"📚 Using configured repositories: {repos}")
+    else:
+        repos = get_all_repos()
+    
     downloaded_content = {}
     
     for repo in repos:
-        print(f"📥 Analyzing repository structure for {repo}...")
-        
-        # Get repository structure
-        structure = get_repo_structure(repo)
-        branch = structure['branch']
-        subdirs = structure['subdirs']
-        
-        # Download main README
-        print(f"📥 Downloading main README for {repo}...")
-        main_content = download_readme(repo, branch=branch)
-        
-        if main_content:
-            # Create repo directory
-            repo_dir = os.path.join(EXTERNAL_DIR, repo)
-            os.makedirs(repo_dir, exist_ok=True)
+        if no_download:
+            print(f"📥 Processing {repo} (no download mode)...")
+            # Try to download only the main README without API calls
+            main_content = download_readme(repo, branch='main')
+            if not main_content:
+                # Try master branch if main fails
+                main_content = download_readme(repo, branch='master')
             
-            # Write main README.md
-            readme_path = os.path.join(repo_dir, "README.md")
-            with open(readme_path, 'w', encoding='utf-8') as f:
-                f.write(main_content)
-            
-            downloaded_content[repo] = {'main': True, 'subdirs': []}
-            print(f"✅ Downloaded main README for {repo}")
-            
-            # Download subdirectory READMEs
-            for subdir_info in subdirs:
-                subdir = subdir_info['name']
-                print(f"📥 Downloading README for {repo}/{subdir}...")
+            if main_content:
+                # Create repo directory
+                repo_dir = os.path.join(EXTERNAL_DIR, repo)
+                os.makedirs(repo_dir, exist_ok=True)
                 
-                subdir_content = download_readme(repo, subdir, branch)
-                if subdir_content:
-                    # Create subdirectory
-                    subdir_path = os.path.join(repo_dir, subdir)
-                    os.makedirs(subdir_path, exist_ok=True)
-                    
-                    # Write subdirectory README.md
-                    subdir_readme_path = os.path.join(subdir_path, "README.md")
-                    with open(subdir_readme_path, 'w', encoding='utf-8') as f:
-                        f.write(subdir_content)
-                    
-                    downloaded_content[repo]['subdirs'].append(subdir)
-                    print(f"✅ Downloaded README for {repo}/{subdir}")
-                else:
-                    print(f"❌ Failed to download README for {repo}/{subdir}")
+                # Write main README.md
+                readme_path = os.path.join(repo_dir, "README.md")
+                with open(readme_path, 'w', encoding='utf-8') as f:
+                    f.write(main_content)
+                
+                downloaded_content[repo] = {'main': True, 'subdirs': []}
+                print(f"✅ Downloaded main README for {repo}")
+            else:
+                print(f"❌ Failed to download main README for {repo}")
         else:
-            print(f"❌ Failed to download main README for {repo}")
+            print(f"📥 Analyzing repository structure for {repo}...")
+            
+            # Get repository structure
+            structure = get_repo_structure(repo)
+            branch = structure['branch']
+            subdirs = structure['subdirs']
+            
+            # Download main README
+            print(f"📥 Downloading main README for {repo}...")
+            main_content = download_readme(repo, branch=branch)
+            
+            if main_content:
+                # Create repo directory
+                repo_dir = os.path.join(EXTERNAL_DIR, repo)
+                os.makedirs(repo_dir, exist_ok=True)
+                
+                # Write main README.md
+                readme_path = os.path.join(repo_dir, "README.md")
+                with open(readme_path, 'w', encoding='utf-8') as f:
+                    f.write(main_content)
+                
+                downloaded_content[repo] = {'main': True, 'subdirs': []}
+                print(f"✅ Downloaded main README for {repo}")
+                
+                # Download subdirectory READMEs
+                for subdir_info in subdirs:
+                    subdir = subdir_info['name']
+                    print(f"📥 Downloading README for {repo}/{subdir}...")
+                    
+                    subdir_content = download_readme(repo, subdir, branch)
+                    if subdir_content:
+                        # Create subdirectory
+                        subdir_path = os.path.join(repo_dir, subdir)
+                        os.makedirs(subdir_path, exist_ok=True)
+                        
+                        # Write subdirectory README.md
+                        subdir_readme_path = os.path.join(subdir_path, "README.md")
+                        with open(subdir_readme_path, 'w', encoding='utf-8') as f:
+                            f.write(subdir_content)
+                        
+                        downloaded_content[repo]['subdirs'].append(subdir)
+                        print(f"✅ Downloaded README for {repo}/{subdir}")
+                    else:
+                        print(f"❌ Failed to download README for {repo}/{subdir}")
+            else:
+                print(f"❌ Failed to download main README for {repo}")
     
     return downloaded_content
 
@@ -252,18 +290,32 @@ def find_uncategorized_repos(repos):
     return sorted(uncategorized)
 
 if __name__ == "__main__":
-    print("🔍 Fetching repositories from GitHub organization...")
-    repos = get_all_repos()
-    print(f"📚 Found {len(repos)} repositories: {repos}")
+    parser = argparse.ArgumentParser(description='Generate sidebar for 2FP documentation site')
+    parser.add_argument('--no-download', action='store_true', 
+                       help='Skip subdirectory discovery to avoid GitHub API rate limits')
+    args = parser.parse_args()
     
-    # Check for uncategorized repos
-    uncategorized = find_uncategorized_repos(repos)
-    if uncategorized:
-        print(f"⚠️  Uncategorized repositories found: {uncategorized}")
-        print("   Consider adding these to REPO_GROUPS in the script")
+    if args.no_download:
+        print("🔍 Using configured repositories (avoiding API calls)...")
+        repos = get_configured_repos()
+        print(f"📚 Found {len(repos)} configured repositories: {repos}")
+    else:
+        print("🔍 Fetching repositories from GitHub organization...")
+        repos = get_all_repos()
+        print(f"📚 Found {len(repos)} repositories: {repos}")
+        
+        # Check for uncategorized repos
+        uncategorized = find_uncategorized_repos(repos)
+        if uncategorized:
+            print(f"⚠️  Uncategorized repositories found: {uncategorized}")
+            print("   Consider adding these to REPO_GROUPS in the script")
     
-    print(f"\n📁 Creating external directory structure with subdirectories...")
-    downloaded_content = create_external_structure()
+    if args.no_download:
+        print(f"\n📁 Creating external directory structure (no subdirectory discovery)...")
+    else:
+        print(f"\n📁 Creating external directory structure with subdirectories...")
+    
+    downloaded_content = create_external_structure(no_download=args.no_download)
     
     print(f"\n🔗 Generating hierarchical sidebar...")
     sidebar_content = generate_sidebar(downloaded_content)
@@ -280,5 +332,10 @@ if __name__ == "__main__":
     
     print("✅ _sidebar.md has been generated with hierarchical repository structure.")
     print(f"✅ Downloaded {total_files} README files from {len(downloaded_content)} repositories.")
+    
+    if args.no_download:
+        print("ℹ️  Ran in no-download mode - subdirectories were not discovered.")
+        print("ℹ️  Run without --no-download flag to discover subdirectories when API limits reset.")
+    
     print("\n📄 Generated sidebar:")
     print(sidebar_content)

@@ -1,4 +1,4 @@
-# 3Dprinting
+# 3D Printing
 
 > **Repository:** [2FP-3dPrinting](https://github.com/two-frontiers-project/2FP-3dPrinting)
 
