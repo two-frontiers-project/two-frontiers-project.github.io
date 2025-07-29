@@ -26,6 +26,7 @@ CUSTOM_NAMES = {
 }
 
 def get_all_repos():
+    """Fetch all repositories from the GitHub organization."""
     repos = []
     page = 1
     while True:
@@ -38,7 +39,17 @@ def get_all_repos():
         page += 1
     return sorted([r for r in repos if r not in EXCLUDE])
 
+def check_readme_exists(repo):
+    """Check if a repository has a README.md file."""
+    url = f"https://raw.githubusercontent.com/{ORG}/{repo}/main/README.md"
+    try:
+        response = requests.head(url)
+        return response.status_code == 200
+    except:
+        return False
+
 def generate_sidebar(repos):
+    """Generate the sidebar markdown with direct GitHub raw links."""
     lines = ["# 2FP Open Tools", "", "## Overview", "- [Home](/README.md)", ""]
     
     for section, repo_list in REPO_GROUPS.items():
@@ -54,18 +65,43 @@ def generate_sidebar(repos):
                 else:
                     title = repo.replace("2FP-", "").replace("2FP_", "").replace("-", " ").replace("_", " ").title()
                 
-                # Create local route for external content
-                lines.append(f"- [{title}](/external/{repo}/)")
+                # Check if README exists before adding link
+                if check_readme_exists(repo):
+                    # Create direct GitHub raw link
+                    github_url = f"https://raw.githubusercontent.com/{ORG}/{repo}/main/README.md"
+                    lines.append(f"- [{title}]({github_url})")
+                else:
+                    print(f"⚠️  No README.md found for {repo}")
         lines.append("")
     
     return "\n".join(lines)
 
+def find_uncategorized_repos(repos):
+    """Find repos that exist but aren't categorized yet."""
+    categorized = set()
+    for repo_list in REPO_GROUPS.values():
+        categorized.update(repo_list)
+    
+    uncategorized = set(repos) - categorized
+    return sorted(uncategorized)
+
 if __name__ == "__main__":
+    print("🔍 Fetching repositories from GitHub organization...")
     repos = get_all_repos()
-    print("Found repositories:", repos)
+    print(f"📚 Found {len(repos)} repositories: {repos}")
+    
+    # Check for uncategorized repos
+    uncategorized = find_uncategorized_repos(repos)
+    if uncategorized:
+        print(f"⚠️  Uncategorized repositories found: {uncategorized}")
+        print("   Consider adding these to REPO_GROUPS in the script")
+    
+    print("\n🔗 Generating sidebar with direct GitHub links...")
     sidebar_content = generate_sidebar(repos)
+    
     with open("_sidebar.md", "w") as f:
         f.write(sidebar_content)
-    print("✅ _sidebar.md has been generated with external content routing.")
-    print("Generated sidebar:")
+    
+    print("✅ _sidebar.md has been generated with direct GitHub repository links.")
+    print("\n📄 Generated sidebar:")
     print(sidebar_content)

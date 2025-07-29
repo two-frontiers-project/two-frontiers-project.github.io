@@ -13,10 +13,8 @@
 ## Hardware
 - [PUMA Scope](https://raw.githubusercontent.com/two-frontiers-project/2FP-PUMA/main/README.md)
 - [Cuvette Holder](https://raw.githubusercontent.com/two-frontiers-project/2FP-cuvette_holder/main/README.md)
-- [Open Colorimeter](https://raw.githubusercontent.com/two-frontiers-project/2FP-open_colorimeter/main/README.md)
 
 ## Software
-- [XTree](https://raw.githubusercontent.com/two-frontiers-project/2FP-XTree/main/README.md)
 - [MAGUS](https://raw.githubusercontent.com/two-frontiers-project/2FP_MAGUS/main/README.md)
 
 ## Templates
