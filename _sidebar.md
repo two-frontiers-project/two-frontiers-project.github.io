@@ -1,5 +1,3 @@
-# 2FP Open Tools
-
 ## Overview
 - [Home](/README.md)
 
