@@ -2,21 +2,78 @@
 <html>
 <head>
   <meta charset="UTF-8">
-  <title>2FP Open Tools</title>
+  <title>2FP Open Tools & Protocols</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Two Frontiers Project - Open source research tools and protocols">
   <script>
     window.$docsify = {
       name: '2FP Open Tools',
+      repo: 'https://github.com/two-frontiers-project',
       loadSidebar: true,
+      subMaxLevel: 2,
+      auto2top: true,
+      search: 'auto',
       alias: {
         '/.*/_sidebar.md': '/_sidebar.md'
-      }
+      },
+      plugins: [
+        // Plugin to fetch external markdown files
+        function(hook, vm) {
+          hook.beforeEach(function(content, next) {
+            // Check if the current route is for an external repo
+            const route = vm.route.path;
+            if (route.includes('/external/')) {
+              // Extract repo info from route
+              const parts = route.replace('/external/', '').split('/');
+              const repo = parts[0];
+              const path = parts.slice(1).join('/') || 'README.md';
+              
+              // Fetch the markdown from GitHub
+              const url = `https://raw.githubusercontent.com/two-frontiers-project/${repo}/main/${path}`;
+              fetch(url)
+                .then(response => response.text())
+                .then(markdown => {
+                  // Add a header with repo info
+                  const header = `# ${repo.replace('2FP-', '').replace('-', ' ')}\n\n> **Repository:** [${repo}](https://github.com/two-frontiers-project/${repo})\n\n---\n\n`;
+                  next(header + markdown);
+                })
+                .catch(error => {
+                  console.error('Error fetching external content:', error);
+                  next(`# Error Loading Content\n\nCould not load content from repository: ${repo}\n\nPlease check the repository exists and is accessible.`);
+                });
+            } else {
+              next(content);
+            }
+          });
+        }
+      ]
     }
   </script>
   <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/vue.css" />
+  <style>
+    .app-name-link img {
+      max-height: 40px;
+    }
+    .markdown-section blockquote {
+      border-left: 4px solid var(--theme-color, #42b883);
+      background: #f8f8f8;
+      padding: 1rem;
+      margin: 1rem 0;
+    }
+    .research-notice {
+      background: #fff3cd;
+      border: 1px solid #ffeaa7;
+      border-radius: 4px;
+      padding: 1rem;
+      margin: 1rem 0;
+      color: #856404;
+    }
+  </style>
 </head>
 <body>
   <div id="app">Loading...</div>
   <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
+  <script src="//unpkg.com/docsify/lib/plugins/search.min.js"></script>
+  <script src="//unpkg.com/docsify/lib/plugins/zoom-image.min.js"></script>
 </body>
 </html>
