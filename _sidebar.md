@@ -10,8 +10,10 @@
 ## Hardware
 - [PUMA Scope](external/2FP-PUMA/README.md)
 - [Cuvette Holder](external/2FP-cuvette_holder/README.md)
+- [Open Colorimeter](external/2FP-open_colorimeter/README.md)
 
 ## Software
+- [XTree](external/2FP-XTree/README.md)
 - [MAGUS](external/2FP_MAGUS/README.md)
 
 ## Templates

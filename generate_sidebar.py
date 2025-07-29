@@ -46,45 +46,52 @@ def get_all_repos():
 
 def download_readme(repo):
     """Download and process README from a repository."""
-    url = f"https://raw.githubusercontent.com/{ORG}/{repo}/main/README.md"
-    try:
-        response = requests.get(url)
-        response.raise_for_status()
-        
-        # Process the markdown to fix relative links
-        content = response.text
-        
-        # Fix image links to point to GitHub raw content
-        content = re.sub(
-            r'!\[([^\]]*)\]\((?!https?://)([^)]+)\)',
-            f'![\\1](https://raw.githubusercontent.com/{ORG}/{repo}/main/\\2)',
-            content
-        )
-        
-        # Fix relative links to point to GitHub repository
-        # Fix markdown links that aren't already absolute URLs
-        content = re.sub(
-            r'\[([^\]]+)\]\((?!https?://|mailto:|#)([^)]+)\)',
-            f'[\\1](https://github.com/{ORG}/{repo}/blob/main/\\2)',
-            content
-        )
-        
-        # Add repository header
-        display_name = CUSTOM_NAMES.get(repo, repo.replace("2FP-", "").replace("2FP_", "").replace("-", " ").replace("_", " ").title())
-        header = f"""# {display_name}
+    # Try both main and master branches
+    branches = ['main', 'master']
+    
+    for branch in branches:
+        url = f"https://raw.githubusercontent.com/{ORG}/{repo}/{branch}/README.md"
+        try:
+            response = requests.get(url)
+            response.raise_for_status()
+            
+            # Process the markdown to fix relative links
+            content = response.text
+            
+            # Fix image links to point to GitHub raw content
+            content = re.sub(
+                r'!\[([^\]]*)\]\((?!https?://)([^)]+)\)',
+                f'![\\1](https://raw.githubusercontent.com/{ORG}/{repo}/{branch}/\\2)',
+                content
+            )
+            
+            # Fix relative links to point to GitHub repository
+            # Fix markdown links that aren't already absolute URLs
+            content = re.sub(
+                r'\[([^\]]+)\]\((?!https?://|mailto:|#)([^)]+)\)',
+                f'[\\1](https://github.com/{ORG}/{repo}/blob/{branch}/\\2)',
+                content
+            )
+            
+            # Add repository header
+            display_name = CUSTOM_NAMES.get(repo, repo.replace("2FP-", "").replace("2FP_", "").replace("-", " ").replace("_", " ").title())
+            header = f"""# {display_name}
 
 > **Repository:** [{repo}](https://github.com/{ORG}/{repo})  
-> **Edit on GitHub:** [README.md](https://github.com/{ORG}/{repo}/edit/main/README.md)
+> **Edit on GitHub:** [README.md](https://github.com/{ORG}/{repo}/edit/{branch}/README.md)
 
 ---
 
 """
-        
-        return header + content
-        
-    except requests.RequestException as e:
-        print(f"⚠️  Could not download README for {repo}: {e}")
-        return None
+            
+            print(f"✅ Found README for {repo} on {branch} branch")
+            return header + content
+            
+        except requests.RequestException as e:
+            continue  # Try next branch
+    
+    print(f"⚠️  Could not download README for {repo}: No README.md found on main or master branch")
+    return None
 
 def create_external_structure():
     """Create the external directory structure and download READMEs."""
