@@ -1,11 +1,10 @@
 # Two Frontiers Project (2FP) - Open Tools & Protocols
 
-## ⚠️ RESEARCH USE ONLY
-**This site contains research protocols and tools that are currently under development. All materials, protocols, and software are intended for research purposes only and should not be used for commercial applications without proper validation and approval.**
-
 ## About the Two Frontiers Project
 
-The Two Frontiers Project (2FP) is a collaborative research initiative focused on developing open-source tools, protocols, and methodologies for [brief description of your research domain]. Our mission is to make scientific tools and protocols accessible to researchers worldwide through comprehensive documentation and open-source implementations.
+The Two Frontiers Project is a 501(c)(3) nonprofit research initiative leveraging the diversity of life in extreme environments to address major challenges in human and planetary health, including bioremediation, coral reef bleaching, sustainable agriculture, and drug discovery. Through global expeditions and community-based citizen science programs, we connect scientists, explorers, and innovators to unlock the potential of naturally evolved microbes. Our research underpins solutions to urgent environmental issues—from discovering carbon-fixing microorganisms in the volcanic ocean vents of the Mediterranean to searching contaminated sites for organisms capable of removing contaminants from the environment. We specialize in sampling, precision culturomics, and sequencing, and we continuously screen our dataset for microbes capable of producing potentially industrially or pharmacologically utile compounds.  
+
+On this site, you can find resources related to the work we do, including our fieldwork handbook, software tools, custom sampling equipment, expedition planning documentation, and so on.
 
 ## What You'll Find on This Site
 
@@ -60,6 +59,11 @@ Navigate through the sections using the sidebar to access specific protocols and
 ## Contributing
 
 This is an active research project. For questions, suggestions, or contributions, please contact the 2FP team or submit issues to the relevant repository.
+
+
+## Usage
+**This site contains research protocols and tools that are currently under development. All materials, protocols, and software are intended for research purposes only and should not be used for commercial applications without proper validation and approval.**
+
 
 ---
 
