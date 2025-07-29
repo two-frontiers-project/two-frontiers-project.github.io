@@ -4,20 +4,20 @@
 - [Home](/README.md)
 
 ## Handbook
-- [Field Kits & Protocols](/external/2FP-fieldKitsAndProtocols/)
+- [Field Kits & Protocols](https://raw.githubusercontent.com/two-frontiers-project/2FP-fieldKitsAndProtocols/main/README.md)
 
 ## Field Protocols
-- [Field Kits & Protocols](/external/2FP-fieldKitsAndProtocols/)
-- [In-Field Geochemistry Tools](/external/2FP-fieldworkToolsGeneral/)
+- [Field Kits & Protocols](https://raw.githubusercontent.com/two-frontiers-project/2FP-fieldKitsAndProtocols/main/README.md)
+- [In-Field Geochemistry Tools](https://raw.githubusercontent.com/two-frontiers-project/2FP-fieldworkToolsGeneral/main/README.md)
 
 ## Hardware
-- [PUMA Scope](/external/2FP-PUMA/)
-- [Cuvette Holder](/external/2FP-cuvette_holder/)
-- [Open Colorimeter](/external/2FP-open_colorimeter/)
+- [PUMA Scope](https://raw.githubusercontent.com/two-frontiers-project/2FP-PUMA/main/README.md)
+- [Cuvette Holder](https://raw.githubusercontent.com/two-frontiers-project/2FP-cuvette_holder/main/README.md)
+- [Open Colorimeter](https://raw.githubusercontent.com/two-frontiers-project/2FP-open_colorimeter/main/README.md)
 
 ## Software
-- [XTree](/external/2FP-XTree/)
-- [MAGUS](/external/2FP_MAGUS/)
+- [XTree](https://raw.githubusercontent.com/two-frontiers-project/2FP-XTree/main/README.md)
+- [MAGUS](https://raw.githubusercontent.com/two-frontiers-project/2FP_MAGUS/main/README.md)
 
 ## Templates
-- [Expedition Template](/external/2FP-expedition-template/)
+- [Expedition Template](https://raw.githubusercontent.com/two-frontiers-project/2FP-expedition-template/main/README.md)
