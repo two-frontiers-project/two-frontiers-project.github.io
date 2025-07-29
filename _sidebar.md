@@ -4,18 +4,18 @@
 - [Home](/README.md)
 
 ## Handbook
-- [Field Kits & Protocols](external/2FP-fieldKitsAndProtocols/README.md)
+- [Field Kits & Protocols](/external/2FP-fieldKitsAndProtocols/)
 
 ## Field Protocols
-- [Field Kits & Protocols](external/2FP-fieldKitsAndProtocols/README.md)
-- [In-Field Geochemistry Tools](external/2FP-fieldworkToolsGeneral/README.md)
+- [Field Kits & Protocols](/external/2FP-fieldKitsAndProtocols/)
+- [In-Field Geochemistry Tools](/external/2FP-fieldworkToolsGeneral/)
 
 ## Hardware
-- [PUMA Scope](external/2FP-PUMA/README.md)
-- [Cuvette Holder](external/2FP-cuvette_holder/README.md)
+- [PUMA Scope](/external/2FP-PUMA/)
+- [Cuvette Holder](/external/2FP-cuvette_holder/)
 
 ## Software
-- [MAGUS](external/2FP_MAGUS/README.md)
+- [MAGUS](/external/2FP_MAGUS/)
 
 ## Templates
-- [Expedition Template](external/2FP-expedition-template/README.md)
+- [Expedition Template](/external/2FP-expedition-template/)

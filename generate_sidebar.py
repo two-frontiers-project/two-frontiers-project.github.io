@@ -120,7 +120,7 @@ def create_external_structure():
     return downloaded_repos
 
 def generate_sidebar(downloaded_repos):
-    """Generate the sidebar markdown with local external links."""
+    """Generate the sidebar markdown with Docsify-compatible routes."""
     lines = ["# 2FP Open Tools", "", "## Overview", "- [Home](/README.md)", ""]
     
     for section, repo_list in REPO_GROUPS.items():
@@ -136,8 +136,8 @@ def generate_sidebar(downloaded_repos):
                 else:
                     title = repo.replace("2FP-", "").replace("2FP_", "").replace("-", " ").replace("_", " ").title()
                 
-                # Create link to local external file
-                lines.append(f"- [{title}](external/{repo}/README.md)")
+                # Create Docsify route pointing to directory - Docsify will find README.md automatically
+                lines.append(f"- [{title}](/external/{repo}/)")
         lines.append("")
     
     return "\n".join(lines)
