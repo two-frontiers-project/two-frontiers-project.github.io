@@ -12,22 +12,22 @@ EXTERNAL_DIR = "external"
 # Map actual existing repositories to sections
 REPO_GROUPS = {
     "Handbook": [],
-    "Field Protocols": ["2FP-fieldKitsAndProtocols", "2FP-fieldworkToolsGeneral"],
+    "Speciality Kits": ["2FP-fieldKitsAndProtocols"],
     "Lab Protocols": [],  # No lab protocol repos exist yet
-    "Hardware": ["2FP-PUMA", "2FP-cuvette_holder", "2FP-open_colorimeter", "2FP-3dPrinting"],
+    "Hardware": ["2FP-fieldworkToolsGeneral","2FP-PUMA", "2FP-cuvette_holder", "2FP-open_colorimeter", "2FP-3dPrinting"],
     "Software": ["2FP-XTree", "2FP_MAGUS"],
     "Templates": ["2FP-expedition-template"]
 }
 
 # Custom names for repos that don't follow the standard pattern
 CUSTOM_NAMES = {
-    "2FP-fieldKitsAndProtocols": "Field Kits & Protocols",
-    "2FP-fieldworkToolsGeneral": "In-Field Geochemistry Tools",
+    "2FP-fieldKitsAndProtocols": "Speciality Kits",
+    "2FP-fieldworkToolsGeneral": "General Field Tools",
     "2FP-expedition-template": "Expedition Template",
     "2FP-PUMA": "PUMA Scope",
+    "2FP-3dPrinting": "General 3D Printing",
     "2FP-cuvette_holder": "Cuvette Holder",
     "2FP-open_colorimeter": "Open Colorimeter",
-    "2FP-3dPrinting": "3D Printing",
     "2FP-XTree": "XTree",
     "2FP_MAGUS": "MAGUS"
 }
@@ -252,13 +252,13 @@ def create_external_structure(no_download=False):
 
 def generate_sidebar(downloaded_content):
     """Generate the sidebar markdown with hierarchical structure for subdirectories."""
-    lines = ["## Overview", "- [Home](/README.md)", ""]
+    lines = ["**Overview**", "- [Home](/README.md)", ""]
     
     for section, repo_list in REPO_GROUPS.items():
         if not repo_list:  # Skip empty sections
             continue
             
-        lines.append(f"## {section}")
+        lines.append(f"**{section}**")
         for repo in repo_list:
             if repo in downloaded_content:
                 # Use custom name if available, otherwise generate from repo name

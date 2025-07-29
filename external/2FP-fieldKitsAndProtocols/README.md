@@ -1,4 +1,4 @@
-# Field Kits & Protocols
+# Speciality Kits
 
 > **Repository:** [2FP-fieldKitsAndProtocols](https://github.com/two-frontiers-project/2FP-fieldKitsAndProtocols)
 

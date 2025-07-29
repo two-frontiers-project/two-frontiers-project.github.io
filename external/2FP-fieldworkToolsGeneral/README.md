@@ -1,4 +1,4 @@
-# In-Field Geochemistry Tools
+# General Field Tools
 
 > **Repository:** [2FP-fieldworkToolsGeneral](https://github.com/two-frontiers-project/2FP-fieldworkToolsGeneral)
 
