@@ -252,13 +252,13 @@ def create_external_structure(no_download=False):
 
 def generate_sidebar(downloaded_content):
     """Generate the sidebar markdown with hierarchical structure for subdirectories."""
-    lines = ["**Overview**", "- [Home](/README.md)", ""]
+    lines = ["## Overview", "- [Home](/README.md)", ""]
     
     for section, repo_list in REPO_GROUPS.items():
         if not repo_list:  # Skip empty sections
             continue
             
-        lines.append(f"**{section}**")
+        lines.append(f"## {section}")
         for repo in repo_list:
             if repo in downloaded_content:
                 # Use custom name if available, otherwise generate from repo name
