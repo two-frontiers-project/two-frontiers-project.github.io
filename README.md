@@ -5,7 +5,7 @@
 
 ## About the Two Frontiers Project
 
-The Two Frontiers Project (2FP) is a collaborative research initiative focused on developing open-source tools, protocols, and methodologies for [brief description of your research domain]. Our mission is to make scientific tools and protocols accessible to researchers worldwide through comprehensive documentation and open-source implementations.
+The Two Frontiers Project (2FP) is a collaborative research initiative focused on developing open-source tools, protocols, and methodologies for microbiome-centric fieldwork/sequencing/culturing. Our mission is to make scientific tools and protocols accessible to researchers worldwide through comprehensive documentation and open-source implementations.
 
 ## What You'll Find on This Site
 
