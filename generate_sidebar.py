@@ -128,7 +128,7 @@ def create_external_structure():
 
 def generate_sidebar(downloaded_repos):
     """Generate the sidebar markdown with direct relative paths to README.md files."""
-    lines = ["# 2FP Open Tools", "", "## Overview", "- [Home](/README.md)", ""]
+    lines = ["## Overview", "- [Home](/README.md)", ""]
     
     for section, repo_list in REPO_GROUPS.items():
         if not repo_list:  # Skip empty sections
