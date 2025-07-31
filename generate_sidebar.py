@@ -4,6 +4,7 @@ import shutil
 import re
 import argparse
 from pathlib import Path
+from urllib.parse import urljoin, urlparse
 
 ORG = "two-frontiers-project"
 EXCLUDE = {"two-frontiers-project.github.io"}
@@ -35,6 +36,27 @@ def categorize_repo(repo):
         return "Templates"
     else:
         return "Other"
+
+def download_image(repo, image_path, local_dir, branch='main'):
+    """Download an image from GitHub to local directory."""
+    try:
+        image_url = f"https://raw.githubusercontent.com/{ORG}/{repo}/{branch}/{image_path}"
+        response = requests.get(image_url)
+        if response.status_code == 200:
+            # Create subdirectories if needed
+            local_image_path = os.path.join(local_dir, os.path.basename(image_path))
+            os.makedirs(os.path.dirname(local_image_path) if os.path.dirname(local_image_path) else local_dir, exist_ok=True)
+            
+            with open(local_image_path, 'wb') as f:
+                f.write(response.content)
+            print(f"📷 Downloaded image: {os.path.basename(image_path)}")
+            return True
+        else:
+            print(f"❌ Failed to download image: {image_path} (status: {response.status_code})")
+            return False
+    except Exception as e:
+        print(f"❌ Error downloading image {image_path}: {e}")
+        return False
 
 def get_all_repos():
     """Fetch all repositories from the GitHub organization."""
@@ -104,13 +126,28 @@ def download_readme(repo, subdir=None, branch='main'):
         
         # Fix image links to point to GitHub raw content
         if subdir:
-            # For subdirectory READMEs, images might be relative to the subdir
-            content = re.sub(
-                r'!\[([^\]]*)\]\((?!https?://)([^)]+)\)',
-                f'![\\1](https://raw.githubusercontent.com/{ORG}/{repo}/{branch}/{subdir}/\\2)',
-                content
-            )
-            # Fix relative links to point to GitHub repository subdir
+            # Find all image references in the content
+            image_pattern = r'!\[([^\]]*)\]\((?!https?://)([^)]+)\)'
+            images = re.findall(image_pattern, content)
+            
+            # Download images and update paths
+            for alt_text, image_path in images:
+                # Download the image to the local subdirectory
+                local_subdir = os.path.join(EXTERNAL_DIR, repo, subdir)
+                full_image_path = f"{subdir}/{image_path}" if subdir else image_path
+                
+                if download_image(repo, full_image_path, local_subdir, branch):
+                    # Update the content to use local image path (just filename)
+                    old_pattern = f'![{re.escape(alt_text)}]({re.escape(image_path)})'
+                    new_pattern = f'![{alt_text}]({os.path.basename(image_path)})'
+                    content = content.replace(old_pattern, new_pattern)
+                else:
+                    # Fallback to GitHub URL if download fails
+                    old_pattern = f'![{re.escape(alt_text)}]({re.escape(image_path)})'
+                    new_pattern = f'![{alt_text}](https://raw.githubusercontent.com/{ORG}/{repo}/{branch}/{subdir}/{image_path})'
+                    content = content.replace(old_pattern, new_pattern)
+            
+            # Fix other relative links (non-images) to point to GitHub
             content = re.sub(
                 r'\[([^\]]+)\]\((?!https?://|mailto:|#)([^)]+)\)',
                 f'[\\1](https://github.com/{ORG}/{repo}/blob/{branch}/{subdir}/\\2)',
@@ -134,8 +171,7 @@ def download_readme(repo, subdir=None, branch='main'):
             display_name = f"{CUSTOM_NAMES.get(repo, repo.replace('2FP-', '').replace('2FP_', '').replace('-', ' ').replace('_', ' ').title())} - {subdir.replace('-', ' ').replace('_', ' ').title()}"
             header = f"""# {display_name}
 
-> **Repository:** [{repo}](https://github.com/{ORG}/{repo})  
-> **Subdirectory:** [{subdir}](https://github.com/{ORG}/{repo}/tree/{branch}/{subdir})
+> **Repository:** [{repo}](https://github.com/{ORG}/{repo})
 
 ---
 
@@ -293,13 +329,17 @@ if __name__ == "__main__":
                        help='Skip subdirectory discovery to avoid GitHub API rate limits')
     args = parser.parse_args()
     
-    print("🔍 Fetching repositories from GitHub organization...")
-    repos = get_all_repos()
-    print(f"📚 Found {len(repos)} repositories: {repos}")
-    
     if args.no_download:
+        print("🔍 Using configured repositories (avoiding API calls)...")
+        # Use hardcoded list when API is rate-limited
+        repos = ["2FP-fieldKitsAndProtocols", "2FP-3dPrinting", "2FP-PUMA", "2FP-cuvette_holder", 
+                "2FP-fieldworkToolsGeneral", "2FP-open_colorimeter", "2FP-XTree", "2FP_MAGUS", "2FP-expedition-template"]
+        print(f"📚 Found {len(repos)} configured repositories: {repos}")
         print(f"\n📁 Creating external directory structure (no subdirectory discovery)...")
     else:
+        print("🔍 Fetching repositories from GitHub organization...")
+        repos = get_all_repos()
+        print(f"📚 Found {len(repos)} repositories: {repos}")
         print(f"\n📁 Creating external directory structure with subdirectories...")
     
     downloaded_content = create_external_structure(repos, no_download=args.no_download)
