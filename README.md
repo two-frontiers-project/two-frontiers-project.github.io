@@ -14,24 +14,37 @@ This comprehensive resource aggregates our tools and protocols, and repositories
 
 ## Site Structure
 
-### Field/Sampling Protocols
-- **Field Kits & Protocols**: Core field sampling protocols, slates, and materials
-- **In-Field Geochemistry Tools**: Real-time chemical analysis tools and methods
+This site is built with [Docsify](https://docsify.js.org/) and the sidebar
+organizes the documentation into the following sections. Each item links to a
+repository in the `external` directory that contains the full documentation.
+
+### Overview
+- **Home** – this page.
+
+### Speciality Kits
+- **Speciality Kits** – additional field kit documentation.
 
 ### Hardware
-Open-source hardware designs and 3D printing files:
-- **PUMA Scope**: Portable microscopy solutions
-- **Cuvette Holder**: Custom laboratory equipment designs
-- **Open Colorimeter**: Colorimetric analysis tools
+- **General 3D Printing**
+  - **Dremelfuge**
+  - **Eyeglasses Divemask Mount**
+  - **Fluorometer Collimating Lens Mount**
+  - **Laser Cutter Racks**
+  - **Microscope Mount for Fiber Spectrophotometer**
+  - **pH Bottle Holder**
+  - **Spec Adapters**
+  - **Turbidometer Adapters**
+- **PUMA Scope**
+  - **FreeCAD**
+- **Cuvette Holder**
+- **General Field Tools**
 
 ### Software
-Research software tools and applications:
-- **XTree**: Phylogenetic analysis tools
-- **MAGUS**: Metagenomic analysis and processing tools
+- **XTree** – phylogenetic analysis tools.
+- **MAGUS** – metagenomic analysis and processing tools.
 
 ### Templates
-Standardized templates for field work and data collection:
-- **Expedition Template**: Template for organizing and documenting field expeditions
+- **Expedition Template** – resources for organizing and documenting field expeditions.
 
 ## Getting Started
 
