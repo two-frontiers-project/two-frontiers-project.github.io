@@ -6,11 +6,16 @@
 
 # Other Field Kits
 
-Details on open source field kits and associated protocols we have generated for use by the scientific community
+This repository contains supplemental field kit documentation maintained by the 2 Frontiers Project. Each kit can be assembled from readily available components and is provided with protocols and metadata so that other labs can reproduce our sampling strategies.
 
-This resource is actively under development as we formalize our kits. Currently, we only list two that we have successfully had used by outside teams:
+## Repository layout
 
-1. kit_10sample_collection-nobanking_protocol -- metadata, kit contents, and protocol for collecting samples without banking for DNA sequencing and culturing in the field (this will happen when kits are received at the lab).
+- **kit_10sample_collection-nobanking** – resources for collecting up to ten samples when cold-chain storage is not available. Contains a materials spreadsheet, metadata, and a step-by-step protocol.
+- **citizen_science_extremophiles_in_the_home** – outreach materials and datasheets for the "Extremophiles in Your Home" citizen science campaign.
 
-2. citizen_science_extremophiles_in_the_home -- Documentation for the following Citizen Science project: https://citsci.org/projects/the-extremophile-campaign-in-your-home
- 
+Each folder is self-contained. See the README inside each directory for specifics about the files provided.
+
+## Contributing
+
+Contributions are welcome. Please open an issue or submit a pull request if you have improvements or new protocols to share.
+
