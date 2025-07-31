@@ -37,6 +37,23 @@ def categorize_repo(repo):
     else:
         return "Other"
 
+def get_subdirectory_files(repo, subdir, branch='main'):
+    """Get all files in a repository subdirectory."""
+    try:
+        url = f"https://api.github.com/repos/{ORG}/{repo}/contents/{subdir}"
+        params = {'ref': branch}
+        response = requests.get(url, params=params)
+        response.raise_for_status()
+        
+        files = []
+        for item in response.json():
+            if item['type'] == 'file':
+                files.append(item['name'])
+        return files
+    except Exception as e:
+        print(f"⚠️  Could not get files for {repo}/{subdir}: {e}")
+        return []
+
 def download_image(repo, image_path, local_dir, branch='main'):
     """Download an image from GitHub to local directory."""
     try:
@@ -126,23 +143,32 @@ def download_readme(repo, subdir=None, branch='main'):
         
         # Fix image links to point to GitHub raw content
         if subdir:
-            # Find all image references in the content
+            # Get all files in the subdirectory to download ALL images
+            local_subdir = os.path.join(EXTERNAL_DIR, repo, subdir)
+            all_files = get_subdirectory_files(repo, subdir, branch)
+            
+            # Download all image files (png, jpg, jpeg, gif, svg, etc.)
+            image_extensions = {'.png', '.jpg', '.jpeg', '.gif', '.svg', '.bmp', '.webp'}
+            for filename in all_files:
+                if any(filename.lower().endswith(ext) for ext in image_extensions):
+                    full_image_path = f"{subdir}/{filename}"
+                    download_image(repo, full_image_path, local_subdir, branch)
+            
+            # Find all image references in the content and fix paths
             image_pattern = r'!\[([^\]]*)\]\((?!https?://)([^)]+)\)'
             images = re.findall(image_pattern, content)
             
-            # Download images and update paths
+            # Update image paths in content to use local files
             for alt_text, image_path in images:
-                # Download the image to the local subdirectory
-                local_subdir = os.path.join(EXTERNAL_DIR, repo, subdir)
-                full_image_path = f"{subdir}/{image_path}" if subdir else image_path
-                
-                if download_image(repo, full_image_path, local_subdir, branch):
-                    # Update the content to use local image path (just filename)
+                # Check if this image was downloaded locally
+                local_image_file = os.path.join(local_subdir, os.path.basename(image_path))
+                if os.path.exists(local_image_file):
+                    # Update to use local image path (just filename)
                     old_pattern = f'![{re.escape(alt_text)}]({re.escape(image_path)})'
                     new_pattern = f'![{alt_text}]({os.path.basename(image_path)})'
                     content = content.replace(old_pattern, new_pattern)
                 else:
-                    # Fallback to GitHub URL if download fails
+                    # Fallback to GitHub URL if not downloaded
                     old_pattern = f'![{re.escape(alt_text)}]({re.escape(image_path)})'
                     new_pattern = f'![{alt_text}](https://raw.githubusercontent.com/{ORG}/{repo}/{branch}/{subdir}/{image_path})'
                     content = content.replace(old_pattern, new_pattern)
@@ -332,8 +358,7 @@ if __name__ == "__main__":
     if args.no_download:
         print("🔍 Using configured repositories (avoiding API calls)...")
         # Use hardcoded list when API is rate-limited
-        repos = ["2FP-fieldKitsAndProtocols", "2FP-3dPrinting", "2FP-PUMA", "2FP-cuvette_holder", 
-                "2FP-fieldworkToolsGeneral", "2FP-open_colorimeter", "2FP-XTree", "2FP_MAGUS", "2FP-expedition-template"]
+        repos = ["2FP-fieldworkToolsGeneral"]  # Test with just one repo to avoid rate limits
         print(f"📚 Found {len(repos)} configured repositories: {repos}")
         print(f"\n📁 Creating external directory structure (no subdirectory discovery)...")
     else:

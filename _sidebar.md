@@ -23,8 +23,6 @@
 - [Cuvette Holder](external/2FP-cuvette_holder/README.md)
 - [General Field Tools](external/2FP-fieldworkToolsGeneral/README.md)
   - [Od600](external/2FP-fieldworkToolsGeneral/OD600/README.md)
-  - [Uvspec](external/2FP-fieldworkToolsGeneral/UVspec/README.md)
-- [Open Colorimeter](external/2FP-open_colorimeter/README.md)
 
 ## Software
 - [XTree](external/2FP-XTree/README.md)
