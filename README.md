@@ -8,14 +8,9 @@ The Two Frontiers Project (2FP) is a collaborative research initiative focused o
 
 ## What You'll Find on This Site
 
-This comprehensive resource aggregates all 2FP tools, protocols, and repositories in a structured format. Each section contains:
+This comprehensive resource aggregates our tools and protocols, and repositories in a structured format. The goal here is that you reproduce our field sampling, sequencing, and analysis according to our standards such that your data lines up with the network of teams using 2FP protocols, enabling easier analysis.
 
-- **Complete protocols** with step-by-step instructions
-- **Materials spreadsheets** for equipment and supply lists  
-- **Metadata sheets** for data collection and organization
-- **Field/lab slates** for in-field and laboratory use
-- **Photos of each protocol step** (where available)
-- **Demo videos** (where available)
+*Please note:* We did NOT make all of these tools ourselves -- most of the hardware, for example, is from forked and/or lightly modified repositories. Please see individual repositories for correct attribution and, if you use these specific tools in your work, cite the authors.
 
 ## Site Structure
 
