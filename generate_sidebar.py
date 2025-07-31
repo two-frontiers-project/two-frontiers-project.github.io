@@ -22,6 +22,20 @@ CUSTOM_NAMES = {
     "2FP_MAGUS": "MAGUS"
 }
 
+# Simple categorization function
+def categorize_repo(repo):
+    """Categorize repositories based on their names."""
+    if repo in ["2FP-fieldKitsAndProtocols"]:
+        return "Speciality Kits"
+    elif repo in ["2FP-fieldworkToolsGeneral", "2FP-PUMA", "2FP-cuvette_holder", "2FP-open_colorimeter", "2FP-3dPrinting"]:
+        return "Hardware"
+    elif repo in ["2FP-XTree", "2FP_MAGUS"]:
+        return "Software"
+    elif repo in ["2FP-expedition-template"]:
+        return "Templates"
+    else:
+        return "Other"
+
 def get_all_repos():
     """Fetch all repositories from the GitHub organization."""
     repos = []
@@ -227,28 +241,43 @@ def create_external_structure(repos, no_download=False):
     return downloaded_content
 
 def generate_sidebar(downloaded_content):
-    """Generate the sidebar markdown with all repositories listed alphabetically."""
+    """Generate the sidebar markdown with simple categorization."""
     lines = ["## Overview", "- [Home](/README.md)", ""]
     
-    # Sort repos alphabetically
-    sorted_repos = sorted(downloaded_content.keys())
+    # Group repositories by category
+    categories = {}
+    for repo in downloaded_content.keys():
+        category = categorize_repo(repo)
+        if category not in categories:
+            categories[category] = []
+        categories[category].append(repo)
     
-    for repo in sorted_repos:
-        if repo in downloaded_content:
-            # Use custom name if available, otherwise generate from repo name
-            if repo in CUSTOM_NAMES:
-                title = CUSTOM_NAMES[repo]
-            else:
-                title = repo.replace("2FP-", "").replace("2FP_", "").replace("-", " ").replace("_", " ").title()
+    # Define the order of categories
+    category_order = ["Speciality Kits", "Hardware", "Software", "Templates", "Other"]
+    
+    for category in category_order:
+        if category in categories and categories[category]:
+            lines.append(f"## {category}")
             
-            # Add main repository link
-            lines.append(f"- [{title}](external/{repo}/README.md)")
+            # Sort repos within category alphabetically
+            for repo in sorted(categories[category]):
+                if repo in downloaded_content:
+                    # Use custom name if available, otherwise generate from repo name
+                    if repo in CUSTOM_NAMES:
+                        title = CUSTOM_NAMES[repo]
+                    else:
+                        title = repo.replace("2FP-", "").replace("2FP_", "").replace("-", " ").replace("_", " ").title()
+                    
+                    # Add main repository link
+                    lines.append(f"- [{title}](external/{repo}/README.md)")
+                    
+                    # Add subdirectory links if they exist
+                    if downloaded_content[repo]['subdirs']:
+                        for subdir in downloaded_content[repo]['subdirs']:
+                            subdir_title = subdir.replace('-', ' ').replace('_', ' ').title()
+                            lines.append(f"  - [{subdir_title}](external/{repo}/{subdir}/README.md)")
             
-            # Add subdirectory links if they exist
-            if downloaded_content[repo]['subdirs']:
-                for subdir in downloaded_content[repo]['subdirs']:
-                    subdir_title = subdir.replace('-', ' ').replace('_', ' ').title()
-                    lines.append(f"  - [{subdir_title}](external/{repo}/{subdir}/README.md)")
+            lines.append("")
     
     return "\n".join(lines)
 
@@ -269,7 +298,7 @@ if __name__ == "__main__":
     
     downloaded_content = create_external_structure(repos, no_download=args.no_download)
     
-    print(f"\n🔗 Generating alphabetical sidebar...")
+    print(f"\n🔗 Generating categorized sidebar...")
     sidebar_content = generate_sidebar(downloaded_content)
     
     with open("_sidebar.md", "w") as f:
@@ -282,7 +311,7 @@ if __name__ == "__main__":
             total_files += 1
         total_files += len(content['subdirs'])
     
-    print("✅ _sidebar.md has been generated with alphabetical repository listing.")
+    print("✅ _sidebar.md has been generated with categorized repository listing.")
     print(f"✅ Downloaded {total_files} README files from {len(downloaded_content)} repositories.")
     
     if args.no_download:
