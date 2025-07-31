@@ -1,3 +1,9 @@
+# General Field Tools - Od600
+
+> **Repository:** [2FP-fieldworkToolsGeneral](https://github.com/two-frontiers-project/2FP-fieldworkToolsGeneral)
+
+---
+
 # Low cost OD600 spectrometer for enrichment and culture growth measurement in the field
 
 We've developed this minimal device for monitoring growth of liquid cultures in tubes. Optical density at a wavelength of 600nm, or _OD600_, is a common tool for measuring relative microbial growth in (semi-)transparent liquid media. It is based on light scattering (more than absorbance) by cells in the  orange-yellow range. While there is variance for different organisms and different instruments, it is a simple noninvasive method to rapidly measure culture growth over time. 
@@ -9,21 +15,21 @@ __Coming soon: spectral measurements and comparisons of mixed communities and di
 ## Design
 
 ### Prototype:
-<img src="external/2FP-fieldworkToolsGeneral/OD600/prototype.jpg" width="45%">
+<img src="prototype.jpg" width="45%">
 
 ### 3d printed part:
 
-Parametric script in [OpenSCAD](https://openscad.org/): [OD600_15mlFalcon.scad](OD600_15mlFalcon.scad)
+Parametric script in [OpenSCAD](https://openscad.org/): [OD600_15mlFalcon.scad](https://github.com/two-frontiers-project/2FP-fieldworkToolsGeneral/blob/main/OD600/OD600_15mlFalcon.scad)
 
-Render in stl format: [OD600_15mlFalcon.stl](OD600_15mlFalcon.stl)
+Render in stl format: [OD600_15mlFalcon.stl](https://github.com/two-frontiers-project/2FP-fieldworkToolsGeneral/blob/main/OD600/OD600_15mlFalcon.stl)
 
-<img src="external/2FP-fieldworkToolsGeneral/OD600/OD600_3dpart.png" width="25%">
+<img src="OD600_3dpart.png" width="25%">
 
 ### Circuit:
-<img src="external/2FP-fieldworkToolsGeneral/OD600/breadboard.png" width="45%">
+<img src="breadboard.png" width="45%">
 
 ### Code:
-here: [OD600.ino](OD600.ino)
+here: [OD600.ino](https://github.com/two-frontiers-project/2FP-fieldworkToolsGeneral/blob/main/OD600/OD600.ino)
 
 Code adapted from the excellent [Adafruit_TSL2591](https://github.com/adafruit/Adafruit_TSL2591_Library/blob/master/examples/tsl2591/tsl2591.ino) and [OLED](https://learn.adafruit.com/monochrome-oled-breakouts/arduino-library-and-examples) examples. 
 
@@ -62,8 +68,8 @@ https://www.nutsvolts.com/magazine/article/diy-biotech-a-spectrophotometer-for-m
 Preparation
 
 1. Order / collect parts
-2. Set up computer with [Arduino IDE](https://www.arduino.cc/en/Guide/) and 3d slicer and control software (see [arduino_install.sh](arduino_install.sh) for an example. Install all needed boards and both the the Adafruit_TSL2591 library and adafruit_GFX library. 
-3. 3d print (or order) the part(s) found here: [OD600_15mlFalcon.stl](OD600_15mlFalcon.stl)
+2. Set up computer with [Arduino IDE](https://www.arduino.cc/en/Guide/) and 3d slicer and control software (see [arduino_install.sh](https://github.com/two-frontiers-project/2FP-fieldworkToolsGeneral/blob/main/OD600/arduino_install.sh) for an example. Install all needed boards and both the the Adafruit_TSL2591 library and adafruit_GFX library. 
+3. 3d print (or order) the part(s) found here: [OD600_15mlFalcon.stl](https://github.com/two-frontiers-project/2FP-fieldworkToolsGeneral/blob/main/OD600/OD600_15mlFalcon.stl)
 
 Assembly
 
