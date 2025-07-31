@@ -163,14 +163,26 @@ def download_readme(repo, subdir=None, branch='main'):
                 # Check if this image was downloaded locally
                 local_image_file = os.path.join(local_subdir, os.path.basename(image_path))
                 if os.path.exists(local_image_file):
-                    # Update to use local image path (just filename)
+                    # Update to use full path from root (for Docsify)
+                    full_local_path = f"{EXTERNAL_DIR}/{repo}/{subdir}/{os.path.basename(image_path)}"
                     old_pattern = f'![{re.escape(alt_text)}]({re.escape(image_path)})'
-                    new_pattern = f'![{alt_text}]({os.path.basename(image_path)})'
+                    new_pattern = f'![{alt_text}]({full_local_path})'
                     content = content.replace(old_pattern, new_pattern)
                 else:
                     # Fallback to GitHub URL if not downloaded
                     old_pattern = f'![{re.escape(alt_text)}]({re.escape(image_path)})'
                     new_pattern = f'![{alt_text}](https://raw.githubusercontent.com/{ORG}/{repo}/{branch}/{subdir}/{image_path})'
+                    content = content.replace(old_pattern, new_pattern)
+            
+            # Also fix HTML img tags
+            html_img_pattern = r'<img\s+src="(?!https?://)([^"]+)"'
+            html_images = re.findall(html_img_pattern, content)
+            for image_path in html_images:
+                local_image_file = os.path.join(local_subdir, os.path.basename(image_path))
+                if os.path.exists(local_image_file):
+                    full_local_path = f"{EXTERNAL_DIR}/{repo}/{subdir}/{os.path.basename(image_path)}"
+                    old_pattern = f'src="{re.escape(image_path)}"'
+                    new_pattern = f'src="{full_local_path}"'
                     content = content.replace(old_pattern, new_pattern)
             
             # Fix other relative links (non-images) to point to GitHub
