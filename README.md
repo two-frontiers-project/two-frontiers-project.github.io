@@ -1,6 +1,6 @@
-# Two Frontiers Project (2FP) - Open Tools & Protocols
+<img src="images/2FP-Logo-MainLogo-COLOR-2063x500.png" alt="Two Frontiers Project" width="1032" />
 
-![Two Frontiers Project logo](images/2FP-Logo-MainLogo-COLOR-2063x500.png)
+# Two Frontiers Project (2FP) - Open Tools & Protocols
 
 ## About the Two Frontiers Project
 
