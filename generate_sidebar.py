@@ -242,7 +242,13 @@ def create_external_structure(repos, no_download=False):
 
 def generate_sidebar(downloaded_content):
     """Generate the sidebar markdown with simple categorization."""
-    lines = ["## Overview", "- [Home](/README.md)", ""]
+    lines = [
+        '<img src="images/2FP-Logo-MainLogo-COLOR-2063x500.png" alt="Two Frontiers Project" width="1032" />',
+        "",
+        "## Overview", 
+        "- [Home](/README.md)", 
+        ""
+    ]
     
     # Group repositories by category
     categories = {}
@@ -277,7 +283,7 @@ def generate_sidebar(downloaded_content):
                             subdir_title = subdir.replace('-', ' ').replace('_', ' ').title()
                             lines.append(f"  - [{subdir_title}](external/{repo}/{subdir}/README.md)")
             
-            lines.append("")
+        lines.append("")
     
     return "\n".join(lines)
 

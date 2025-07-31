@@ -1,10 +1,10 @@
-<img src="images/2FP-Logo-MainLogo-COLOR-2063x500.png" alt="Two Frontiers Project" width="1032" />
 
 # Two Frontiers Project (2FP) - Open Tools & Protocols
 
 ## About the Two Frontiers Project
 
-The Two Frontiers Project (2FP) is a collaborative research initiative focused on developing open-source tools, protocols, and methodologies for environmental and biological research. Our mission is to make scientific tools and protocols accessible to researchers worldwide through comprehensive documentation and open-source implementations.
+The Two Frontiers Project (2FP) is a collaborative research initiative focused on developing open-source tools, protocols, and methodologies for environmental and biological research. Our mission is to make scientific tools and protocols accessibl
+e to researchers worldwide through comprehensive documentation and open-source implementations.
 
 > **Note:** This site contains research protocols and tools that are currently under development. All materials, protocols, and software are intended for research purposes only.
 
