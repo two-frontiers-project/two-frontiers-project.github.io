@@ -37,6 +37,43 @@ def categorize_repo(repo):
     else:
         return "Other"
 
+def fix_readme_image_paths(readme_path, repo, subdir=None):
+    """Fix image paths in an existing README file to use full paths from root."""
+    try:
+        with open(readme_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        original_content = content
+        
+        if subdir:
+            # Fix markdown images
+            image_pattern = r'!\[([^\]]*)\]\((?!https?://)([^)]+)\)'
+            images = re.findall(image_pattern, content)
+            for alt_text, image_path in images:
+                # Always use full path from root
+                full_path = f"{EXTERNAL_DIR}/{repo}/{subdir}/{os.path.basename(image_path)}"
+                old_pattern = f'![{re.escape(alt_text)}]({re.escape(image_path)})'
+                new_pattern = f'![{alt_text}]({full_path})'
+                content = content.replace(old_pattern, new_pattern)
+            
+            # Fix HTML img tags
+            html_img_pattern = r'<img\s+src="(?!https?://)([^"]+)"'
+            html_images = re.findall(html_img_pattern, content)
+            for image_path in html_images:
+                full_path = f"{EXTERNAL_DIR}/{repo}/{subdir}/{os.path.basename(image_path)}"
+                old_pattern = f'src="{re.escape(image_path)}"'
+                new_pattern = f'src="{full_path}"'
+                content = content.replace(old_pattern, new_pattern)
+        
+        # Only write if content changed
+        if content != original_content:
+            with open(readme_path, 'w', encoding='utf-8') as f:
+                f.write(content)
+            print(f"🔧 Fixed image paths in {readme_path}")
+        
+    except Exception as e:
+        print(f"⚠️  Could not fix image paths in {readme_path}: {e}")
+
 def get_subdirectory_files(repo, subdir, branch='main'):
     """Get all files in a repository subdirectory."""
     try:
@@ -232,8 +269,8 @@ def download_readme(repo, subdir=None, branch='main'):
 
 def create_external_structure(repos, no_download=False):
     """Create the external directory structure and download READMEs."""
-    # Remove existing external directory
-    if os.path.exists(EXTERNAL_DIR):
+    # Remove existing external directory (ONLY if not in no-download mode)
+    if os.path.exists(EXTERNAL_DIR) and not no_download:
         shutil.rmtree(EXTERNAL_DIR)
     
     # Create external directory
@@ -368,18 +405,52 @@ if __name__ == "__main__":
     args = parser.parse_args()
     
     if args.no_download:
-        print("🔍 Using configured repositories (avoiding API calls)...")
-        # Use hardcoded list when API is rate-limited
-        repos = ["2FP-fieldworkToolsGeneral"]  # Test with just one repo to avoid rate limits
-        print(f"📚 Found {len(repos)} configured repositories: {repos}")
-        print(f"\n📁 Creating external directory structure (no subdirectory discovery)...")
+        print("🔍 Scanning existing external directory...")
+        # Build downloaded_content from existing external directory
+        downloaded_content = {}
+        if os.path.exists(EXTERNAL_DIR):
+            for repo_name in os.listdir(EXTERNAL_DIR):
+                repo_path = os.path.join(EXTERNAL_DIR, repo_name)
+                if os.path.isdir(repo_path):
+                    downloaded_content[repo_name] = {'main': False, 'subdirs': []}
+                    
+                    # Check for main README
+                    main_readme = os.path.join(repo_path, "README.md")
+                    if os.path.exists(main_readme):
+                        downloaded_content[repo_name]['main'] = True
+                    
+                    # Check for subdirectories with READMEs
+                    for item in os.listdir(repo_path):
+                        subdir_path = os.path.join(repo_path, item)
+                        if os.path.isdir(subdir_path):
+                            subdir_readme = os.path.join(subdir_path, "README.md")
+                            if os.path.exists(subdir_readme):
+                                downloaded_content[repo_name]['subdirs'].append(item)
+        
+        print(f"📚 Found {len(downloaded_content)} existing repositories with content")
+        print(f"\n📁 Using existing external directory structure...")
     else:
         print("🔍 Fetching repositories from GitHub organization...")
-        repos = get_all_repos()
+    repos = get_all_repos()
         print(f"📚 Found {len(repos)} repositories: {repos}")
         print(f"\n📁 Creating external directory structure with subdirectories...")
+        downloaded_content = create_external_structure(repos, no_download=args.no_download)
     
-    downloaded_content = create_external_structure(repos, no_download=args.no_download)
+    # Fix image paths in all READMEs regardless of mode
+    print(f"\n🔧 Fixing image paths in all READMEs...")
+    for repo_name in downloaded_content:
+        repo_path = os.path.join(EXTERNAL_DIR, repo_name)
+        if os.path.exists(repo_path):
+            # Fix main README
+            main_readme = os.path.join(repo_path, "README.md")
+            if os.path.exists(main_readme):
+                fix_readme_image_paths(main_readme, repo_name)
+            
+            # Fix subdirectory READMEs
+            for subdir in downloaded_content[repo_name]['subdirs']:
+                subdir_readme = os.path.join(repo_path, subdir, "README.md")
+                if os.path.exists(subdir_readme):
+                    fix_readme_image_paths(subdir_readme, repo_name, subdir)
     
     print(f"\n🔗 Generating categorized sidebar...")
     sidebar_content = generate_sidebar(downloaded_content)

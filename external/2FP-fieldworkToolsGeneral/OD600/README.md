@@ -15,7 +15,7 @@ __Coming soon: spectral measurements and comparisons of mixed communities and di
 ## Design
 
 ### Prototype:
-<img src="prototype.jpg" width="45%">
+<img src="external/2FP-fieldworkToolsGeneral/OD600/prototype.jpg" width="45%">
 
 ### 3d printed part:
 
@@ -23,10 +23,10 @@ Parametric script in [OpenSCAD](https://openscad.org/): [OD600_15mlFalcon.scad](
 
 Render in stl format: [OD600_15mlFalcon.stl](https://github.com/two-frontiers-project/2FP-fieldworkToolsGeneral/blob/main/OD600/OD600_15mlFalcon.stl)
 
-<img src="OD600_3dpart.png" width="25%">
+<img src="external/2FP-fieldworkToolsGeneral/OD600/OD600_3dpart.png" width="25%">
 
 ### Circuit:
-<img src="breadboard.png" width="45%">
+<img src="external/2FP-fieldworkToolsGeneral/OD600/breadboard.png" width="45%">
 
 ### Code:
 here: [OD600.ino](https://github.com/two-frontiers-project/2FP-fieldworkToolsGeneral/blob/main/OD600/OD600.ino)
