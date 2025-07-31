@@ -14,12 +14,6 @@ This comprehensive resource aggregates our tools and protocols, and repositories
 
 *Please note:* We did NOT make all of these tools ourselves -- most of the hardware, for example, is from forked and/or lightly modified repositories. Please see individual repositories for correct attribution and, if you use these specific tools in your work, cite the authors.
 
-## Site Structure
-
-This site is built with [Docsify](https://docsify.js.org/) and the sidebar
-organizes the documentation into the following sections. Each item links to a
-repository in the `external` directory that contains the full documentation.
-
 ### Overview
 - **Home** – this page.
 
