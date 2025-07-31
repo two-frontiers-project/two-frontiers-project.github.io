@@ -28,3 +28,17 @@ body {
 .app-nav {
   background-color: #000000;
 }
+
+.site-header,
+.site-footer {
+  text-align: center;
+  padding: 1rem 0;
+}
+
+.brand-mark {
+  height: 50px;
+}
+
+.full-logo {
+  height: 40px;
+}
