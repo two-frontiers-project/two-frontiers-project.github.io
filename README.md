@@ -36,8 +36,8 @@ This comprehensive resource aggregates our tools and protocols, and repositories
 - **General Field Tools**
 
 ### Software
-- **XTree** – phylogenetic analysis tools.
-- **MAGUS** – metagenomic analysis and processing tools.
+- **XTree** – fast and accurate pan-domain alignment.
+- **MAGUS** – single-shot multi-domain genomic assembly, binning, and annotation.
 
 ### Templates
 - **Expedition Template** – resources for organizing and documenting field expeditions.
