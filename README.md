@@ -3,48 +3,95 @@
 
 ## About the Two Frontiers Project
 
-The Two Frontiers Project (2FP) is a collaborative research initiative focused on developing open-source tools, protocols, and methodologies for environmental and biological research. Our mission is to make scientific tools and protocols accessibl
-e to researchers worldwide through comprehensive documentation and open-source implementations.
+The Two Frontiers Project (2FP) is a collaborative research initiative focused on developing open-source tools, protocols, and methodologies for environmental and biological research. Our mission is to make scientific tools and protocols accessible to researchers worldwide through comprehensive documentation and open-source implementations.
 
 > **Note:** This site contains research protocols and tools that are currently under development. All materials, protocols, and software are intended for research purposes only.
 
-## What You'll Find on This Site
+## The Two Frontiers Field Handbook
 
-This comprehensive resource aggregates our tools and protocols, and repositories in a structured format. The goal here is that you reproduce our field sampling, sequencing, and analysis according to our standards such that your data lines up with the network of teams using 2FP protocols, enabling easier analysis.
+**Download the complete Field Handbook:** [2FP Handbook V11 (PDF)](https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/2FP_handbook_V11.pdf?raw=1)
+
+The Two Frontiers Field Handbook is our comprehensive guide that sets the gold standard for field research methodology and enables unprecedented interoperability across research teams worldwide. This handbook represents the culmination of years of collaborative research and field experience, providing standardized protocols that ensure data quality and comparability across diverse research environments.
+
+### Why the Handbook Matters
+
+- **Standardization**: Establishes consistent methodologies that enable data comparison across different research teams and locations
+- **Interoperability**: Allows researchers to work with us using compatible protocols, ensuring their data integrates seamlessly with our global network
+- **Quality Assurance**: Provides proven, field-tested procedures that minimize errors and maximize data reliability
+- **Collaboration**: Enables teams worldwide to contribute to and benefit from our collective research infrastructure
+
+### What's Inside the Handbook
+
+The handbook covers the complete research workflow from expedition planning to post-sampling analysis:
+
+1. **About This Handbook** - Introduction, scope, and how to use this resource
+2. **Expedition Planning** - Comprehensive planning guidelines and checklists
+3. **Sample Identifiers & Site Metadata** - Standardized data collection protocols
+4. **Preparation for Sample Collection** - Pre-fieldwork setup and equipment preparation
+5. **Field Lab Setup** - Establishing processing facilities in remote locations
+6. **Sample Collection** - Detailed collection protocols and best practices
+7. **Sample Check-in** - Documentation and initial processing procedures
+8. **Sample Processing & Preservation** - Laboratory protocols and storage methods
+9. **Sample Transportation** - Safe transport and chain of custody procedures
+10. **Post-Sampling Reset & Team Debrief** - Expedition closure and data review
+
+## What You'll Find on the rest of This Site
+
+The rest of the 2FP Open Tools resource aggregates our software, protocols, and repositories in a structured format. The goal here is that you reproduce our field sampling, sequencing, and analysis according to our standards such that your data lines up with the network of teams using 2FP protocols, enabling easier analysis.
 
 *Please note:* We did NOT make all of these tools ourselves -- most of the hardware, for example, is from forked and/or lightly modified repositories. Please see individual repositories for correct attribution and, if you use these specific tools in your work, cite the authors.
 
-### Overview
-- **Home** – this page.
+## Repository Categories
+
+### The Two Frontiers Handbook
+Our flagship documentation containing comprehensive field protocols and research standards. This is the primary resource for teams working with 2FP methodologies.
 
 ### Speciality Kits
-- **Speciality Kits** – additional field kit documentation.
+Specialized field kits and protocols for specific research applications:
+- **Field Kits & Protocols** - Comprehensive field kit documentation and protocols
 
 ### Hardware
-- **General 3D Printing**
-  - **Dremelfuge**
-  - **Eyeglasses Divemask Mount**
-  - **Fluorometer Collimating Lens Mount**
-  - **Laser Cutter Racks**
-  - **Microscope Mount for Fiber Spectrophotometer**
-  - **pH Bottle Holder**
-  - **Spec Adapters**
-  - **Turbidometer Adapters**
-- **PUMA Scope**
-  - **FreeCAD**
-- **Cuvette Holder**
-- **General Field Tools**
+Open-source hardware designs and modifications for field research:
+- **General 3D Printing** - 3D printable components including:
+  - **Dremelfuge** - Centrifuge adapters for field use
+  - **Eyeglasses Divemask Mount** - Custom mounting solutions
+  - **Fluorometer Collimating Lens Mount** - Optical equipment modifications
+  - **Laser Cutter Racks** - Sample organization and transport solutions
+  - **Microscope Mount for Fiber Spectrophotometer** - Equipment integration
+  - **pH Bottle Holder** - Sample container solutions
+  - **Spec Adapters** - Spectrophotometer modifications
+  - **Turbidometer Adapters** - Water quality measurement tools
+- **PUMA Scope** - Field microscopy solutions with FreeCAD designs
+- **Cuvette Holder** - Sample holder designs
+- **General Field Tools** - Various field equipment including:
+  - **UVspec** - Ultraviolet spectroscopy tools
+  - **OD600** - Optical density measurement equipment
+  - **Open Colorimeter** - Open-source colorimetric analysis tools
 
 ### Software
-- **XTree** – fast and accurate pan-domain alignment.
-- **MAGUS** – single-shot multi-domain genomic assembly, binning, and annotation.
+Open-source software tools for data analysis and research:
+- **XTree** - Fast and accurate pan-domain alignment software
+- **MAGUS** - Single-shot multi-domain genomic assembly, binning, and annotation
 
 ### Templates
-- **Expedition Template** – resources for organizing and documenting field expeditions.
+Standardized templates and resources for research organization:
+- **Expedition Template** - Complete expedition planning resources including:
+  - **Maps** - Geographic and site planning resources
+  - **Background Research** - Literature review and preparation materials
+  - **Forms** - Standardized documentation templates
+  - **Additional Data** - Supplementary research materials
+  - **Receipts, Tickets & Confirmations** - Administrative documentation
+  - **Permitting** - Regulatory compliance resources
+  - **Photos** - Documentation standards and templates
+  - **Protocols** - Standard operating procedures
 
 ## Getting Started
 
-Navigate through the sections using the sidebar to access specific protocols and tools. Each repository contains comprehensive documentation including setup instructions, usage guidelines, and troubleshooting information.
+1. **Start with the Handbook**: Download and review the [Field Handbook PDF](https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/2FP_handbook_V11.pdf?raw=1) to understand our standardized protocols
+2. **Navigate the Repository**: Use the sidebar to explore specific tools and protocols
+3. **Choose Your Tools**: Select hardware, software, or templates that fit your research needs
+4. **Follow Protocols**: Implement our standardized methodologies to ensure data compatibility
+5. **Join the Network**: Contribute to our collaborative research infrastructure
 
 ## Contributing
 
