@@ -10,6 +10,9 @@ ORG = "two-frontiers-project"
 EXCLUDE = {"two-frontiers-project.github.io"}
 EXTERNAL_DIR = "external"
 
+# GitHub API token for higher rate limits
+GITHUB_TOKEN = None  # Will be set from command line argument
+
 # Custom names for repos that don't follow the standard pattern
 CUSTOM_NAMES = {
     "2FP-fieldKitsAndProtocols": "Speciality Kits",
@@ -275,14 +278,17 @@ def download_field_handbook_files(repo, branch='main'):
     try:
         # Get the repository contents
         url = f"https://api.github.com/repos/{ORG}/{repo}/contents?ref={branch}"
-        response = requests.get(url)
+        headers = {}
+        if GITHUB_TOKEN:
+            headers['Authorization'] = f'token {GITHUB_TOKEN}'
+        response = requests.get(url, headers=headers)
         response.raise_for_status()
         
         contents = response.json()
         downloaded_files = []
         
         for item in contents:
-            if item['type'] == 'file' and item['name'].endswith('.md'):
+            if item['type'] == 'file' and item['name'].endswith('.md') and item['name'] != 'README.md':
                 # Download the markdown file
                 file_url = f"https://raw.githubusercontent.com/{ORG}/{repo}/{branch}/{item['name']}"
                 file_response = requests.get(file_url)
@@ -495,7 +501,13 @@ if __name__ == "__main__":
                        help='Skip subdirectory discovery to avoid GitHub API rate limits')
     parser.add_argument('--handbook', action='store_true',
                        help='Download only the Field Handbook repository')
+    parser.add_argument('--token', type=str, help='GitHub personal access token for higher rate limits')
     args = parser.parse_args()
+    
+    # Set GitHub token if provided
+    if args.token:
+        GITHUB_TOKEN = args.token
+        print("🔑 Using provided GitHub token for higher rate limits")
     
     if args.handbook:
         print("📚 Handbook-only mode: Downloading only the Field Handbook...")
