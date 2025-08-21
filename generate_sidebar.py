@@ -29,7 +29,7 @@ CUSTOM_NAMES = {
     "2FP-open_colorimeter": "Open Colorimeter",
     "2FP-XTree": "XTree",
     "2FP_MAGUS": "MAGUS",
-    "2FP-Field-Handbook": "The Two Frontiers Handbook"
+    "2FP-Field-Handbook": "2FP Field Handbook and Standards"
 }
 
 # Simple categorization function
