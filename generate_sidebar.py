@@ -20,13 +20,16 @@ CUSTOM_NAMES = {
     "2FP-cuvette_holder": "Cuvette Holder",
     "2FP-open_colorimeter": "Open Colorimeter",
     "2FP-XTree": "XTree",
-    "2FP_MAGUS": "MAGUS"
+    "2FP_MAGUS": "MAGUS",
+    "2FP-Field-Handbook": "The Two Frontiers Handbook"
 }
 
 # Simple categorization function
 def categorize_repo(repo):
     """Categorize repositories based on their names."""
-    if repo in ["2FP-fieldKitsAndProtocols"]:
+    if repo in ["2FP-Field-Handbook"]:
+        return "The Two Frontiers Handbook"
+    elif repo in ["2FP-fieldKitsAndProtocols"]:
         return "Speciality Kits"
     elif repo in ["2FP-fieldworkToolsGeneral", "2FP-PUMA", "2FP-cuvette_holder", "2FP-open_colorimeter", "2FP-3dPrinting"]:
         return "Hardware"
@@ -370,7 +373,7 @@ def generate_sidebar(downloaded_content):
         categories[category].append(repo)
     
     # Define the order of categories
-    category_order = ["Speciality Kits", "Hardware", "Software", "Templates", "Other"]
+    category_order = ["The Two Frontiers Handbook", "Speciality Kits", "Hardware", "Software", "Templates", "Other"]
     
     for category in category_order:
         if category in categories and categories[category]:
@@ -431,7 +434,7 @@ if __name__ == "__main__":
         print(f"\n📁 Using existing external directory structure...")
     else:
         print("🔍 Fetching repositories from GitHub organization...")
-    repos = get_all_repos()
+        repos = get_all_repos()
         print(f"📚 Found {len(repos)} repositories: {repos}")
         print(f"\n📁 Creating external directory structure with subdirectories...")
         downloaded_content = create_external_structure(repos, no_download=args.no_download)

@@ -3,6 +3,9 @@
 ## Overview
 - [Home](/README.md)
 
+## The Two Frontiers Handbook
+- [The Two Frontiers Handbook](external/2FP-Field-Handbook/README.md)
+
 ## Speciality Kits
 - [Speciality Kits](external/2FP-fieldKitsAndProtocols/README.md)
   - [Citizen Science Extremophiles In The Home](external/2FP-fieldKitsAndProtocols/citizen_science_extremophiles_in_the_home/README.md)
@@ -22,7 +25,6 @@
   - [Freecad](external/2FP-PUMA/FreeCAD/README.md)
 - [Cuvette Holder](external/2FP-cuvette_holder/README.md)
 - [General Field Tools](external/2FP-fieldworkToolsGeneral/README.md)
-  - [Od600](external/2FP-fieldworkToolsGeneral/OD600/README.md)
 
 ## Software
 - [XTree](external/2FP-XTree/README.md)
