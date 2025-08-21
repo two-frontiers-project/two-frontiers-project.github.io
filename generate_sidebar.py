@@ -462,25 +462,25 @@ def get_flat_markdown_files(repo_path):
                 title = item.replace('.md', '').replace('-', ' ').replace('_', ' ')
                 # Convert numbered prefixes to more readable titles
                 if title.startswith('01 '):
-                    title = title.replace('01 ', 'About This Handbook - ')
+                    title = 'About This Handbook'
                 elif title.startswith('02 '):
-                    title = title.replace('02 ', 'Expedition Planning - ')
+                    title = 'Expedition Planning'
                 elif title.startswith('03 '):
-                    title = title.replace('03 ', 'Sample Identifiers - ')
+                    title = 'Sample Identifiers and Site Metadata'
                 elif title.startswith('04 '):
-                    title = title.replace('04 ', 'Preparation - ')
+                    title = 'Preparation for Sample Collection'
                 elif title.startswith('05 '):
-                    title = title.replace('05 ', 'Field Lab Setup - ')
+                    title = 'Setting Up a Field Processing Lab'
                 elif title.startswith('06 '):
-                    title = title.replace('06 ', 'Sample Collection - ')
+                    title = 'Sample Collection'
                 elif title.startswith('07 '):
-                    title = title.replace('07 ', 'Sample Check-in - ')
+                    title = 'Sample Check-in'
                 elif title.startswith('08 '):
-                    title = title.replace('08 ', 'Sample Processing - ')
+                    title = 'Sample Processing and Preservation'
                 elif title.startswith('09 '):
-                    title = title.replace('09 ', 'Sample Transportation - ')
+                    title = 'Sample Transportation'
                 elif title.startswith('10 '):
-                    title = title.replace('10 ', 'Post-Sampling - ')
+                    title = 'Post-Sampling Reset and Team Debrief'
                 
                 markdown_files.append({
                     'filename': item,
