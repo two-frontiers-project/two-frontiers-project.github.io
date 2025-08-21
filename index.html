@@ -1,150 +1,545 @@
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
   <meta charset="UTF-8">
-  <title>2FP Open Tools & Protocols</title>
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>2FP Open Tools & Protocols</title>
   <meta name="description" content="Two Frontiers Project - Open source research tools and protocols">
-
-  <script>
-    window.$docsify = {
-      name: '2FP Open Tools',
-      repo: 'https://github.com/two-frontiers-project',
-      loadSidebar: true,
-      subMaxLevel: 0, // Disable auto-extraction to prevent duplication
-      auto2top: true,
-      search: 'auto',
-      alias: {
-        '/.*/_sidebar.md': '/_sidebar.md'
+  
+  <style>
+    * {
+      margin: 0;
+      padding: 0;
+      box-sizing: border-box;
+    }
+    
+    body {
+      font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, Oxygen, Ubuntu, Cantarell, sans-serif;
+      background: #0f1419;
+      color: #e6edf3;
+      line-height: 1.6;
+      font-size: 18px;
+    }
+    
+    /* Header */
+    .header {
+      background: linear-gradient(135deg, #1a2332 0%, #2c3e50 100%);
+      padding: 2rem 0;
+      border-bottom: 1px solid #30363d;
+      position: sticky;
+      top: 0;
+      z-index: 100;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    
+    .header-content {
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .logo {
+      max-height: 60px;
+      filter: drop-shadow(0 2px 4px rgba(0,0,0,0.3));
+    }
+    
+    .header-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      background: linear-gradient(135deg, #58a6ff, #79c0ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+      text-shadow: 0 2px 4px rgba(0,0,0,0.3);
+    }
+    
+    /* Main Layout */
+    .main-container {
+      display: flex;
+      min-height: calc(100vh - 120px);
+      max-width: 1400px;
+      margin: 0 auto;
+      padding: 0 2rem;
+    }
+    
+    /* Navigation Sidebar */
+    .nav-sidebar {
+      width: 350px;
+      background: #161b22;
+      border-right: 1px solid #30363d;
+      padding: 2rem 0;
+      overflow-y: auto;
+      position: sticky;
+      top: 120px;
+      height: calc(100vh - 120px);
+    }
+    
+    .nav-section {
+      margin-bottom: 1.5rem;
+    }
+    
+    .nav-section-header {
+      background: linear-gradient(135deg, #21262d, #30363d);
+      color: #f0f6fc;
+      padding: 1rem 1.5rem;
+      margin: 0 1rem 1rem 1rem;
+      border-radius: 8px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 1px solid #484f58;
+      font-weight: 600;
+      font-size: 1.1rem;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+    }
+    
+    .nav-section-header:hover {
+      background: linear-gradient(135deg, #30363d, #484f58);
+      transform: translateY(-2px);
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+    }
+    
+    .nav-section-header.active {
+      background: linear-gradient(135deg, #1f6feb, #388bfd);
+      border-color: #58a6ff;
+    }
+    
+    .nav-section-content {
+      max-height: 0;
+      overflow: hidden;
+      transition: max-height 0.3s ease;
+      margin: 0 1rem;
+    }
+    
+    .nav-section-content.expanded {
+      max-height: 1000px;
+    }
+    
+    .nav-item {
+      padding: 0.75rem 1.5rem;
+      margin: 0.25rem 0;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+      font-size: 0.95rem;
+    }
+    
+    .nav-item:hover {
+      background: #21262d;
+      border-color: #484f58;
+      transform: translateX(4px);
+    }
+    
+    .nav-item.active {
+      background: #1f6feb;
+      color: white;
+      border-color: #58a6ff;
+    }
+    
+    .nav-subitem {
+      padding: 0.5rem 1.5rem 0.5rem 2.5rem;
+      margin: 0.25rem 0;
+      border-radius: 6px;
+      cursor: pointer;
+      transition: all 0.2s ease;
+      border: 1px solid transparent;
+      font-size: 0.9rem;
+      color: #8b949e;
+    }
+    
+    .nav-subitem:hover {
+      background: #21262d;
+      border-color: #484f58;
+      color: #f0f6fc;
+      transform: translateX(4px);
+    }
+    
+    .nav-subitem.active {
+      background: #1f6feb;
+      color: white;
+      border-color: #58a6ff;
+    }
+    
+    /* Content Area */
+    .content-area {
+      flex: 1;
+      padding: 2rem;
+      overflow-y: auto;
+    }
+    
+    .content-section {
+      display: none;
+      animation: fadeIn 0.3s ease;
+    }
+    
+    .content-section.active {
+      display: block;
+    }
+    
+    @keyframes fadeIn {
+      from { opacity: 0; transform: translateY(20px); }
+      to { opacity: 1; transform: translateY(0); }
+    }
+    
+    .section-title {
+      font-size: 2.5rem;
+      font-weight: 700;
+      margin-bottom: 1.5rem;
+      background: linear-gradient(135deg, #58a6ff, #79c0ff);
+      -webkit-background-clip: text;
+      -webkit-text-fill-color: transparent;
+      background-clip: text;
+    }
+    
+    .section-description {
+      font-size: 1.2rem;
+      color: #8b949e;
+      margin-bottom: 2rem;
+      line-height: 1.7;
+    }
+    
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 1.5rem;
+      margin-top: 2rem;
+    }
+    
+    .content-card {
+      background: linear-gradient(135deg, #21262d, #30363d);
+      border: 1px solid #484f58;
+      border-radius: 12px;
+      padding: 1.5rem;
+      transition: all 0.3s ease;
+      cursor: pointer;
+    }
+    
+    .content-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      border-color: #58a6ff;
+    }
+    
+    .card-title {
+      font-size: 1.3rem;
+      font-weight: 600;
+      margin-bottom: 0.75rem;
+      color: #f0f6fc;
+    }
+    
+    .card-description {
+      color: #8b949e;
+      font-size: 0.95rem;
+      line-height: 1.6;
+    }
+    
+    /* Handbook Special Section */
+    .handbook-section {
+      background: linear-gradient(135deg, #1a2332, #2c3e50);
+      border: 2px solid #58a6ff;
+      border-radius: 16px;
+      padding: 2rem;
+      margin-bottom: 2rem;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .handbook-section::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: 0;
+      right: 0;
+      height: 4px;
+      background: linear-gradient(90deg, #58a6ff, #79c0ff, #58a6ff);
+      animation: shimmer 2s infinite;
+    }
+    
+    @keyframes shimmer {
+      0% { transform: translateX(-100%); }
+      100% { transform: translateX(100%); }
+    }
+    
+    .handbook-download {
+      display: inline-block;
+      background: linear-gradient(135deg, #1f6feb, #388bfd);
+      color: white;
+      padding: 1rem 2rem;
+      border-radius: 8px;
+      text-decoration: none;
+      font-weight: 600;
+      margin-top: 1rem;
+      transition: all 0.3s ease;
+      border: none;
+      cursor: pointer;
+      box-shadow: 0 4px 12px rgba(31, 111, 235, 0.3);
+    }
+    
+    .handbook-download:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 6px 20px rgba(31, 111, 235, 0.4);
+    }
+    
+    /* Responsive Design */
+    @media (max-width: 1024px) {
+      .main-container {
+        flex-direction: column;
+      }
+      
+      .nav-sidebar {
+        width: 100%;
+        position: relative;
+        top: 0;
+        height: auto;
+        max-height: 400px;
+      }
+      
+      .header-content {
+        flex-direction: column;
+        gap: 1rem;
+        text-align: center;
+      }
+      
+      .header-title {
+        font-size: 2rem;
       }
     }
-  </script>
-  <link rel="stylesheet" href="//unpkg.com/docsify/lib/themes/dark.css" />
-  <link rel="stylesheet" href="style.css" />
-  <style>
-    .app-name-link img {
-      max-height: 40px;
+    
+    @media (max-width: 768px) {
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
+      
+      .header-content, .main-container {
+        padding: 0 1rem;
+      }
+      
+      .content-area {
+        padding: 1rem;
+      }
     }
-    .markdown-section blockquote {
-      border-left: 4px solid var(--theme-color, #42b883);
-      background: #f0f9ff;
-      padding: 1rem;
-      margin: 1rem 0;
+    
+    /* Scrollbar Styling */
+    ::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    ::-webkit-scrollbar-track {
+      background: #161b22;
+    }
+    
+    ::-webkit-scrollbar-thumb {
+      background: #484f58;
       border-radius: 4px;
     }
-    .research-notice {
-      background: #fff3cd;
-      border: 1px solid #ffeaa7;
-      border-radius: 4px;
-      padding: 1rem;
-      margin: 1rem 0;
-      color: #856404;
-    }
     
-    /* Fix table styling for dark theme */
-    .markdown-section table {
-      background: #2c3e50;
-      border: 1px solid #34495e;
-      border-radius: 4px;
-    }
-    
-    .markdown-section table th {
-      background: #34495e;
-      color: white;
-      border: 1px solid #4a5568;
-      padding: 8px 12px;
-    }
-    
-    .markdown-section table td {
-      background: #2c3e50;
-      color: white;
-      border: 1px solid #4a5568;
-      padding: 8px 12px;
-    }
-    
-    .markdown-section table tr:nth-child(even) td {
-      background: #34495e;
-    }
-    
-    .markdown-section table tr:hover td {
-      background: #4a5568;
-    }
-    
-    /* Increase font sizes across the entire site */
-    body {
-      font-size: 18px !important; /* Base font size increase */
-    }
-    
-    .markdown-section {
-      font-size: 18px !important;
-    }
-    
-    .markdown-section h1 {
-      font-size: 2.5em !important; /* Was ~2em, now 2.5em */
-    }
-    
-    .markdown-section h2 {
-      font-size: 2.2em !important; /* Was ~1.8em, now 2.2em */
-    }
-    
-    .markdown-section h3 {
-      font-size: 1.8em !important; /* Was ~1.5em, now 1.8em */
-    }
-    
-    .markdown-section h4 {
-      font-size: 1.5em !important; /* Was ~1.2em, now 1.5em */
-    }
-    
-    .markdown-section h5 {
-      font-size: 1.3em !important; /* Was ~1.1em, now 1.3em */
-    }
-    
-    .markdown-section h6 {
-      font-size: 1.2em !important; /* Was ~1em, now 1.2em */
-    }
-    
-    .markdown-section p {
-      font-size: 18px !important; /* Paragraph text */
-      line-height: 1.6 !important; /* Better readability with larger text */
-    }
-    
-    .markdown-section li {
-      font-size: 18px !important; /* List items */
-      line-height: 1.6 !important;
-    }
-    
-    .markdown-section blockquote {
-      font-size: 18px !important; /* Blockquotes */
-    }
-    
-    .markdown-section code {
-      font-size: 16px !important; /* Code blocks (slightly smaller than text) */
-    }
-    
-    .markdown-section pre {
-      font-size: 16px !important; /* Pre-formatted text */
-    }
-    
-    /* Sidebar font size increase */
-    .sidebar {
-      font-size: 16px !important; /* Sidebar text */
-    }
-    
-    .sidebar h1, .sidebar h2, .sidebar h3 {
-      font-size: 1.3em !important; /* Sidebar headers */
-    }
-    
-    .sidebar a {
-      font-size: 16px !important; /* Sidebar links */
+    ::-webkit-scrollbar-thumb:hover {
+      background: #58a6ff;
     }
   </style>
 </head>
 <body>
+  <!-- Header -->
+  <header class="header">
+    <div class="header-content">
+      <img src="images/2FP-Logo-MainLogo-COLOR-2063x500.png" alt="Two Frontiers Project" class="logo">
+      <h1 class="header-title">2FP Open Tools & Protocols</h1>
+    </div>
+  </header>
 
-  <div id="app">Loading...</div>
+  <!-- Main Container -->
+  <div class="main-container">
+    <!-- Navigation Sidebar -->
+    <nav class="nav-sidebar">
+      <div class="nav-section">
+        <div class="nav-section-header" onclick="toggleSection('overview')">
+          Overview
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="nav-section-content" id="overview-content">
+          <div class="nav-item" onclick="showContent('home')">Home</div>
+        </div>
+      </div>
 
-  <script src="//unpkg.com/docsify/lib/docsify.min.js"></script>
-  <script src="//unpkg.com/docsify/lib/plugins/search.min.js"></script>
-  <script src="//unpkg.com/docsify/lib/plugins/zoom-image.min.js"></script>
+      <div class="nav-section">
+        <div class="nav-section-header" onclick="toggleSection('handbook')">
+          The Two Frontiers Handbook
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="nav-section-content" id="handbook-content">
+          <div class="nav-item" onclick="showContent('handbook-main')">About This Handbook</div>
+          <div class="nav-item" onclick="showContent('handbook-01')">Expedition Planning</div>
+          <div class="nav-item" onclick="showContent('handbook-02')">Sample Identifiers</div>
+          <div class="nav-item" onclick="showContent('handbook-03')">Preparation</div>
+          <div class="nav-item" onclick="showContent('handbook-04')">Field Lab Setup</div>
+          <div class="nav-item" onclick="showContent('handbook-05')">Sample Collection</div>
+          <div class="nav-item" onclick="showContent('handbook-06')">Sample Check-in</div>
+          <div class="nav-item" onclick="showContent('handbook-07')">Sample Processing</div>
+          <div class="nav-item" onclick="showContent('handbook-08')">Sample Transportation</div>
+          <div class="nav-item" onclick="showContent('handbook-09')">Post-Sampling</div>
+        </div>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-header" onclick="toggleSection('speciality')">
+          Speciality Kits
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="nav-section-content" id="speciality-content">
+          <div class="nav-item" onclick="showContent('speciality-main')">Field Kits & Protocols</div>
+          <div class="nav-subitem" onclick="showContent('speciality-10sample')">10-Sample Collection Kit</div>
+          <div class="nav-subitem" onclick="showContent('speciality-citizen')">Citizen Science Kit</div>
+        </div>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-header" onclick="toggleSection('hardware')">
+          Hardware
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="nav-section-content" id="hardware-content">
+          <div class="nav-item" onclick="showContent('hardware-3dprinting')">General 3D Printing</div>
+          <div class="nav-subitem" onclick="showContent('hardware-dremelfuge')">Dremelfuge</div>
+          <div class="nav-subitem" onclick="showContent('hardware-eyeglasses')">Eyeglasses Divemask Mount</div>
+          <div class="nav-subitem" onclick="showContent('hardware-fluorometer')">Fluorometer Collimating Lens Mount</div>
+          <div class="nav-subitem" onclick="showContent('hardware-laser')">Laser Cutter Racks</div>
+          <div class="nav-subitem" onclick="showContent('hardware-microscope')">Microscope Mount for Fiber Spectrophotometer</div>
+          <div class="nav-subitem" onclick="showContent('hardware-ph')">pH Bottle Holder</div>
+          <div class="nav-subitem" onclick="showContent('hardware-spec')">Spec Adapters</div>
+          <div class="nav-subitem" onclick="showContent('hardware-turbidometer')">Turbidometer Adapters</div>
+          <div class="nav-item" onclick="showContent('hardware-puma')">PUMA Scope</div>
+          <div class="nav-subitem" onclick="showContent('hardware-freecad')">FreeCAD</div>
+          <div class="nav-item" onclick="showContent('hardware-cuvette')">Cuvette Holder</div>
+          <div class="nav-item" onclick="showContent('hardware-fieldtools')">General Field Tools</div>
+          <div class="nav-subitem" onclick="showContent('hardware-uvspec')">UVspec</div>
+          <div class="nav-subitem" onclick="showContent('hardware-od600')">OD600</div>
+          <div class="nav-subitem" onclick="showContent('hardware-colorimeter')">Open Colorimeter</div>
+        </div>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-header" onclick="toggleSection('software')">
+          Software
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="nav-section-content" id="software-content">
+          <div class="nav-item" onclick="showContent('software-xtree')">XTree</div>
+          <div class="nav-item" onclick="showContent('software-magus')">MAGUS</div>
+        </div>
+      </div>
+
+      <div class="nav-section">
+        <div class="nav-section-header" onclick="toggleSection('templates')">
+          Templates
+          <span class="toggle-icon">▼</span>
+        </div>
+        <div class="nav-section-content" id="templates-content">
+          <div class="nav-item" onclick="showContent('templates-main')">Expedition Template</div>
+          <div class="nav-subitem" onclick="showContent('templates-maps')">Maps</div>
+          <div class="nav-subitem" onclick="showContent('templates-background')">Background Research</div>
+          <div class="nav-subitem" onclick="showContent('templates-forms')">Forms</div>
+          <div class="nav-subitem" onclick="showContent('templates-additional')">Additional Data</div>
+          <div class="nav-subitem" onclick="showContent('templates-receipts')">Receipts, Tickets & Confirmations</div>
+          <div class="nav-subitem" onclick="showContent('templates-permitting')">Permitting</div>
+          <div class="nav-subitem" onclick="showContent('templates-photos')">Photos</div>
+          <div class="nav-subitem" onclick="showContent('templates-protocols')">Protocols</div>
+        </div>
+      </div>
+    </nav>
+
+    <!-- Content Area -->
+    <main class="content-area">
+      <!-- Home Content -->
+      <div class="content-section active" id="home">
+        <h1 class="section-title">Welcome to 2FP Open Tools</h1>
+        <p class="section-description">
+          The Two Frontiers Project (2FP) is a collaborative research initiative focused on developing open-source tools, protocols, and methodologies for environmental and biological research.
+        </p>
+        
+        <div class="handbook-section">
+          <h2 style="color: #f0f6fc; margin-bottom: 1rem;">The Two Frontiers Field Handbook</h2>
+          <p style="color: #8b949e; margin-bottom: 1rem;">
+            Our comprehensive guide that sets the gold standard for field research methodology and enables unprecedented interoperability across research teams worldwide.
+          </p>
+          <a href="https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/2FP_handbook_V11.pdf?raw=1" class="handbook-download">
+            📖 Download Handbook V11 (PDF)
+          </a>
+        </div>
+        
+        <div class="content-grid">
+          <div class="content-card" onclick="showContent('handbook-main')">
+            <h3 class="card-title">Field Protocols</h3>
+            <p class="card-description">Standardized methodologies for field sampling, processing, and data collection.</p>
+          </div>
+          <div class="content-card" onclick="showContent('hardware-main')">
+            <h3 class="card-title">Open Hardware</h3>
+            <p class="card-description">3D printable components and field equipment modifications for research applications.</p>
+          </div>
+          <div class="content-card" onclick="showContent('software-main')">
+            <h3 class="card-title">Analysis Tools</h3>
+            <p class="card-description">Software for genomic analysis, alignment, and data processing.</p>
+          </div>
+        </div>
+      </div>
+
+      <!-- Other content sections will be dynamically loaded -->
+      <div id="content-placeholder" style="display: none;">
+        <h1 class="section-title">Content Loading...</h1>
+        <p class="section-description">Select a section from the navigation to view its content.</p>
+      </div>
+    </main>
+  </div>
+
+  <script>
+    // Navigation functionality
+    function toggleSection(sectionId) {
+      const content = document.getElementById(sectionId + '-content');
+      const header = content.previousElementSibling;
+      const icon = header.querySelector('.toggle-icon');
+      
+      // Close all other sections
+      document.querySelectorAll('.nav-section-content').forEach(section => {
+        if (section !== content) {
+          section.classList.remove('expanded');
+          section.previousElementSibling.classList.remove('active');
+          section.previousElementSibling.querySelector('.toggle-icon').textContent = '▼';
+        }
+      });
+      
+      // Toggle current section
+      content.classList.toggle('expanded');
+      header.classList.toggle('active');
+      icon.textContent = content.classList.contains('expanded') ? '▲' : '▼';
+    }
+    
+    function showContent(contentId) {
+      // Hide all content sections
+      document.querySelectorAll('.content-section').forEach(section => {
+        section.classList.remove('active');
+      });
+      
+      // Remove active class from all nav items
+      document.querySelectorAll('.nav-item, .nav-subitem').forEach(item => {
+        item.classList.remove('active');
+      });
+      
+      // Add active class to clicked item
+      event.target.classList.add('active');
+      
+      // Show content (for now, just show placeholder)
+      document.getElementById('content-placeholder').style.display = 'block';
+      document.getElementById('home').classList.remove('active');
+    }
+    
+    // Initialize with overview section expanded
+    document.addEventListener('DOMContentLoaded', function() {
+      toggleSection('overview');
+    });
+  </script>
 </body>
 </html>
