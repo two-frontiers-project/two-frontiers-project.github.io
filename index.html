@@ -451,7 +451,7 @@
   <!-- Header -->
   <header class="header">
     <div class="header-content">
-      <img src="images/2FP-Logo-MainLogo-COLOR-2063x500.png" alt="Two Frontiers Project" class="logo" onclick="showContent('home')" style="cursor: pointer;">
+      <img src="images/2FP-Logo-MainLogo-COLOR-2063x500.png" alt="Two Frontiers Project" class="logo" onclick="loadWelcomeDirectly()" style="cursor: pointer;">
       <h1 class="header-title">2FP Open Tools & Protocols</h1>
     </div>
     
@@ -468,7 +468,7 @@
           <span class="toggle-icon">▼</span>
         </div>
         <div class="nav-section-content" id="overview-content">
-          <div class="nav-item" onclick="showContent('home')">Welcome</div>
+          <div class="nav-item" onclick="loadWelcomeDirectly()">Welcome</div>
           <div class="nav-item" onclick="showContent('about')">About 2FP</div>
         </div>
       </div>
@@ -481,7 +481,18 @@
       <!-- Home Content -->
       <div class="content-section active" id="home">
         <div id="home-content">
-          <!-- Content will be loaded here -->
+          <h1 class="section-title">Welcome to 2FP Open Tools</h1>
+          <div class="markdown-content" id="welcome-content">
+            <!-- README content will be loaded here -->
+          </div>
+        </div>
+      </div>
+
+      <!-- Welcome Content (Separate from Home) -->
+      <div class="content-section" id="welcome">
+        <h1 class="section-title">Welcome to 2FP Open Tools</h1>
+        <div class="markdown-content" id="welcome-content-separate">
+          <!-- README content will be loaded here -->
         </div>
       </div>
 
@@ -539,9 +550,10 @@
       event.target.classList.add('active');
       
       // Handle special content cases
-      if (contentId === 'home') {
-        // For home, just load the README content like any other page
-        loadContentFromLink('/README.md', 'Welcome to 2FP Open Tools');
+      if (contentId === 'welcome') {
+        // Show welcome section and always load fresh content
+        document.getElementById('welcome').classList.add('active');
+        loadWelcomeContentSeparate();
       } else if (contentId === 'about') {
         loadAbout2FP();
       } else {
@@ -1163,7 +1175,172 @@
           contentArea.innerHTML = aboutContent;
         }
     
+    // Load welcome content function
+    function loadWelcomeContent() {
+      const welcomeContent = document.getElementById('welcome-content');
+      if (!welcomeContent) return;
+      
+      // Show loading state
+      welcomeContent.innerHTML = '<p>Loading welcome content...</p>';
+      
+      // Fetch and load README content
+      fetch('README.md')
+        .then(response => response.text())
+        .then(content => {
+          const htmlContent = marked.parse(content);
+          welcomeContent.innerHTML = htmlContent;
+          
+          // Apply button styling to the download link
+          setTimeout(() => {
+            const downloadLink = welcomeContent.querySelector('a[href*="2FP_handbook_V11.pdf"]');
+            if (downloadLink) {
+              downloadLink.style.cssText = `
+                display: inline-block !important;
+                background: linear-gradient(135deg, #1f6feb, #388bfd) !important;
+                color: white !important;
+                padding: 1.5rem 3rem !important;
+                border-radius: 14px !important;
+                text-decoration: none !important;
+                font-weight: 700 !important;
+                font-size: 1.3rem !important;
+                transition: all 0.3s ease !important;
+                box-shadow: 0 6px 24px rgba(31, 110, 235, 0.4) !important;
+                border: 2px solid rgba(255, 255, 255, 0.1) !important;
+                text-align: center !important;
+                min-width: 350px !important;
+                position: relative !important;
+                overflow: hidden !important;
+              `;
+            }
+          }, 100);
+        })
+        .catch(error => {
+          console.error('Error loading README:', error);
+          welcomeContent.innerHTML = '<p>Error loading welcome content. Please refresh the page.</p>';
+        });
+    }
 
+    // Load welcome content function for the separate welcome section
+    function loadWelcomeContentSeparate() {
+      const welcomeContent = document.getElementById('welcome-content-separate');
+      if (!welcomeContent) return;
+
+      // Show loading state
+      welcomeContent.innerHTML = '<p>Loading welcome content...</p>';
+
+      // Fetch and load README content
+      fetch('README.md')
+        .then(response => response.text())
+        .then(content => {
+          const htmlContent = marked.parse(content);
+          welcomeContent.innerHTML = htmlContent;
+
+          // Apply button styling to the download link
+          setTimeout(() => {
+            const downloadLink = welcomeContent.querySelector('a[href*="2FP_handbook_V11.pdf"]');
+            if (downloadLink) {
+              downloadLink.style.cssText = `
+                display: inline-block !important;
+                background: linear-gradient(135deg, #1f6feb, #388bfd) !important;
+                color: white !important;
+                padding: 1.5rem 3rem !important;
+                border-radius: 14px !important;
+                text-decoration: none !important;
+                font-weight: 700 !important;
+                font-size: 1.3rem !important;
+                transition: all 0.3s ease !important;
+                box-shadow: 0 6px 24px rgba(31, 110, 235, 0.4) !important;
+                border: 2px solid rgba(255, 255, 255, 0.1) !important;
+                text-align: center !important;
+                min-width: 350px !important;
+                position: relative !important;
+                overflow: hidden !important;
+              `;
+            }
+          }, 100);
+        })
+        .catch(error => {
+          console.error('Error loading README:', error);
+          welcomeContent.innerHTML = '<p>Error loading welcome content. Please refresh the page.</p>';
+        });
+    }
+    
+    // Simple function to load README.md directly when Welcome is clicked
+    function loadWelcomeDirectly() {
+      console.log('loadWelcomeDirectly called');
+      
+      // Remove active class from all nav items
+      document.querySelectorAll('.nav-item, .nav-subitem').forEach(item => {
+        item.classList.remove('active');
+      });
+      
+      // Add active class to Welcome
+      event.target.classList.add('active');
+      
+      // Hide all content sections
+      document.querySelectorAll('.content-section').forEach(section => {
+        section.classList.remove('active');
+      });
+      
+      // Show the welcome section
+      const welcomeSection = document.getElementById('welcome');
+      console.log('Welcome section element:', welcomeSection);
+      if (welcomeSection) {
+        welcomeSection.classList.add('active');
+      }
+      
+      // Load README.md directly into the welcome content area
+      console.log('Fetching README.md...');
+      fetch('README.md')
+        .then(response => {
+          console.log('Response status:', response.status);
+          return response.text();
+        })
+        .then(content => {
+          console.log('Content loaded, length:', content.length);
+          const welcomeContent = document.getElementById('welcome-content-separate');
+          console.log('Welcome content element:', welcomeContent);
+          if (welcomeContent) {
+            const htmlContent = marked.parse(content);
+            console.log('HTML content generated, length:', htmlContent.length);
+            welcomeContent.innerHTML = htmlContent;
+            console.log('Content set to welcome-content-separate');
+            
+            // Apply button styling to the download link
+            setTimeout(() => {
+              const downloadLink = welcomeContent.querySelector('a[href*="2FP_handbook_V11.pdf"]');
+              if (downloadLink) {
+                downloadLink.style.cssText = `
+                  display: inline-block !important;
+                  background: linear-gradient(135deg, #1f6feb, #388bfd) !important;
+                  color: white !important;
+                  padding: 1.5rem 3rem !important;
+                  border-radius: 14px !important;
+                  text-decoration: none !important;
+                  font-weight: 700 !important;
+                  font-size: 1.3rem !important;
+                  transition: all 0.3s ease !important;
+                  box-shadow: 0 6px 24px rgba(31, 110, 235, 0.4) !important;
+                  border: 2px solid rgba(255, 255, 255, 0.1) !important;
+                  text-align: center !important;
+                  min-width: 350px !important;
+                  position: relative !important;
+                  overflow: hidden !important;
+                `;
+              }
+            }, 100);
+          } else {
+            console.error('welcome-content-separate element not found!');
+          }
+        })
+        .catch(error => {
+          console.error('Error loading README:', error);
+          const welcomeContent = document.getElementById('welcome-content-separate');
+          if (welcomeContent) {
+            welcomeContent.innerHTML = '<p>Error loading README.md. Please refresh the page.</p>';
+          }
+        });
+    }
     
     // Fix internal links in loaded content
     function fixInternalLinksFromContent(link) {
@@ -1225,8 +1402,47 @@
     document.addEventListener('DOMContentLoaded', function() {
       loadNavigation();
       
-      // Automatically load the README content for the home page
-      loadContentFromLink('/README.md', 'Welcome to 2FP Open Tools');
+      // Directly load the README content for the welcome page
+      fetch('README.md')
+        .then(response => response.text())
+        .then(content => {
+          const welcomeContent = document.getElementById('welcome-content');
+          if (welcomeContent) {
+            const htmlContent = marked.parse(content);
+            welcomeContent.innerHTML = htmlContent;
+            
+            // Apply button styling to the download link
+            setTimeout(() => {
+              const downloadLink = welcomeContent.querySelector('a[href*="2FP_handbook_V11.pdf"]');
+              if (downloadLink) {
+                downloadLink.style.cssText = `
+                  display: inline-block !important;
+                  background: linear-gradient(135deg, #1f6feb, #388bfd) !important;
+                  color: white !important;
+                  padding: 1.5rem 3rem !important;
+                  border-radius: 14px !important;
+                  text-decoration: none !important;
+                  font-weight: 700 !important;
+                  font-size: 1.3rem !important;
+                  transition: all 0.3s ease !important;
+                  box-shadow: 0 6px 24px rgba(31, 110, 235, 0.4) !important;
+                  border: 2px solid rgba(255, 255, 255, 0.1) !important;
+                  text-align: center !important;
+                  min-width: 350px !important;
+                  position: relative !important;
+                  overflow: hidden !important;
+                `;
+              }
+            }, 100);
+          }
+        })
+        .catch(error => {
+          console.error('Error loading README:', error);
+          const welcomeContent = document.getElementById('welcome-content');
+          if (welcomeContent) {
+            welcomeContent.innerHTML = '<p>Error loading welcome content. Please refresh the page.</p>';
+          }
+        });
     });
   </script>
 </body>
