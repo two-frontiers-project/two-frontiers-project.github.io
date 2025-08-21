@@ -540,8 +540,7 @@
       
       // Handle special content cases
       if (contentId === 'home') {
-        // For home, show the home section and load README content
-        document.getElementById('home').classList.add('active');
+        // For home, just load the README content like any other page
         loadContentFromLink('/README.md', 'Welcome to 2FP Open Tools');
       } else if (contentId === 'about') {
         loadAbout2FP();
