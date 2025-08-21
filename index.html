@@ -224,22 +224,24 @@
     
     .handbook-download-main {
       display: inline-block;
-      background: linear-gradient(135deg, #1f6feb, #388bfd);
+      background: linear-gradient(135deg, #ff6b35, #f7931e);
       color: white;
-      padding: 1rem 2rem;
-      border-radius: 8px;
+      padding: 1.5rem 3rem;
+      border-radius: 12px;
       text-decoration: none;
-      font-weight: 600;
-      font-size: 1.1rem;
+      font-weight: 700;
+      font-size: 1.3rem;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 12px rgba(31, 110, 235, 0.3);
+      box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
+      border: 3px solid rgba(255, 255, 255, 0.2);
     }
     
     .handbook-download-main:hover {
-      transform: translateY(-2px);
-      box-shadow: 0 6px 20px rgba(31, 111, 235, 0.4);
+      transform: translateY(-3px);
+      box-shadow: 0 12px 35px rgba(255, 107, 53, 0.6);
       color: white;
       text-decoration: none;
+      background: linear-gradient(135deg, #ff5722, #ff9800);
     }
     
     /* Custom Scrollbar */
@@ -1028,7 +1030,6 @@
           if (link === '/README.md') {
             // For home page, load into home-content div
             targetElement.innerHTML = `
-              <h1 class="section-title">${actualTitle}</h1>
               <div class="markdown-content">
                 ${htmlContent}
               </div>
@@ -1042,7 +1043,6 @@
             // For other content, load into content area
             targetElement.innerHTML = `
               <div class="content-section active" id="content-loaded">
-                <h1 class="section-title">${actualTitle}</h1>
                 <div class="markdown-content">
                   ${htmlContent}
                 </div>
