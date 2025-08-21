@@ -1,4 +1,4 @@
-# Field Handbook
+# The Two Frontiers Handbook
 
 > **Repository:** [2FP-Field-Handbook](https://github.com/two-frontiers-project/2FP-Field-Handbook)
 
@@ -8,6 +8,8 @@
 Author(s): Krista A. Ryon, James R. Henriksen, Braden T. Tierney
 
 Version 11.0
+
+[Download the full 2FP Handbook](https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/2FP_handbook_V11.pdf?raw=1)
 
 ## Introduction: 
 This Standard Operating Procedure (SOP) has been outlined to cover the sampling and processing of general environmental samples for the study of microorganisms.

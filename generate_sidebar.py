@@ -354,6 +354,42 @@ def create_external_structure(repos, no_download=False):
     
     return downloaded_content
 
+def get_flat_markdown_files(repo_path):
+    """Get all markdown files from a repository root directory for flat-structured repos."""
+    markdown_files = []
+    if os.path.exists(repo_path):
+        for item in os.listdir(repo_path):
+            if item.endswith('.md') and item != 'README.md':
+                # Remove the .md extension for display
+                title = item.replace('.md', '').replace('-', ' ').replace('_', ' ')
+                # Convert numbered prefixes to more readable titles
+                if title.startswith('01 '):
+                    title = title.replace('01 ', 'About This Handbook - ')
+                elif title.startswith('02 '):
+                    title = title.replace('02 ', 'Expedition Planning - ')
+                elif title.startswith('03 '):
+                    title = title.replace('03 ', 'Sample Identifiers - ')
+                elif title.startswith('04 '):
+                    title = title.replace('04 ', 'Preparation - ')
+                elif title.startswith('05 '):
+                    title = title.replace('05 ', 'Field Lab Setup - ')
+                elif title.startswith('06 '):
+                    title = title.replace('06 ', 'Sample Collection - ')
+                elif title.startswith('07 '):
+                    title = title.replace('07 ', 'Sample Check-in - ')
+                elif title.startswith('08 '):
+                    title = title.replace('08 ', 'Sample Processing - ')
+                elif title.startswith('09 '):
+                    title = title.replace('09 ', 'Sample Transportation - ')
+                elif title.startswith('10 '):
+                    title = title.replace('10 ', 'Post-Sampling - ')
+                
+                markdown_files.append({
+                    'filename': item,
+                    'title': title.title()
+                })
+    return sorted(markdown_files, key=lambda x: x['filename'])
+
 def generate_sidebar(downloaded_content):
     """Generate the sidebar markdown with simple categorization."""
     lines = [
@@ -388,14 +424,23 @@ def generate_sidebar(downloaded_content):
                     else:
                         title = repo.replace("2FP-", "").replace("2FP_", "").replace("-", " ").replace("_", " ").title()
                     
-                    # Add main repository link
-                    lines.append(f"- [{title}](external/{repo}/README.md)")
-                    
-                    # Add subdirectory links if they exist
-                    if downloaded_content[repo]['subdirs']:
-                        for subdir in downloaded_content[repo]['subdirs']:
-                            subdir_title = subdir.replace('-', ' ').replace('_', ' ').title()
-                            lines.append(f"  - [{subdir_title}](external/{repo}/{subdir}/README.md)")
+                    # Special handling for Field Handbook - it has flat markdown structure
+                    if repo == "2FP-Field-Handbook" or (repo in downloaded_content and downloaded_content[repo].get('flat_markdown', False)):
+                        lines.append(f"- [{title}](external/{repo}/README.md)")
+                        # Get all the individual markdown files
+                        repo_path = os.path.join(EXTERNAL_DIR, repo)
+                        markdown_files = get_flat_markdown_files(repo_path)
+                        for md_file in markdown_files:
+                            lines.append(f"  - [{md_file['title']}](external/{repo}/{md_file['filename']})")
+                    else:
+                        # Standard handling for other repos
+                        lines.append(f"- [{title}](external/{repo}/README.md)")
+                        
+                        # Add subdirectory links if they exist
+                        if downloaded_content[repo]['subdirs']:
+                            for subdir in downloaded_content[repo]['subdirs']:
+                                subdir_title = subdir.replace('-', ' ').replace('_', ' ').title()
+                                lines.append(f"  - [{subdir_title}](external/{repo}/{subdir}/README.md)")
             
         lines.append("")
     
@@ -429,6 +474,12 @@ if __name__ == "__main__":
                             subdir_readme = os.path.join(subdir_path, "README.md")
                             if os.path.exists(subdir_readme):
                                 downloaded_content[repo_name]['subdirs'].append(item)
+                    
+                    # Special handling for Field Handbook - check for flat markdown files
+                    if repo_name == "2FP-Field-Handbook":
+                        markdown_files = get_flat_markdown_files(repo_path)
+                        if markdown_files:
+                            downloaded_content[repo_name]['flat_markdown'] = True
         
         print(f"📚 Found {len(downloaded_content)} existing repositories with content")
         print(f"\n📁 Using existing external directory structure...")
