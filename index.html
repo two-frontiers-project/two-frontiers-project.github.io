@@ -224,24 +224,43 @@
     
     .handbook-download-main {
       display: inline-block;
-      background: linear-gradient(135deg, #ff6b35, #f7931e);
+      background: linear-gradient(135deg, #1f6feb, #388bfd);
       color: white;
-      padding: 1.5rem 3rem;
-      border-radius: 12px;
+      padding: 2rem 4rem;
+      border-radius: 16px;
       text-decoration: none;
       font-weight: 700;
-      font-size: 1.3rem;
+      font-size: 1.5rem;
       transition: all 0.3s ease;
-      box-shadow: 0 8px 25px rgba(255, 107, 53, 0.4);
-      border: 3px solid rgba(255, 255, 255, 0.2);
+      box-shadow: 0 8px 32px rgba(31, 110, 235, 0.4);
+      border: 2px solid rgba(255, 255, 255, 0.1);
+      text-align: center;
+      min-width: 400px;
+      position: relative;
+      overflow: hidden;
+    }
+    
+    .handbook-download-main::before {
+      content: '';
+      position: absolute;
+      top: 0;
+      left: -100%;
+      width: 100%;
+      height: 100%;
+      background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.2), transparent);
+      transition: left 0.5s;
     }
     
     .handbook-download-main:hover {
-      transform: translateY(-3px);
-      box-shadow: 0 12px 35px rgba(255, 107, 53, 0.6);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 40px rgba(31, 111, 235, 0.6);
       color: white;
       text-decoration: none;
-      background: linear-gradient(135deg, #ff5722, #ff9800);
+      background: linear-gradient(135deg, #388bfd, #1f6feb);
+    }
+    
+    .handbook-download-main:hover::before {
+      left: 100%;
     }
     
     /* Custom Scrollbar */
@@ -531,6 +550,8 @@
       
       // Handle special content cases
       if (contentId === 'home') {
+        // For home, show the home section and load README content
+        document.getElementById('home').classList.add('active');
         loadContentFromLink('/README.md', 'Welcome to 2FP Open Tools');
       } else if (contentId === 'about') {
         loadAbout2FP();
@@ -1033,11 +1054,6 @@
               <div class="markdown-content">
                 ${htmlContent}
               </div>
-              <div class="handbook-download-section">
-                <a href="https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/2FP_handbook_V11.pdf?raw=1" class="handbook-download-main" target="_blank">
-                  📖 Download The Two Frontiers Field Handbook V11 (PDF)
-                </a>
-              </div>
             `;
           } else {
             // For other content, load into content area
@@ -1106,19 +1122,16 @@
                     <tr>
                       <th style="text-align: center;">Carbon</th>
                       <th>Removing greenhouse gases from the atmosphere is needed to fight climate change. Searching across four continents, We have found some of the <a href="https://www.synbiobeta.com/read/meet-chonkus-the-algae-that-eats-carbon-and-sinks-like-a-rock" target="_blank">most efficient carbon-capturing organisms ever observed</a> that can efficiently reduce greenhouse gas (carbon dioxide and methane) emissions.</th>
-                      <th style="text-align: center;">![][image1]![][image2]</th>
                     </tr>
                   </thead>
                   <tbody>
                     <tr>
                       <td style="text-align: center;"><strong>Coral</strong></td>
                       <td>We need more tools to protect our reefs from an increasingly polluted and warming ocean. In our Coral Initiative, we do so by sequencing, culturing, and deploying microbial communities that enhance reef resilience to disease and heat-stress.</td>
-                      <td style="text-align: center;">![][image3]![][image4]</td>
                     </tr>
                     <tr>
                       <td style="text-align: center;"><strong>Crops</strong></td>
                       <td>Sustainable crops are required for humanity's survival. We identify microbes that confer tolerance to drought, pests, and other stressors in a variety of plants. Additionally, as part of NASA-funded efforts, we are finding microbes that help plants grow in stressful, desertified environments on and off this planet, with the aim of eventually growing crops in lunar soil.</td>
-                      <td style="text-align: center;">![][image5]![][image6]</td>
                     </tr>
                   </tbody>
                 </table>
