@@ -124,7 +124,11 @@ def download_image(repo, image_path, local_dir, branch='main'):
         return False
 
 def get_all_repos():
-    """Fetch all repositories from the GitHub organization."""
+    """Fetch all PUBLIC repositories from the GitHub organization.
+    
+    Note: This only accesses public repositories. Private repositories are not accessible
+    even with a token unless the token has explicit access to them.
+    """
     repos = []
     page = 1
     while True:
@@ -135,14 +139,21 @@ def get_all_repos():
         else:
             print("⚠️  No token available for API call")
         
+        # This endpoint only returns PUBLIC repositories by default
         r = requests.get(f"https://api.github.com/orgs/{ORG}/repos?page={page}&per_page=100", headers=headers)
         r.raise_for_status()
         page_repos = r.json()
         if not page_repos:
             break
-        repos.extend([repo["name"] for repo in page_repos])
+        
+        # Filter to ensure we only get public repos
+        public_repos = [repo["name"] for repo in page_repos if not repo.get("private", False)]
+        repos.extend(public_repos)
         page += 1
-    return sorted([r for r in repos if r not in EXCLUDE])
+    
+    filtered_repos = sorted([r for r in repos if r not in EXCLUDE])
+    print(f"🔒 Found {len(filtered_repos)} public repositories")
+    return filtered_repos
 
 def get_repo_structure(repo, branch='main'):
     """Get the directory structure of a repository."""
