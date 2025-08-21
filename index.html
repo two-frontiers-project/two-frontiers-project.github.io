@@ -207,16 +207,22 @@
       line-height: 1.7;
     }
     
-    .handbook-section {
-      background: linear-gradient(135deg, #1a2332, #2c3e50);
-      padding: 2rem;
-      border-radius: 12px;
+
+    
+
+    
+
+    
+
+    
+
+    
+    .handbook-download-section {
+      text-align: center;
       margin: 2rem 0;
-      border: 1px solid #30363d;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
     
-    .handbook-download {
+    .handbook-download-main {
       display: inline-block;
       background: linear-gradient(135deg, #1f6feb, #388bfd);
       color: white;
@@ -224,48 +230,16 @@
       border-radius: 8px;
       text-decoration: none;
       font-weight: 600;
+      font-size: 1.1rem;
       transition: all 0.3s ease;
-      box-shadow: 0 4px 12px rgba(31, 111, 235, 0.3);
+      box-shadow: 0 4px 12px rgba(31, 110, 235, 0.3);
     }
     
-    .handbook-download:hover {
+    .handbook-download-main:hover {
       transform: translateY(-2px);
       box-shadow: 0 6px 20px rgba(31, 111, 235, 0.4);
-    }
-    
-    .content-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 2rem;
-      margin-top: 2rem;
-    }
-    
-    .content-card {
-      background: linear-gradient(135deg, #21262d, #30363d);
-      padding: 2rem;
-      border-radius: 12px;
-      cursor: pointer;
-      transition: all 0.3s ease;
-      border: 1px solid #484f58;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    }
-    
-    .content-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-      border-color: #58a6ff;
-    }
-    
-    .card-title {
-      font-size: 1.5rem;
-      font-weight: 600;
-      margin-bottom: 1rem;
-      color: #f0f6fc;
-    }
-    
-    .card-description {
-      color: #8b949e;
-      line-height: 1.6;
+      color: white;
+      text-decoration: none;
     }
     
     /* Custom Scrollbar */
@@ -466,9 +440,10 @@
   <!-- Header -->
   <header class="header">
     <div class="header-content">
-      <img src="images/2FP-Logo-MainLogo-COLOR-2063x500.png" alt="Two Frontiers Project" class="logo">
+      <img src="images/2FP-Logo-MainLogo-COLOR-2063x500.png" alt="Two Frontiers Project" class="logo" onclick="showContent('home')" style="cursor: pointer;">
       <h1 class="header-title">2FP Open Tools & Protocols</h1>
     </div>
+    
   </header>
 
   <!-- Main Container -->
@@ -494,34 +469,8 @@
     <main class="content-area">
       <!-- Home Content -->
       <div class="content-section active" id="home">
-        <h1 class="section-title">Welcome to 2FP Open Tools</h1>
-        <p class="section-description">
-          The Two Frontiers Project (2FP) is a collaborative research initiative focused on developing open-source tools, protocols, and methodologies for environmental and biological research.
-        </p>
-        
-        <div class="handbook-section">
-          <h2 style="color: #f0f6fc; margin-bottom: 1rem;">The Two Frontiers Field Handbook</h2>
-          <p style="color: #8b949e; margin-bottom: 1rem;">
-            Our comprehensive guide that sets the gold standard for field research methodology and enables unprecedented interoperability across research teams worldwide.
-          </p>
-          <a href="https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/2FP_handbook_V11.pdf?raw=1" class="handbook-download">
-            📖 Download Handbook V11 (PDF)
-          </a>
-        </div>
-        
-        <div class="content-grid">
-          <div class="content-card" onclick="showContent('handbook-main')">
-            <h3 class="card-title">Field Protocols</h3>
-            <p class="card-description">Standardized methodologies for field sampling, processing, and data collection.</p>
-          </div>
-          <div class="content-card" onclick="showContent('hardware-main')">
-            <h3 class="card-title">Open Hardware</h3>
-            <p class="card-description">3D printable components and field equipment modifications for research applications.</p>
-          </div>
-          <div class="content-card" onclick="showContent('software-main')">
-            <h3 class="card-title">Analysis Tools</h3>
-            <p class="card-description">Software for genomic analysis, alignment, and data processing.</p>
-          </div>
+        <div id="home-content">
+          <!-- Content will be loaded here -->
         </div>
       </div>
 
@@ -936,6 +885,10 @@
             
             const subItemDiv = document.createElement('div');
             subItemDiv.className = 'nav-subitem';
+            // Add subdirectory class if this is a subdirectory
+            if (subItem.isSubdirectory) {
+              subItemDiv.classList.add('subdirectory');
+            }
             subItemDiv.onclick = () => showContentFromLink(subItem.link, subItem.title);
             subItemDiv.textContent = subItem.title;
             contentDiv.appendChild(subItemDiv);
@@ -1025,56 +978,57 @@
       }
     }
     
-    // Load About 2FP content
-    function loadAbout2FP() {
-      const contentArea = document.querySelector('.content-area');
-      
-      const aboutContent = `
-        <div class="content-section active" id="about">
-          <h1 class="section-title">About Two Frontiers Project</h1>
-          <div class="markdown-content">
-            <h2>Our Mission</h2>
-            <p>The Two Frontiers Project (2FP) is dedicated to advancing scientific research through open-source collaboration and standardized methodologies. We work at the intersection of cutting-edge biological research and accessible, reproducible science.</p>
-            
-            <h2>What We Do</h2>
-            <p>We develop and maintain:</p>
-            <ul>
-              <li><strong>Open-source research tools</strong> - Hardware and software solutions for biological and environmental research</li>
-              <li><strong>Standardized protocols</strong> - Field-tested methodologies that ensure reproducibility across research teams</li>
-              <li><strong>Educational resources</strong> - Comprehensive documentation and training materials</li>
-              <li><strong>Community platforms</strong> - Tools that enable collaboration between researchers worldwide</li>
-            </ul>
-            
-            <h2>Our Approach</h2>
-            <p>We believe that science advances fastest when tools, protocols, and knowledge are freely shared. Our comprehensive Field Handbook sets the gold standard for environmental sampling and processing, enabling unprecedented interoperability across research teams worldwide.</p>
-            
-            <h2>Research Areas</h2>
-            <ul>
-              <li><strong>Environmental Microbiology</strong> - Studying microbial communities in diverse environments</li>
-              <li><strong>Genomic Analysis</strong> - Tools for DNA sequencing and phylogenetic analysis</li>
-              <li><strong>Field Instrumentation</strong> - Portable devices for real-time environmental monitoring</li>
-              <li><strong>Data Standards</strong> - Protocols for sample identification, metadata, and data sharing</li>
-            </ul>
-            
-            <h2>Open Science Philosophy</h2>
-            <p>All our tools, protocols, and resources are freely available under open-source licenses. We believe that removing barriers to scientific tools and knowledge accelerates discovery and enables more researchers to contribute to our understanding of the natural world.</p>
-            
-            <h2>Get Involved</h2>
-            <p>Whether you're a researcher, student, or citizen scientist, there are many ways to engage with the Two Frontiers Project:</p>
-            <ul>
-              <li>Use our open-source tools and protocols in your research</li>
-              <li>Contribute improvements and new features to our repositories</li>
-              <li>Share your field experiences and help refine our methodologies</li>
-              <li>Join our community of researchers working on environmental and biological questions</li>
-            </ul>
-            
-            <p>Visit <a href="https://twofrontiers.org" target="_blank">twofrontiers.org</a> to learn more about our mission and current projects.</p>
-          </div>
-        </div>
-      `;
-      
-      contentArea.innerHTML = aboutContent;
-    }
+            // Load About 2FP content
+        function loadAbout2FP() {
+          const contentArea = document.querySelector('.content-area');
+          
+          const aboutContent = `
+            <div class="content-section active" id="about">
+              <h1 class="section-title">About Two Frontiers Project</h1>
+              <div class="markdown-content">
+                <p>The <strong>Two Frontiers Project</strong> (2FP, <a href="https://twofrontiers.org/" target="_blank">https://twofrontiers.org/</a>) is a 501 c(3), non-profit research organization dedicated to advancing human and environmental health by harnessing the potential of microbial life, from sea to space. Microbes are nature's alchemists: they remove contaminants from the environment, capture greenhouse gases, improve crop yields, and refine rare Earth minerals. Through expeditions around the globe, <strong>we find and scale these microbial machines to macro-scale impact</strong>, aiming to address major societal challenges in human and planetary health, emphasizing pollutant remediation, coral reef bleaching, and sustainable agriculture.</p>
+                
+                <h2>2FP Research Initiatives</h2>
+                
+                <table>
+                  <thead>
+                    <tr>
+                      <th style="text-align: center;">Carbon</th>
+                      <th>Removing greenhouse gases from the atmosphere is needed to fight climate change. Searching across four continents, We have found some of the <a href="https://www.synbiobeta.com/read/meet-chonkus-the-algae-that-eats-carbon-and-sinks-like-a-rock" target="_blank">most efficient carbon-capturing organisms ever observed</a> that can efficiently reduce greenhouse gas (carbon dioxide and methane) emissions.</th>
+                      <th style="text-align: center;">![][image1]![][image2]</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td style="text-align: center;"><strong>Coral</strong></td>
+                      <td>We need more tools to protect our reefs from an increasingly polluted and warming ocean. In our Coral Initiative, we do so by sequencing, culturing, and deploying microbial communities that enhance reef resilience to disease and heat-stress.</td>
+                      <td style="text-align: center;">![][image3]![][image4]</td>
+                    </tr>
+                    <tr>
+                      <td style="text-align: center;"><strong>Crops</strong></td>
+                      <td>Sustainable crops are required for humanity's survival. We identify microbes that confer tolerance to drought, pests, and other stressors in a variety of plants. Additionally, as part of NASA-funded efforts, we are finding microbes that help plants grow in stressful, desertified environments on and off this planet, with the aim of eventually growing crops in lunar soil.</td>
+                      <td style="text-align: center;">![][image5]![][image6]</td>
+                    </tr>
+                  </tbody>
+                </table>
+                
+                <p>Our <strong>next initiative</strong>, which has not been formally announced, is <strong>Cleanup</strong>, and it focuses on removing – and replacing – toxic chemicals from the environment and the food supply.</p>
+                
+                <h2>2FP Open Science and Outreach Initiatives</h2>
+                
+                <p><strong>Citizen Science:</strong> We have run two citizen science, national sampling campaigns. These programs enable anyone to learn about and collect microbial samples from "the extremophiles in their homes" (e.g., HVAC systems) or "extremophiles in the wild" (hot springs on their property), where we expect carbon and contaminant capturing organisms can be found. A third citizen science campaign, focused on studying aquarium corals, is launching in fall of 2025. [<a href="https://citsci.org/projects/the-extremophile-campaign-in-your-home/" target="_blank">Extremophiles in the home sign-up</a> and <a href="https://www.npr.org/2025/06/02/nx-s1-5419557/these-researchers-think-the-sludge-in-your-home-may-help-save-the-planet" target="_blank">press coverage</a>]</p>
+                
+                <p><strong>Educational programs:</strong> The 2FP is dedicated to building global research capacity. We provide financial and mentorship support for graduate student researchers, and additionally we run low-cost, modular educational programs for K-12 and undergraduate classes as well as the lay public. Using our standardized sampling kits, we have managed courses in the modern application of DNA sequencing and microbiology around the world.</p>
+                
+                <p><strong>The 2FP Living Database:</strong> Each of our core research initiatives involves characterizing the microbial life using standardized, low-cost methods. We store every sample we take in a "living database," which contains both living organisms and paired DNA sequencing data. We are dedicated to <strong>Open Science,</strong> enabling this resource to be available to the entire research community. <strong>We provide our open-source tech stack <a href="https://two-frontiers-project.github.io/#/" target="_blank">here</a>.</strong></p>
+              </div>
+            </div>
+          `;
+          
+          contentArea.innerHTML = aboutContent;
+        }
+    
+
     
     // Fix internal links in loaded content
     function fixInternalLinksFromContent(link) {
@@ -1135,6 +1089,9 @@
     // Initialize with overview section expanded and load navigation
     document.addEventListener('DOMContentLoaded', function() {
       loadNavigation();
+      
+      // Automatically load the README content for the home page
+      loadContentFromLink('/README.md', 'Welcome to 2FP Open Tools');
     });
   </script>
 </body>

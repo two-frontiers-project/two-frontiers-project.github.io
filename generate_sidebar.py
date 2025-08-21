@@ -948,6 +948,34 @@ if __name__ == "__main__":
             # Fix internal links in the README
             print(f"🔧 Fixing internal links in README...")
             fix_handbook_readme_links(readme_path, handbook_repo)
+            
+            # For handbook mode, also scan existing external directory to build full sidebar
+            print("🔍 Scanning existing external directory for full sidebar generation...")
+            if os.path.exists(EXTERNAL_DIR):
+                for repo_name in os.listdir(EXTERNAL_DIR):
+                    if repo_name != handbook_repo:  # Skip handbook since we just downloaded it
+                        repo_path = os.path.join(EXTERNAL_DIR, repo_name)
+                        if os.path.isdir(repo_path):
+                            downloaded_content[repo_name] = {'main': False, 'subdirs': []}
+                            
+                            # Check for main README
+                            main_readme = os.path.join(repo_path, "README.md")
+                            if os.path.exists(main_readme):
+                                downloaded_content[repo_name]['main'] = True
+                            
+                            # Check for subdirectories with READMEs
+                            for item in os.listdir(repo_path):
+                                subdir_path = os.path.join(repo_path, item)
+                                if os.path.isdir(subdir_path):
+                                    subdir_readme = os.path.join(subdir_path, "README.md")
+                                    if os.path.exists(subdir_readme):
+                                        downloaded_content[repo_name]['subdirs'].append(item)
+                            
+                            # Special handling for Field Handbook - check for flat markdown files
+                            if repo_name == "2FP-Field-Handbook":
+                                markdown_files = get_flat_markdown_files(repo_path)
+                                if markdown_files:
+                                    downloaded_content[repo_name]['flat_markdown'] = True
         else:
             print(f"❌ Failed to download Field Handbook")
             downloaded_content = {}
