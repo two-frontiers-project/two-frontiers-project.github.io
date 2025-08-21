@@ -29,18 +29,6 @@ The purpose of this protocol is to collect samples for downstream metagenomic se
 - **Coral:** marine invertebrate living mainly in ocean environments.
 - **Plants:** Includes plant biomass (above or below ground) and soil containing roots
 - **Invertebrates:** Occasional organisms, often marine benthic
-
-1. About this handbook
-2. Expedition Planning
-3. Sample Identifiers and Site Metadata
-4. Preparation for Sample Collection
-5. Setting up a Field Lab
-6. Sample Collection
-7. Sample Check-In Area
-8. Sample Collection
-9. Sample Processing and Preservation
-10. Sample Transportation
-11. Post-Sample Collection Reset and Team Debrief
     
 ## Contact: 
 Email: info at two frontiers dot org
