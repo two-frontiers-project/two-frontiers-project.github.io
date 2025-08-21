@@ -9,9 +9,7 @@ The Two Frontiers Project (2FP) is a collaborative research initiative focused o
 
 ## The Two Frontiers Field Handbook
 
-**Download the complete Field Handbook:**
-
-<a href="https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/2FP_handbook_V11.pdf?raw=1" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #1f6feb, #388bfd); color: white; padding: 1.5rem 3rem; border-radius: 14px; text-decoration: none; font-weight: 700; font-size: 1.3rem; transition: all 0.3s ease; box-shadow: 0 6px 24px rgba(31, 110, 235, 0.4); border: 2px solid rgba(255, 255, 255, 0.1); text-align: center; min-width: 350px;">📖 Download The Two Frontiers Field Handbook V11 (PDF)</a>
+<a href="https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/2FP_handbook_V11.pdf?raw=1" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #1f6feb, #388bfd); color: white; padding: 1.5rem 3rem; border-radius: 14px; text-decoration: none; font-weight: 700; font-size: 1.3rem; transition: all 0.3s ease; box-shadow: 0 6px 24px rgba(31, 110, 235, 0.4); border: 2px solid rgba(255, 255, 255, 0.1); text-align: center; min-width: 350px;">Download the 2FP Handbook</a>
 
 The Two Frontiers Field Handbook is our comprehensive guide that defines our standards and practices for field research methodology and enables  interoperability across research teams worldwide. This handbook represents the culmination of years of collaborative research and field experience, providing standardized protocols that ensure data quality and comparability across diverse research environments. In addition to downloading it, you can work with the embedded version directly in this site.
 

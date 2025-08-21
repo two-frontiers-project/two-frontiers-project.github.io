@@ -542,12 +542,6 @@
       if (contentId === 'home') {
         // For home, show the home section and load README content
         document.getElementById('home').classList.add('active');
-        // Hide other content sections
-        document.querySelectorAll('.content-section').forEach(section => {
-          if (section.id !== 'home') {
-            section.classList.remove('active');
-          }
-        });
         loadContentFromLink('/README.md', 'Welcome to 2FP Open Tools');
       } else if (contentId === 'about') {
         loadAbout2FP();
