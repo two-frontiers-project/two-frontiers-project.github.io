@@ -8,16 +8,6 @@
 
 This repository provides a basic folder structure and a set of spreadsheets for planning and documenting a field expedition. Each spreadsheet uses `###EXPEDITIONNAME###` as a placeholder so they can be renamed to match the name of a specific expedition.
 
-## Contents
-
-- `initialize_expedition.py` – small script used to replace the `###EXPEDITIONNAME###` placeholder in filenames with your actual expedition name.
-- `###EXPEDITIONNAME###_BUDGET_AND_EXPENSES.xlsx` – track the overall budget.
-- `###EXPEDITIONNAME###_CONCEPT_OF_OPERATIONS.docx` – Word document describing how the expedition will be run.
-- `###EXPEDITIONNAME###_DEBRIEF.xlsx` – template for recording post-expedition notes.
-- `###EXPEDITIONNAME###_INVENTORY_AND_TRANSPORT.xlsx` – spreadsheet for tracking gear and transport logistics.
-- `###EXPEDITIONNAME###_SAMPLING_AND_METADATA.xlsx` – template for recording samples and associated metadata.
-- `###EXPEDITIONNAME###_TEAM_AND_TRAVEL.xlsx` – roster and travel information for the expedition team.
-
 ### Folders
 
 - `ADDITIONAL_DATA` – place any extra data collected in the field.

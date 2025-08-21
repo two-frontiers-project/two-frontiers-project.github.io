@@ -30,7 +30,6 @@ The purpose of this protocol is to collect samples for downstream metagenomic se
 - **Plants:** Includes plant biomass (above or below ground) and soil containing roots
 - **Invertebrates:** Occasional organisms, often marine benthic
 
-## Handbook Contents
 1. [About this handbook](https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/01-about-this-handbook.md)
 2. [Expedition Planning](https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/02-expedition-planning.md)
 3. [Sample Identifiers and Site Metadata](https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/03-sample-identifiers-and-site-metadata.md)

@@ -11,7 +11,7 @@
       name: '2FP Open Tools',
       repo: 'https://github.com/two-frontiers-project',
       loadSidebar: true,
-      subMaxLevel: 0, // Don't extract headings from pages into sidebar
+      subMaxLevel: 0, // Disable auto-extraction to prevent duplication
       auto2top: true,
       search: 'auto',
       alias: {
@@ -39,6 +39,35 @@
       padding: 1rem;
       margin: 1rem 0;
       color: #856404;
+    }
+    
+    /* Fix table styling for dark theme */
+    .markdown-section table {
+      background: #2c3e50;
+      border: 1px solid #34495e;
+      border-radius: 4px;
+    }
+    
+    .markdown-section table th {
+      background: #34495e;
+      color: white;
+      border: 1px solid #4a5568;
+      padding: 8px 12px;
+    }
+    
+    .markdown-section table td {
+      background: #2c3e50;
+      color: white;
+      border: 1px solid #4a5568;
+      padding: 8px 12px;
+    }
+    
+    .markdown-section table tr:nth-child(even) td {
+      background: #34495e;
+    }
+    
+    .markdown-section table tr:hover td {
+      background: #4a5568;
     }
   </style>
 </head>

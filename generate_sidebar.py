@@ -493,6 +493,95 @@ def generate_sidebar(downloaded_content):
     lines = [
         '<img src="images/2FP-Logo-MainLogo-COLOR-2063x500.png" alt="Two Frontiers Project" width="1032" />',
         "",
+        '<script>',
+        'function toggleHandbookSection(linkElement) {',
+        '  // Only handle Field Handbook links',
+        '  if (!linkElement.href.includes("2FP-Field-Handbook")) return;',
+        '  ',
+        '  const listItem = linkElement.parentElement;',
+        '  const existingSubsections = listItem.querySelector(".handbook-subsections");',
+        '  ',
+        '  if (existingSubsections) {',
+        '    // Toggle existing subsections',
+        '    existingSubsections.style.display = existingSubsections.style.display === "none" ? "block" : "none";',
+        '    return;',
+        '  }',
+        '  ',
+        '  // Create subsections container',
+        '  const subsectionsDiv = document.createElement("div");',
+        '  subsectionsDiv.className = "handbook-subsections";',
+        '  subsectionsDiv.style.paddingLeft = "20px";',
+        '  subsectionsDiv.style.marginTop = "5px";',
+        '  ',
+        '  // Add loading indicator',
+        '  subsectionsDiv.innerHTML = "Loading subsections...";',
+        '  listItem.appendChild(subsectionsDiv);',
+        '  ',
+        '  // Fetch the markdown file to extract headers',
+        '  fetch(linkElement.href)',
+        '    .then(response => response.text())',
+        '    .then(content => {',
+        '      const headers = extractHeadersFromMarkdown(content);',
+        '      if (headers.length > 0) {',
+        '        const subsectionsList = document.createElement("ul");',
+        '        headers.forEach(header => {',
+        '          const li = document.createElement("li");',
+        '          const anchor = header.text.toLowerCase().replace(/[^a-z0-9]+/g, "-");',
+        '          const link = document.createElement("a");',
+        '          link.href = linkElement.href + "#" + anchor;',
+        '          link.textContent = header.text;',
+        '          li.appendChild(link);',
+        '          subsectionsList.appendChild(li);',
+        '        });',
+        '        subsectionsDiv.innerHTML = "";',
+        '        subsectionsDiv.appendChild(subsectionsList);',
+        '      } else {',
+        '        subsectionsDiv.innerHTML = "No subsections found";',
+        '      }',
+        '    })',
+        '    .catch(error => {',
+        '      subsectionsDiv.innerHTML = "Error loading subsections";',
+        '      console.error("Error:", error);',
+        '    });',
+        '}',
+        '',
+        'function extractHeadersFromMarkdown(content) {',
+        '  const lines = content.split("\\n");',
+        '  const headers = [];',
+        '  ',
+        '  for (const line of lines) {',
+        '    const trimmed = line.trim();',
+        '    if (trimmed.startsWith("#")) {',
+        '      const level = trimmed.length - trimmed.replace(/^#+/, "").length;',
+        '      const text = trimmed.replace(/^#+\\s*/, "").trim();',
+        '      if (text.length > 3) {',
+        '        headers.push({ level, text });',
+        '      }',
+        '    }',
+        '  }',
+        '  ',
+        '  return headers;',
+        '}',
+        '</script>',
+        '<style>',
+        '.handbook-subsections ul {',
+        '  list-style-type: none;',
+        '  padding-left: 0;',
+        '}',
+        '.handbook-subsections li {',
+        '  margin: 2px 0;',
+        '}',
+        '.handbook-subsections a {',
+        '  color: #ccc;',
+        '  text-decoration: none;',
+        '  font-size: 0.9em;',
+        '}',
+        '.handbook-subsections a:hover {',
+        '  color: #fff;',
+        '  text-decoration: underline;',
+        '}',
+        '</style>',
+        "",
         "## Overview", 
         "- [Home](/README.md)", 
         ""
@@ -530,11 +619,13 @@ def generate_sidebar(downloaded_content):
                         markdown_files = get_flat_markdown_files(repo_path)
                         for md_file in markdown_files:
                             lines.append(f"  - [{md_file['title']}](external/{repo}/{md_file['filename']})")
+                            
+
                     else:
                         # Standard handling for other repos
                         lines.append(f"- [{title}](external/{repo}/README.md)")
                         
-                        # Add subdirectory links if they exist
+                        # Add subdirectory links if they exist (as separate clickable items)
                         if downloaded_content[repo]['subdirs']:
                             for subdir in downloaded_content[repo]['subdirs']:
                                 subdir_title = subdir.replace('-', ' ').replace('_', ' ').title()
@@ -543,6 +634,46 @@ def generate_sidebar(downloaded_content):
         lines.append("")
     
     return "\n".join(lines)
+
+def standardize_readme_headings(readme_path):
+    """Standardize heading levels in README files to prevent navigation conflicts."""
+    try:
+        with open(readme_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        original_content = content
+        
+        # Find the highest heading level used
+        lines = content.split('\n')
+        heading_levels = []
+        for line in lines:
+            if line.strip().startswith('#'):
+                level = len(line) - len(line.lstrip('#'))
+                heading_levels.append(level)
+        
+        if not heading_levels:
+            return
+        
+        min_level = min(heading_levels)
+        
+        # If the highest level is > 1, normalize to start at 1
+        if min_level > 1:
+            for i in range(len(lines)):
+                if lines[i].strip().startswith('#'):
+                    current_level = len(lines[i]) - len(lines[i].lstrip('#'))
+                    new_level = current_level - min_level + 1
+                    lines[i] = '#' * new_level + lines[i].lstrip('#')
+            
+            content = '\n'.join(lines)
+            
+            # Only write if content changed
+            if content != original_content:
+                with open(readme_path, 'w', encoding='utf-8') as f:
+                    f.write(content)
+                print(f"🔧 Standardized headings in {readme_path}")
+        
+    except Exception as e:
+        print(f"⚠️  Could not standardize headings in {readme_path}: {e}")
 
 def fix_handbook_readme_links(readme_path, repo):
     """Fix internal links in the Field Handbook README to point to local files."""
@@ -597,6 +728,83 @@ def fix_handbook_readme_links(readme_path, repo):
         
     except Exception as e:
         print(f"⚠️  Could not fix internal links in {readme_path}: {e}")
+
+def extract_handbook_headers(markdown_file_path):
+    """Extract headers from a Field Handbook markdown file for custom navigation."""
+    try:
+        with open(markdown_file_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        headers = []
+        lines = content.split('\n')
+        
+        for line in lines:
+            line = line.strip()
+            if line.startswith('#'):
+                # Count the # symbols to get the level
+                level = len(line) - len(line.lstrip('#'))
+                # Extract the header text (remove # symbols and clean up)
+                header_text = line.lstrip('#').strip()
+                
+                # Skip if it's just a title or very short
+                if len(header_text) > 3:
+                    headers.append({
+                        'level': level,
+                        'text': header_text,
+                        'anchor': header_text.lower().replace(' ', '-').replace(':', '').replace(',', '').replace('.', '')
+                    })
+        
+        return headers
+        
+    except Exception as e:
+        print(f"⚠️  Could not extract headers from {markdown_file_path}: {e}")
+        return []
+
+def remove_table_of_contents(readme_path):
+    """Remove table of contents sections from READMEs to prevent duplication with sidebar."""
+    try:
+        with open(readme_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        original_content = content
+        
+        # Remove common table of contents patterns
+        # Pattern 1: Lines starting with - or * followed by text and links
+        lines = content.split('\n')
+        filtered_lines = []
+        in_toc = False
+        
+        for line in lines:
+            stripped = line.strip()
+            
+            # Check if we're entering a TOC section
+            if any(keyword in stripped.lower() for keyword in ['table of contents', 'contents', 'sections', 'chapters']):
+                in_toc = True
+                continue
+            
+            # Check if we're exiting a TOC section (hit a header or end of list)
+            if in_toc and (stripped.startswith('#') or (stripped and not stripped.startswith('-') and not stripped.startswith('*'))):
+                in_toc = False
+            
+            # Skip lines that are part of TOC
+            if in_toc and (stripped.startswith('-') or stripped.startswith('*')):
+                continue
+            
+            # Keep the line if not in TOC
+            if not in_toc:
+                filtered_lines.append(line)
+        
+        # Join lines back together
+        content = '\n'.join(filtered_lines)
+        
+        # Only write if content changed
+        if content != original_content:
+            with open(readme_path, 'w', encoding='utf-8') as f:
+                f.write(content)
+            print(f"🔧 Removed table of contents from {readme_path}")
+        
+    except Exception as e:
+        print(f"⚠️  Could not remove table of contents from {readme_path}: {e}")
 
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Generate sidebar for 2FP documentation site')
@@ -690,21 +898,25 @@ if __name__ == "__main__":
         print(f"\n📁 Creating external directory structure with subdirectories...")
         downloaded_content = create_external_structure(repos, no_download=args.no_download)
     
-    # Fix image paths in all READMEs regardless of mode
-    print(f"\n🔧 Fixing image paths in all READMEs...")
+    # Fix image paths and standardize headings in all READMEs
+    print(f"\n🔧 Processing all READMEs...")
     for repo_name in downloaded_content:
         repo_path = os.path.join(EXTERNAL_DIR, repo_name)
         if os.path.exists(repo_path):
-            # Fix main README
+            # Process main README
             main_readme = os.path.join(repo_path, "README.md")
             if os.path.exists(main_readme):
                 fix_readme_image_paths(main_readme, repo_name)
+                standardize_readme_headings(main_readme)
+                remove_table_of_contents(main_readme)
             
-            # Fix subdirectory READMEs
+            # Process subdirectory READMEs
             for subdir in downloaded_content[repo_name]['subdirs']:
                 subdir_readme = os.path.join(repo_path, subdir, "README.md")
                 if os.path.exists(subdir_readme):
                     fix_readme_image_paths(subdir_readme, repo_name, subdir)
+                    standardize_readme_headings(subdir_readme)
+                    remove_table_of_contents(subdir_readme)
     
     # Fix internal links in the Field Handbook README
     if "2FP-Field-Handbook" in downloaded_content:
