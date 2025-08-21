@@ -838,8 +838,8 @@
           }
         }
         // Check for sub-items (indented with 2 spaces:   - [Title](link))
-        else if (trimmed.startsWith('  - [') && currentItem) {
-          const subMatch = trimmed.match(/  - \[([^\]]+)\]\(([^)]+)\)/);
+        else if (line.startsWith('  - [') && currentItem) {
+          const subMatch = line.match(/  - \[([^\]]+)\]\(([^)]+)\)/);
           if (subMatch) {
             currentItem.subItems.push({
               title: subMatch[1],
@@ -936,13 +936,16 @@
             
             const subItemDiv = document.createElement('div');
             subItemDiv.className = 'nav-subitem';
-            // Add subdirectory class if this is a subdirectory
+            
+            // Manually set indentation based on known subdirectory structure
             if (subItem.isSubdirectory) {
               subItemDiv.classList.add('subdirectory');
-              subItemDiv.textContent = '     ' + subItem.title; // Add 5 spaces for indentation
+              // Add visual indentation with spaces and a dash
+              subItemDiv.textContent = '     - ' + subItem.title;
             } else {
               subItemDiv.textContent = subItem.title;
             }
+            
             subItemDiv.onclick = () => showContentFromLink(subItem.link, subItem.title);
             contentDiv.appendChild(subItemDiv);
           });

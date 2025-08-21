@@ -1049,6 +1049,24 @@ if __name__ == "__main__":
     print(f"\n🔗 Generating categorized sidebar...")
     sidebar_content = generate_sidebar(downloaded_content)
     
+    # Add "-- " after opening bracket for indented items (subdirectories)
+    print("🔧 Adding visual indentation to subdirectory items...")
+    lines = sidebar_content.split('\n')
+    modified_lines = []
+    
+    for line in lines:
+        # Check if this line is indented (starts with 2 spaces)
+        if line.startswith('  - ['):
+            # This is a subdirectory item, add "-- " after the opening bracket
+            modified_line = line.replace('- [', '- [-- ', 1)
+            modified_lines.append(modified_line)
+        else:
+            # This is not indented, keep as is
+            modified_lines.append(line)
+    
+    # Reconstruct the sidebar content
+    sidebar_content = '\n'.join(modified_lines)
+    
     with open("_sidebar.md", "w") as f:
         f.write(sidebar_content)
     
