@@ -170,9 +170,9 @@
     }
     
     .nav-subitem.subdirectory {
-      padding-left: 4rem;
-      color: #6a737d;
-      font-size: 0.9rem;
+      padding-left: 4rem !important;
+      color: #6a737d !important;
+      font-size: 0.9rem !important;
     }
     
     /* Content Area */
@@ -850,6 +850,57 @@
         }
       }
       
+      // Manually fix the subdirectory structure based on known hierarchy
+      sections.forEach(section => {
+        if (section.title === 'Hardware') {
+          section.items.forEach(item => {
+            if (item.title === 'General 3D Printing') {
+              // All sub-items under General 3D Printing are subdirectories
+              item.subItems.forEach(subItem => {
+                subItem.isSubdirectory = true;
+              });
+            } else if (item.title === 'PUMA Scope') {
+              // Freecad is a subdirectory
+              item.subItems.forEach(subItem => {
+                subItem.isSubdirectory = true;
+              });
+            } else if (item.title === 'General Field Tools') {
+              // Uvspec and Od600 are subdirectories
+              item.subItems.forEach(subItem => {
+                subItem.isSubdirectory = true;
+              });
+            }
+          });
+        } else if (section.title === 'The Two Frontiers Handbook') {
+          // All sub-items under Handbook are subdirectories
+          section.items.forEach(item => {
+            if (item.title === '2FP Field Handbook and Standards') {
+              item.subItems.forEach(subItem => {
+                subItem.isSubdirectory = true;
+              });
+            }
+          });
+        } else if (section.title === 'Speciality Kits') {
+          // All sub-items under Speciality Kits are subdirectories
+          section.items.forEach(item => {
+            if (item.title === 'Speciality Kits') {
+              item.subItems.forEach(subItem => {
+                subItem.isSubdirectory = true;
+              });
+            }
+          });
+        } else if (section.title === 'Templates') {
+          // All sub-items under Templates are subdirectories
+          section.items.forEach(item => {
+            if (item.title === 'Expedition Template') {
+              item.subItems.forEach(subItem => {
+                subItem.isSubdirectory = true;
+              });
+            }
+          });
+        }
+      });
+      
       return sections;
     }
     
@@ -888,9 +939,11 @@
             // Add subdirectory class if this is a subdirectory
             if (subItem.isSubdirectory) {
               subItemDiv.classList.add('subdirectory');
+              subItemDiv.textContent = '     ' + subItem.title; // Add 5 spaces for indentation
+            } else {
+              subItemDiv.textContent = subItem.title;
             }
             subItemDiv.onclick = () => showContentFromLink(subItem.link, subItem.title);
-            subItemDiv.textContent = subItem.title;
             contentDiv.appendChild(subItemDiv);
           });
         }
@@ -917,15 +970,35 @@
     
     // Load content from a specific link
     async function loadContentFromLink(link, title) {
-      const contentArea = document.querySelector('.content-area');
+      let targetElement;
+      
+      // If loading README for home page, load into home-content div
+      if (link === '/README.md') {
+        targetElement = document.querySelector('#home-content');
+        if (!targetElement) {
+          // Fallback to content area if home-content doesn't exist
+          targetElement = document.querySelector('.content-area');
+        }
+      } else {
+        targetElement = document.querySelector('.content-area');
+      }
       
       // Show loading state
-      contentArea.innerHTML = `
-        <div class="content-section active" id="loading">
-          <h1 class="section-title">Loading Content...</h1>
-          <p class="section-description">Please wait while we load the requested content.</p>
-        </div>
-      `;
+      if (link === '/README.md') {
+        targetElement.innerHTML = `
+          <div class="loading-content">
+            <h1 class="section-title">Loading...</h1>
+            <p class="section-description">Please wait while we load the content.</p>
+          </div>
+        `;
+      } else {
+        targetElement.innerHTML = `
+          <div class="content-section active" id="loading">
+            <h1 class="section-title">Loading Content...</h1>
+            <p class="section-description">Please wait while we load the requested content.</p>
+          </div>
+        `;
+      }
       
       try {
         // Handle different link types
@@ -948,33 +1021,68 @@
         if (content) {
           // Convert markdown to HTML using marked.js and display
           const htmlContent = marked.parse(content);
-          contentArea.innerHTML = `
-            <div class="content-section active" id="content-loaded">
+          
+          if (link === '/README.md') {
+            // For home page, load into home-content div
+            targetElement.innerHTML = `
               <h1 class="section-title">${actualTitle}</h1>
               <div class="markdown-content">
                 ${htmlContent}
               </div>
-            </div>
-          `;
+              <div class="handbook-download-section">
+                <a href="https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/2FP_handbook_V11.pdf?raw=1" class="handbook-download-main" target="_blank">
+                  📖 Download The Two Frontiers Field Handbook V11 (PDF)
+                </a>
+              </div>
+            `;
+          } else {
+            // For other content, load into content area
+            targetElement.innerHTML = `
+              <div class="content-section active" id="content-loaded">
+                <h1 class="section-title">${actualTitle}</h1>
+                <div class="markdown-content">
+                  ${htmlContent}
+                </div>
+              </div>
+            `;
+          }
           
           // Fix any internal links
           fixInternalLinksFromContent(link);
         } else {
-          contentArea.innerHTML = `
-            <div class="content-section active" id="error">
-              <h1 class="section-title">Content Not Found</h1>
-              <p class="section-description">The requested content could not be loaded. Please try another section.</p>
-            </div>
-          `;
+          if (link === '/README.md') {
+            targetElement.innerHTML = `
+              <div class="error-content">
+                <h1 class="section-title">Content Not Found</h1>
+                <p class="section-description">The README content could not be loaded.</p>
+              </div>
+            `;
+          } else {
+            targetElement.innerHTML = `
+              <div class="content-section active" id="error">
+                <h1 class="section-title">Content Not Found</h1>
+                <p class="section-description">The requested content could not be loaded. Please try another section.</p>
+              </div>
+            `;
+          }
         }
       } catch (error) {
         console.error('Error loading content:', error);
-        contentArea.innerHTML = `
-          <div class="content-section active" id="error">
-            <h1 class="section-title">Error Loading Content</h1>
-            <p class="section-description">There was an error loading the requested content. Please try again.</p>
-          </div>
-        `;
+        if (link === '/README.md') {
+          targetElement.innerHTML = `
+            <div class="error-content">
+              <h1 class="section-title">Error Loading Content</h1>
+              <p class="section-description">There was an error loading the README content.</p>
+            </div>
+          `;
+        } else {
+          targetElement.innerHTML = `
+            <div class="content-section active" id="error">
+              <h1 class="section-title">Error Loading Content</h1>
+              <p class="section-description">There was an error loading the requested content. Please try again.</p>
+            </div>
+          `;
+        }
       }
     }
     
