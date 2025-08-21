@@ -317,7 +317,7 @@ def download_field_handbook_files(repo, branch='main'):
         downloaded_files = []
         
         for item in contents:
-            if item['type'] == 'file' and item['name'].endswith('.md') and item['name'] != 'README.md':
+            if item['type'] == 'file' and item['name'].endswith('.md') and item['name'] not in ['README.md', '_sidebar.md']:
                 # Download the markdown file
                 file_url = f"https://raw.githubusercontent.com/{ORG}/{repo}/{branch}/{item['name']}"
                 file_response = requests.get(file_url)
@@ -544,6 +544,60 @@ def generate_sidebar(downloaded_content):
     
     return "\n".join(lines)
 
+def fix_handbook_readme_links(readme_path, repo):
+    """Fix internal links in the Field Handbook README to point to local files."""
+    try:
+        with open(readme_path, 'r', encoding='utf-8') as f:
+            content = f.read()
+        
+        original_content = content
+        
+        # Find all internal links to markdown files
+        # Pattern: [text](filename.md) or [text](filename)
+        link_pattern = r'\[([^\]]+)\]\(([^)]+\.md)\)'
+        links = re.findall(link_pattern, content)
+        
+        for link_text, filename in links:
+            # Skip if it's already a full URL or external link
+            if filename.startswith('http') or filename.startswith('#'):
+                continue
+            
+            # Create the local path
+            local_path = f"external/{repo}/{filename}"
+            old_pattern = f'[{re.escape(link_text)}]({re.escape(filename)})'
+            new_pattern = f'[{link_text}]({local_path})'
+            content = content.replace(old_pattern, new_pattern)
+            print(f"🔗 Fixed link: {filename} -> {local_path}")
+        
+        # Also fix links without .md extension
+        link_pattern_no_ext = r'\[([^\]]+)\]\(([^)]+)\)'
+        links_no_ext = re.findall(link_pattern_no_ext, content)
+        
+        for link_text, filename in links_no_ext:
+            # Skip if it's already a full URL, external link, or has extension
+            if filename.startswith('http') or filename.startswith('#') or '.' in filename:
+                continue
+            
+            # Check if this filename exists as a markdown file
+            repo_dir = os.path.join(EXTERNAL_DIR, repo)
+            if os.path.exists(os.path.join(repo_dir, f"{filename}.md")):
+                local_path = f"external/{repo}/{filename}.md"
+                old_pattern = f'[{re.escape(link_text)}]({re.escape(filename)})'
+                new_pattern = f'[{link_text}]({local_path})'
+                content = content.replace(old_pattern, new_pattern)
+                print(f"🔗 Fixed link: {filename} -> {local_path}")
+        
+        # Only write if content changed
+        if content != original_content:
+            with open(readme_path, 'w', encoding='utf-8') as f:
+                f.write(content)
+            print(f"🔧 Fixed internal links in {readme_path}")
+        else:
+            print(f"ℹ️  No internal links to fix in {readme_path}")
+        
+    except Exception as e:
+        print(f"⚠️  Could not fix internal links in {readme_path}: {e}")
+
 if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Generate sidebar for 2FP documentation site')
     parser.add_argument('--no-download', action='store_true', 
@@ -590,6 +644,10 @@ if __name__ == "__main__":
             downloaded_content[handbook_repo] = {'main': True, 'subdirs': [], 'flat_markdown': True, 'markdown_files': downloaded_files}
             print(f"✅ Downloaded {len(downloaded_files)} markdown files for {handbook_repo}")
             print(f"✅ Downloaded main README for {handbook_repo}")
+            
+            # Fix internal links in the README
+            print(f"🔧 Fixing internal links in README...")
+            fix_handbook_readme_links(readme_path, handbook_repo)
         else:
             print(f"❌ Failed to download Field Handbook")
             downloaded_content = {}
@@ -647,6 +705,14 @@ if __name__ == "__main__":
                 subdir_readme = os.path.join(repo_path, subdir, "README.md")
                 if os.path.exists(subdir_readme):
                     fix_readme_image_paths(subdir_readme, repo_name, subdir)
+    
+    # Fix internal links in the Field Handbook README
+    if "2FP-Field-Handbook" in downloaded_content:
+        handbook_repo_path = os.path.join(EXTERNAL_DIR, "2FP-Field-Handbook")
+        if os.path.exists(handbook_repo_path):
+            handbook_readme = os.path.join(handbook_repo_path, "README.md")
+            if os.path.exists(handbook_readme):
+                fix_handbook_readme_links(handbook_readme, "2FP-Field-Handbook")
     
     print(f"\n🔗 Generating categorized sidebar...")
     sidebar_content = generate_sidebar(downloaded_content)

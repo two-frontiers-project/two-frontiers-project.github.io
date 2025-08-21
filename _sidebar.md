@@ -15,7 +15,6 @@
   - [Sample Processing - Sample Processing And Preservation](external/2FP-Field-Handbook/08-sample-processing-and-preservation.md)
   - [Sample Transportation - Sample Transportation](external/2FP-Field-Handbook/09-sample-transportation.md)
   - [Post-Sampling - Post Sampling Reset And Team Debrief](external/2FP-Field-Handbook/10-post-sampling-reset-and-team-debrief.md)
-  - [ Sidebar](external/2FP-Field-Handbook/_sidebar.md)
 
 ## Speciality Kits
 - [Speciality Kits](external/2FP-fieldKitsAndProtocols/README.md)
