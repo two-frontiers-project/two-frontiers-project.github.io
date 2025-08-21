@@ -13,6 +13,11 @@ EXTERNAL_DIR = "external"
 # GitHub API token for higher rate limits
 GITHUB_TOKEN = None  # Will be set from command line argument
 
+def set_github_token(token):
+    """Set the GitHub token globally for API calls."""
+    global GITHUB_TOKEN
+    GITHUB_TOKEN = token
+
 # Custom names for repos that don't follow the standard pattern
 CUSTOM_NAMES = {
     "2FP-fieldKitsAndProtocols": "Speciality Kits",
@@ -123,7 +128,14 @@ def get_all_repos():
     repos = []
     page = 1
     while True:
-        r = requests.get(f"https://api.github.com/orgs/{ORG}/repos?page={page}&per_page=100")
+        headers = {}
+        if GITHUB_TOKEN:
+            headers['Authorization'] = f'token {GITHUB_TOKEN}'
+            print(f"🔑 Using token for API call: {GITHUB_TOKEN[:8]}...")
+        else:
+            print("⚠️  No token available for API call")
+        
+        r = requests.get(f"https://api.github.com/orgs/{ORG}/repos?page={page}&per_page=100", headers=headers)
         r.raise_for_status()
         page_repos = r.json()
         if not page_repos:
@@ -140,7 +152,10 @@ def get_repo_structure(repo, branch='main'):
         
         for br in branches_to_try:
             url = f"https://api.github.com/repos/{ORG}/{repo}/contents?ref={br}"
-            response = requests.get(url)
+            headers = {}
+            if GITHUB_TOKEN:
+                headers['Authorization'] = f'token {GITHUB_TOKEN}'
+            response = requests.get(url, headers=headers)
             if response.status_code == 200:
                 contents = response.json()
                 
@@ -150,7 +165,10 @@ def get_repo_structure(repo, branch='main'):
                     if item['type'] == 'dir':
                         # Check if this directory has a README
                         readme_url = f"https://api.github.com/repos/{ORG}/{repo}/contents/{item['name']}/README.md?ref={br}"
-                        readme_response = requests.get(readme_url)
+                        headers = {}
+                        if GITHUB_TOKEN:
+                            headers['Authorization'] = f'token {GITHUB_TOKEN}'
+                        readme_response = requests.get(readme_url, headers=headers)
                         if readme_response.status_code == 200:
                             subdirs.append({
                                 'name': item['name'],
@@ -297,13 +315,25 @@ def download_field_handbook_files(repo, branch='main'):
                     repo_dir = os.path.join(EXTERNAL_DIR, repo)
                     os.makedirs(repo_dir, exist_ok=True)
                     
-                    # Write the markdown file
+                    # Check if file already exists and is the same
                     file_path = os.path.join(repo_dir, item['name'])
-                    with open(file_path, 'w', encoding='utf-8') as f:
-                        f.write(file_response.text)
+                    should_write = True
+                    if os.path.exists(file_path):
+                        with open(file_path, 'r', encoding='utf-8') as f:
+                            existing_content = f.read()
+                        if existing_content == file_response.text:
+                            should_write = False
+                            print(f"⏭️  {item['name']} is up to date")
+                    
+                    if should_write:
+                        # Write the markdown file
+                        with open(file_path, 'w', encoding='utf-8') as f:
+                            f.write(file_response.text)
+                        print(f"📄 Updated: {item['name']}")
+                    else:
+                        print(f"📄 Skipped: {item['name']} (no changes)")
                     
                     downloaded_files.append(item['name'])
-                    print(f"📄 Downloaded: {item['name']}")
         
         return downloaded_files
         
@@ -313,11 +343,7 @@ def download_field_handbook_files(repo, branch='main'):
 
 def create_external_structure(repos, no_download=False):
     """Create the external directory structure and download READMEs."""
-    # Remove existing external directory (ONLY if not in no-download mode)
-    if os.path.exists(EXTERNAL_DIR) and not no_download:
-        shutil.rmtree(EXTERNAL_DIR)
-    
-    # Create external directory
+    # Create external directory (don't delete existing content)
     os.makedirs(EXTERNAL_DIR, exist_ok=True)
     
     downloaded_content = {}
@@ -336,21 +362,33 @@ def create_external_structure(repos, no_download=False):
                 repo_dir = os.path.join(EXTERNAL_DIR, repo)
                 os.makedirs(repo_dir, exist_ok=True)
                 
-                # Write main README.md
+                # Check if README already exists and is the same
                 readme_path = os.path.join(repo_dir, "README.md")
-                with open(readme_path, 'w', encoding='utf-8') as f:
-                    f.write(main_content)
+                should_write = True
+                if os.path.exists(readme_path):
+                    with open(readme_path, 'r', encoding='utf-8') as f:
+                        existing_content = f.read()
+                    if existing_content == main_content:
+                        should_write = False
+                        print(f"⏭️  README for {repo} is up to date")
+                
+                if should_write:
+                    # Write main README.md
+                    with open(readme_path, 'w', encoding='utf-8') as f:
+                        f.write(main_content)
+                    print(f"✅ Updated README for {repo}")
                 
                 # Special handling for Field Handbook - download all markdown files
                 if repo == "2FP-Field-Handbook":
-                    print(f"📥 Downloading all markdown files for {repo}...")
+                    print(f"📥 Checking markdown files for {repo}...")
                     downloaded_files = download_field_handbook_files(repo, branch='main')
                     downloaded_content[repo] = {'main': True, 'subdirs': [], 'flat_markdown': True, 'markdown_files': downloaded_files}
-                    print(f"✅ Downloaded {len(downloaded_files)} markdown files for {repo}")
+                    print(f"✅ Processed {len(downloaded_files)} markdown files for {repo}")
                 else:
                     downloaded_content[repo] = {'main': True, 'subdirs': []}
                 
-                print(f"✅ Downloaded main README for {repo}")
+                if should_write:
+                    print(f"✅ Downloaded main README for {repo}")
             else:
                 print(f"❌ Failed to download main README for {repo}")
         else:
@@ -506,8 +544,10 @@ if __name__ == "__main__":
     
     # Set GitHub token if provided
     if args.token:
-        GITHUB_TOKEN = args.token
-        print("🔑 Using provided GitHub token for higher rate limits")
+        set_github_token(args.token)
+        print(f"🔑 Using provided GitHub token: {args.token[:8]}...")
+    else:
+        print("⚠️  No GitHub token provided - using unauthenticated API (60 req/hour limit)")
     
     if args.handbook:
         print("📚 Handbook-only mode: Downloading only the Field Handbook...")
