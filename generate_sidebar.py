@@ -270,6 +270,41 @@ def download_readme(repo, subdir=None, branch='main'):
         print(f"⚠️  Could not download README for {display_path}: {e}")
         return None
 
+def download_field_handbook_files(repo, branch='main'):
+    """Download all markdown files from the Field Handbook repository."""
+    try:
+        # Get the repository contents
+        url = f"https://api.github.com/repos/{ORG}/{repo}/contents?ref={branch}"
+        response = requests.get(url)
+        response.raise_for_status()
+        
+        contents = response.json()
+        downloaded_files = []
+        
+        for item in contents:
+            if item['type'] == 'file' and item['name'].endswith('.md'):
+                # Download the markdown file
+                file_url = f"https://raw.githubusercontent.com/{ORG}/{repo}/{branch}/{item['name']}"
+                file_response = requests.get(file_url)
+                if file_response.status_code == 200:
+                    # Create repo directory
+                    repo_dir = os.path.join(EXTERNAL_DIR, repo)
+                    os.makedirs(repo_dir, exist_ok=True)
+                    
+                    # Write the markdown file
+                    file_path = os.path.join(repo_dir, item['name'])
+                    with open(file_path, 'w', encoding='utf-8') as f:
+                        f.write(file_response.text)
+                    
+                    downloaded_files.append(item['name'])
+                    print(f"📄 Downloaded: {item['name']}")
+        
+        return downloaded_files
+        
+    except Exception as e:
+        print(f"⚠️  Could not download Field Handbook files for {repo}: {e}")
+        return []
+
 def create_external_structure(repos, no_download=False):
     """Create the external directory structure and download READMEs."""
     # Remove existing external directory (ONLY if not in no-download mode)
@@ -300,7 +335,15 @@ def create_external_structure(repos, no_download=False):
                 with open(readme_path, 'w', encoding='utf-8') as f:
                     f.write(main_content)
                 
-                downloaded_content[repo] = {'main': True, 'subdirs': []}
+                # Special handling for Field Handbook - download all markdown files
+                if repo == "2FP-Field-Handbook":
+                    print(f"📥 Downloading all markdown files for {repo}...")
+                    downloaded_files = download_field_handbook_files(repo, branch='main')
+                    downloaded_content[repo] = {'main': True, 'subdirs': [], 'flat_markdown': True, 'markdown_files': downloaded_files}
+                    print(f"✅ Downloaded {len(downloaded_files)} markdown files for {repo}")
+                else:
+                    downloaded_content[repo] = {'main': True, 'subdirs': []}
+                
                 print(f"✅ Downloaded main README for {repo}")
             else:
                 print(f"❌ Failed to download main README for {repo}")
@@ -450,9 +493,45 @@ if __name__ == "__main__":
     parser = argparse.ArgumentParser(description='Generate sidebar for 2FP documentation site')
     parser.add_argument('--no-download', action='store_true', 
                        help='Skip subdirectory discovery to avoid GitHub API rate limits')
+    parser.add_argument('--handbook', action='store_true',
+                       help='Download only the Field Handbook repository')
     args = parser.parse_args()
     
-    if args.no_download:
+    if args.handbook:
+        print("📚 Handbook-only mode: Downloading only the Field Handbook...")
+        # Create external directory if it doesn't exist
+        os.makedirs(EXTERNAL_DIR, exist_ok=True)
+        
+        # Download only the Field Handbook
+        handbook_repo = "2FP-Field-Handbook"
+        downloaded_content = {}
+        
+        # Download main README
+        main_content = download_readme(handbook_repo, branch='main')
+        if not main_content:
+            main_content = download_readme(handbook_repo, branch='master')
+        
+        if main_content:
+            # Create repo directory
+            repo_dir = os.path.join(EXTERNAL_DIR, handbook_repo)
+            os.makedirs(repo_dir, exist_ok=True)
+            
+            # Write main README.md
+            readme_path = os.path.join(repo_dir, "README.md")
+            with open(readme_path, 'w', encoding='utf-8') as f:
+                f.write(main_content)
+            
+            # Download all markdown files
+            print(f"📥 Downloading all markdown files for {handbook_repo}...")
+            downloaded_files = download_field_handbook_files(handbook_repo, branch='main')
+            downloaded_content[handbook_repo] = {'main': True, 'subdirs': [], 'flat_markdown': True, 'markdown_files': downloaded_files}
+            print(f"✅ Downloaded {len(downloaded_files)} markdown files for {handbook_repo}")
+            print(f"✅ Downloaded main README for {handbook_repo}")
+        else:
+            print(f"❌ Failed to download Field Handbook")
+            downloaded_content = {}
+    
+    elif args.no_download:
         print("🔍 Scanning existing external directory...")
         # Build downloaded_content from existing external directory
         downloaded_content = {}
@@ -522,7 +601,9 @@ if __name__ == "__main__":
     print("✅ _sidebar.md has been generated with categorized repository listing.")
     print(f"✅ Downloaded {total_files} README files from {len(downloaded_content)} repositories.")
     
-    if args.no_download:
+    if args.handbook:
+        print("ℹ️  Ran in handbook-only mode - only the Field Handbook was downloaded.")
+    elif args.no_download:
         print("ℹ️  Ran in no-download mode - subdirectories were not discovered.")
         print("ℹ️  Run without --no-download flag to discover subdirectories when API limits reset.")
     
