@@ -78,14 +78,6 @@ Standardized templates and resources for research organization:
   - **Photos** - Documentation standards and templates
   - **Protocols** - Standard operating procedures
 
-## Getting Started
-
-1. **Start with the Handbook**: Download and review the [Field Handbook PDF](https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/2FP_handbook_V11.pdf?raw=1) to understand our standardized protocols (or look at its embedded for on this site)
-2. **Navigate the Repository**: Use the sidebar to explore specific tools and protocols
-3. **Choose Your Tools**: Select hardware, software, or templates that fit your research needs
-4. **Follow Protocols**: Implement our standardized methodologies to ensure data compatibility
-5. **Join the Network**: Contribute to our collaborative research infrastructure
-
 ## Contributing
 
 This is an active research project. For questions, suggestions, or contributions, please contact the 2FP team or submit issues to the relevant repository.
