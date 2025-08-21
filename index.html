@@ -542,6 +542,12 @@
       if (contentId === 'home') {
         // For home, show the home section and load README content
         document.getElementById('home').classList.add('active');
+        // Hide other content sections
+        document.querySelectorAll('.content-section').forEach(section => {
+          if (section.id !== 'home') {
+            section.classList.remove('active');
+          }
+        });
         loadContentFromLink('/README.md', 'Welcome to 2FP Open Tools');
       } else if (contentId === 'about') {
         loadAbout2FP();
@@ -1045,6 +1051,30 @@
                 ${htmlContent}
               </div>
             `;
+            
+            // Force apply button styling to the download link
+            setTimeout(() => {
+              const downloadLink = targetElement.querySelector('a[href*="2FP_handbook_V11.pdf"]');
+              if (downloadLink) {
+                downloadLink.style.cssText = `
+                  display: inline-block !important;
+                  background: linear-gradient(135deg, #1f6feb, #388bfd) !important;
+                  color: white !important;
+                  padding: 1.5rem 3rem !important;
+                  border-radius: 14px !important;
+                  text-decoration: none !important;
+                  font-weight: 700 !important;
+                  font-size: 1.3rem !important;
+                  transition: all 0.3s ease !important;
+                  box-shadow: 0 6px 24px rgba(31, 110, 235, 0.4) !important;
+                  border: 2px solid rgba(255, 255, 255, 0.1) !important;
+                  text-align: center !important;
+                  min-width: 350px !important;
+                  position: relative !important;
+                  overflow: hidden !important;
+                `;
+              }
+            }, 100);
           } else {
             // For other content, load into content area
             targetElement.innerHTML = `
