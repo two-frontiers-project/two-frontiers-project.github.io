@@ -99,13 +99,18 @@
     
     .nav-section-header:hover {
       background: linear-gradient(135deg, #30363d, #484f58);
-      transform: translateY(-2px);
+      transform: translateY(-1px);
       box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
     
     .nav-section-header.active {
       background: linear-gradient(135deg, #1f6feb, #388bfd);
       border-color: #58a6ff;
+    }
+    
+    .toggle-icon {
+      font-size: 0.9rem;
+      transition: transform 0.3s ease;
     }
     
     .nav-section-content {
@@ -125,44 +130,49 @@
       border-radius: 6px;
       cursor: pointer;
       transition: all 0.2s ease;
-      border: 1px solid transparent;
-      font-size: 0.95rem;
+      color: #8b949e;
+      font-size: 1rem;
     }
     
     .nav-item:hover {
       background: #21262d;
-      border-color: #484f58;
+      color: #f0f6fc;
       transform: translateX(4px);
     }
     
     .nav-item.active {
       background: #1f6feb;
-      color: white;
-      border-color: #58a6ff;
+      color: #ffffff;
     }
     
     .nav-subitem {
-      padding: 0.5rem 1.5rem 0.5rem 2.5rem;
-      margin: 0.25rem 0;
-      border-radius: 6px;
+      padding: 0.5rem 1.5rem 0.5rem 3rem;
+      margin: 0.125rem 0;
+      border-radius: 4px;
       cursor: pointer;
       transition: all 0.2s ease;
-      border: 1px solid transparent;
-      font-size: 0.9rem;
-      color: #8b949e;
+      color: #7d8590;
+      font-size: 0.95rem;
+      border-left: 2px solid transparent;
     }
     
     .nav-subitem:hover {
       background: #21262d;
-      border-color: #484f58;
       color: #f0f6fc;
+      border-left-color: #58a6ff;
       transform: translateX(4px);
     }
     
     .nav-subitem.active {
       background: #1f6feb;
-      color: white;
-      border-color: #58a6ff;
+      color: #ffffff;
+      border-left-color: #ffffff;
+    }
+    
+    .nav-subitem.subdirectory {
+      padding-left: 4rem;
+      color: #6a737d;
+      font-size: 0.9rem;
     }
     
     /* Content Area */
@@ -174,22 +184,16 @@
     
     .content-section {
       display: none;
-      animation: fadeIn 0.3s ease;
     }
     
     .content-section.active {
       display: block;
     }
     
-    @keyframes fadeIn {
-      from { opacity: 0; transform: translateY(20px); }
-      to { opacity: 1; transform: translateY(0); }
-    }
-    
     .section-title {
       font-size: 2.5rem;
       font-weight: 700;
-      margin-bottom: 1.5rem;
+      margin-bottom: 1rem;
       background: linear-gradient(135deg, #58a6ff, #79c0ff);
       -webkit-background-clip: text;
       -webkit-text-fill-color: transparent;
@@ -203,66 +207,13 @@
       line-height: 1.7;
     }
     
-    .content-grid {
-      display: grid;
-      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-      gap: 1.5rem;
-      margin-top: 2rem;
-    }
-    
-    .content-card {
-      background: linear-gradient(135deg, #21262d, #30363d);
-      border: 1px solid #484f58;
-      border-radius: 12px;
-      padding: 1.5rem;
-      transition: all 0.3s ease;
-      cursor: pointer;
-    }
-    
-    .content-card:hover {
-      transform: translateY(-4px);
-      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-      border-color: #58a6ff;
-    }
-    
-    .card-title {
-      font-size: 1.3rem;
-      font-weight: 600;
-      margin-bottom: 0.75rem;
-      color: #f0f6fc;
-    }
-    
-    .card-description {
-      color: #8b949e;
-      font-size: 0.95rem;
-      line-height: 1.6;
-    }
-    
-    /* Handbook Special Section */
     .handbook-section {
       background: linear-gradient(135deg, #1a2332, #2c3e50);
-      border: 2px solid #58a6ff;
-      border-radius: 16px;
       padding: 2rem;
-      margin-bottom: 2rem;
-      position: relative;
-      overflow: hidden;
-    }
-    
-    .handbook-section::before {
-      content: '';
-      position: absolute;
-      top: 0;
-      left: 0;
-      right: 0;
-      height: 4px;
-      background: linear-gradient(90deg, #58a6ff, #79c0ff, #58a6ff);
-      animation: shimmer 2s infinite;
-    }
-    
-    @keyframes shimmer {
-      0% { transform: translateX(-100%); }
-      100% { transform: translateX(100%); }
+      border-radius: 12px;
+      margin: 2rem 0;
+      border: 1px solid #30363d;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.3);
     }
     
     .handbook-download {
@@ -273,10 +224,7 @@
       border-radius: 8px;
       text-decoration: none;
       font-weight: 600;
-      margin-top: 1rem;
       transition: all 0.3s ease;
-      border: none;
-      cursor: pointer;
       box-shadow: 0 4px 12px rgba(31, 111, 235, 0.3);
     }
     
@@ -285,38 +233,213 @@
       box-shadow: 0 6px 20px rgba(31, 111, 235, 0.4);
     }
     
+    .content-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+      gap: 2rem;
+      margin-top: 2rem;
+    }
+    
+    .content-card {
+      background: linear-gradient(135deg, #21262d, #30363d);
+      padding: 2rem;
+      border-radius: 12px;
+      cursor: pointer;
+      transition: all 0.3s ease;
+      border: 1px solid #484f58;
+      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    }
+    
+    .content-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 25px rgba(0,0,0,0.3);
+      border-color: #58a6ff;
+    }
+    
+    .card-title {
+      font-size: 1.5rem;
+      font-weight: 600;
+      margin-bottom: 1rem;
+      color: #f0f6fc;
+    }
+    
+    .card-description {
+      color: #8b949e;
+      line-height: 1.6;
+    }
+    
+    /* Custom Scrollbar */
+    .nav-sidebar::-webkit-scrollbar {
+      width: 8px;
+    }
+    
+    .nav-sidebar::-webkit-scrollbar-track {
+      background: #0d1117;
+    }
+    
+    .nav-sidebar::-webkit-scrollbar-thumb {
+      background: #30363d;
+      border-radius: 4px;
+    }
+    
+    .nav-sidebar::-webkit-scrollbar-thumb:hover {
+      background: #484f58;
+    }
+    
+    /* Markdown Content Styling */
+    .markdown-content {
+      line-height: 1.7;
+      color: #e6edf3;
+    }
+    
+    .markdown-content h1,
+    .markdown-content h2,
+    .markdown-content h3,
+    .markdown-content h4,
+    .markdown-content h5,
+    .markdown-content h6 {
+      color: #f0f6fc;
+      margin: 1.5rem 0 1rem 0;
+      font-weight: 600;
+    }
+    
+    .markdown-content h1 {
+      font-size: 2rem;
+      border-bottom: 2px solid #30363d;
+      padding-bottom: 0.5rem;
+    }
+    
+    .markdown-content h2 {
+      font-size: 1.75rem;
+      border-bottom: 1px solid #30363d;
+      padding-bottom: 0.3rem;
+    }
+    
+    .markdown-content h3 {
+      font-size: 1.5rem;
+    }
+    
+    .markdown-content p {
+      margin-bottom: 1rem;
+      color: #e6edf3;
+    }
+    
+    .markdown-content ul,
+    .markdown-content ol {
+      margin: 1rem 0;
+      padding-left: 2rem;
+    }
+    
+    .markdown-content li {
+      margin-bottom: 0.5rem;
+      color: #e6edf3;
+    }
+    
+    .markdown-content strong {
+      color: #f0f6fc;
+      font-weight: 600;
+    }
+    
+    .markdown-content em {
+      color: #8b949e;
+      font-style: italic;
+    }
+    
+    .markdown-content a {
+      color: #58a6ff;
+      text-decoration: none;
+      border-bottom: 1px solid transparent;
+      transition: border-color 0.2s ease;
+    }
+    
+    .markdown-content a:hover {
+      border-bottom-color: #58a6ff;
+    }
+    
+    .markdown-content blockquote {
+      border-left: 4px solid #58a6ff;
+      margin: 1.5rem 0;
+      padding: 0.5rem 0 0.5rem 1.5rem;
+      background: rgba(88, 166, 255, 0.1);
+      border-radius: 0 4px 4px 0;
+    }
+    
+    .markdown-content blockquote p {
+      margin: 0;
+      color: #8b949e;
+      font-style: italic;
+    }
+    
+    .markdown-content code {
+      background: #21262d;
+      color: #f0f6fc;
+      padding: 0.2rem 0.4rem;
+      border-radius: 4px;
+      font-family: 'SF Mono', Monaco, 'Cascadia Code', 'Roboto Mono', Consolas, 'Courier New', monospace;
+      font-size: 0.9em;
+    }
+    
+    .markdown-content pre {
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      padding: 1rem;
+      overflow-x: auto;
+      margin: 1.5rem 0;
+    }
+    
+    .markdown-content pre code {
+      background: none;
+      padding: 0;
+      color: #e6edf3;
+    }
+    
+    /* Table Styling */
+    .markdown-content table {
+      border-collapse: collapse;
+      width: 100%;
+      margin: 1.5rem 0;
+      background: #0d1117;
+      border: 1px solid #30363d;
+      border-radius: 6px;
+      overflow: hidden;
+    }
+    
+    .markdown-content th {
+      background: #21262d;
+      color: #f0f6fc;
+      font-weight: 600;
+      padding: 0.75rem;
+      text-align: left;
+      border-bottom: 1px solid #30363d;
+    }
+    
+    .markdown-content td {
+      padding: 0.75rem;
+      border-bottom: 1px solid #30363d;
+      color: #e6edf3;
+    }
+    
+    .markdown-content tr:nth-child(even) {
+      background: #161b22;
+    }
+    
+    .markdown-content tr:hover {
+      background: #21262d;
+    }
+    
     /* Responsive Design */
-    @media (max-width: 1024px) {
+    @media (max-width: 1200px) {
       .main-container {
         flex-direction: column;
       }
       
       .nav-sidebar {
         width: 100%;
+        height: auto;
         position: relative;
         top: 0;
-        height: auto;
         max-height: 400px;
-      }
-      
-      .header-content {
-        flex-direction: column;
-        gap: 1rem;
-        text-align: center;
-      }
-      
-      .header-title {
-        font-size: 2rem;
-      }
-    }
-    
-    @media (max-width: 768px) {
-      .content-grid {
-        grid-template-columns: 1fr;
-      }
-      
-      .header-content, .main-container {
-        padding: 0 1rem;
       }
       
       .content-area {
@@ -324,22 +447,18 @@
       }
     }
     
-    /* Scrollbar Styling */
-    ::-webkit-scrollbar {
-      width: 8px;
-    }
-    
-    ::-webkit-scrollbar-track {
-      background: #161b22;
-    }
-    
-    ::-webkit-scrollbar-thumb {
-      background: #484f58;
-      border-radius: 4px;
-    }
-    
-    ::-webkit-scrollbar-thumb:hover {
-      background: #58a6ff;
+    @media (max-width: 768px) {
+      .header-title {
+        font-size: 2rem;
+      }
+      
+      .section-title {
+        font-size: 2rem;
+      }
+      
+      .content-grid {
+        grid-template-columns: 1fr;
+      }
     }
   </style>
 </head>
@@ -355,101 +474,20 @@
   <!-- Main Container -->
   <div class="main-container">
     <!-- Navigation Sidebar -->
-    <nav class="nav-sidebar">
+    <nav class="nav-sidebar" id="nav-sidebar">
+      <!-- Navigation will be dynamically generated from _sidebar.md -->
       <div class="nav-section">
         <div class="nav-section-header" onclick="toggleSection('overview')">
           Overview
           <span class="toggle-icon">▼</span>
         </div>
         <div class="nav-section-content" id="overview-content">
-          <div class="nav-item" onclick="showContent('home')">Home</div>
+          <div class="nav-item" onclick="showContent('home')">Welcome</div>
+          <div class="nav-item" onclick="showContent('about')">About 2FP</div>
         </div>
       </div>
-
-      <div class="nav-section">
-        <div class="nav-section-header" onclick="toggleSection('handbook')">
-          The Two Frontiers Handbook
-          <span class="toggle-icon">▼</span>
-        </div>
-        <div class="nav-section-content" id="handbook-content">
-          <div class="nav-item" onclick="showContent('handbook-main')">About This Handbook</div>
-          <div class="nav-item" onclick="showContent('handbook-01')">Expedition Planning</div>
-          <div class="nav-item" onclick="showContent('handbook-02')">Sample Identifiers</div>
-          <div class="nav-item" onclick="showContent('handbook-03')">Preparation</div>
-          <div class="nav-item" onclick="showContent('handbook-04')">Field Lab Setup</div>
-          <div class="nav-item" onclick="showContent('handbook-05')">Sample Collection</div>
-          <div class="nav-item" onclick="showContent('handbook-06')">Sample Check-in</div>
-          <div class="nav-item" onclick="showContent('handbook-07')">Sample Processing</div>
-          <div class="nav-item" onclick="showContent('handbook-08')">Sample Transportation</div>
-          <div class="nav-item" onclick="showContent('handbook-09')">Post-Sampling</div>
-        </div>
-      </div>
-
-      <div class="nav-section">
-        <div class="nav-section-header" onclick="toggleSection('speciality')">
-          Speciality Kits
-          <span class="toggle-icon">▼</span>
-        </div>
-        <div class="nav-section-content" id="speciality-content">
-          <div class="nav-item" onclick="showContent('speciality-main')">Field Kits & Protocols</div>
-          <div class="nav-subitem" onclick="showContent('speciality-10sample')">10-Sample Collection Kit</div>
-          <div class="nav-subitem" onclick="showContent('speciality-citizen')">Citizen Science Kit</div>
-        </div>
-      </div>
-
-      <div class="nav-section">
-        <div class="nav-section-header" onclick="toggleSection('hardware')">
-          Hardware
-          <span class="toggle-icon">▼</span>
-        </div>
-        <div class="nav-section-content" id="hardware-content">
-          <div class="nav-item" onclick="showContent('hardware-3dprinting')">General 3D Printing</div>
-          <div class="nav-subitem" onclick="showContent('hardware-dremelfuge')">Dremelfuge</div>
-          <div class="nav-subitem" onclick="showContent('hardware-eyeglasses')">Eyeglasses Divemask Mount</div>
-          <div class="nav-subitem" onclick="showContent('hardware-fluorometer')">Fluorometer Collimating Lens Mount</div>
-          <div class="nav-subitem" onclick="showContent('hardware-laser')">Laser Cutter Racks</div>
-          <div class="nav-subitem" onclick="showContent('hardware-microscope')">Microscope Mount for Fiber Spectrophotometer</div>
-          <div class="nav-subitem" onclick="showContent('hardware-ph')">pH Bottle Holder</div>
-          <div class="nav-subitem" onclick="showContent('hardware-spec')">Spec Adapters</div>
-          <div class="nav-subitem" onclick="showContent('hardware-turbidometer')">Turbidometer Adapters</div>
-          <div class="nav-item" onclick="showContent('hardware-puma')">PUMA Scope</div>
-          <div class="nav-subitem" onclick="showContent('hardware-freecad')">FreeCAD</div>
-          <div class="nav-item" onclick="showContent('hardware-cuvette')">Cuvette Holder</div>
-          <div class="nav-item" onclick="showContent('hardware-fieldtools')">General Field Tools</div>
-          <div class="nav-subitem" onclick="showContent('hardware-uvspec')">UVspec</div>
-          <div class="nav-subitem" onclick="showContent('hardware-od600')">OD600</div>
-          <div class="nav-subitem" onclick="showContent('hardware-colorimeter')">Open Colorimeter</div>
-        </div>
-      </div>
-
-      <div class="nav-section">
-        <div class="nav-section-header" onclick="toggleSection('software')">
-          Software
-          <span class="toggle-icon">▼</span>
-        </div>
-        <div class="nav-section-content" id="software-content">
-          <div class="nav-item" onclick="showContent('software-xtree')">XTree</div>
-          <div class="nav-item" onclick="showContent('software-magus')">MAGUS</div>
-        </div>
-      </div>
-
-      <div class="nav-section">
-        <div class="nav-section-header" onclick="toggleSection('templates')">
-          Templates
-          <span class="toggle-icon">▼</span>
-        </div>
-        <div class="nav-section-content" id="templates-content">
-          <div class="nav-item" onclick="showContent('templates-main')">Expedition Template</div>
-          <div class="nav-subitem" onclick="showContent('templates-maps')">Maps</div>
-          <div class="nav-subitem" onclick="showContent('templates-background')">Background Research</div>
-          <div class="nav-subitem" onclick="showContent('templates-forms')">Forms</div>
-          <div class="nav-subitem" onclick="showContent('templates-additional')">Additional Data</div>
-          <div class="nav-subitem" onclick="showContent('templates-receipts')">Receipts, Tickets & Confirmations</div>
-          <div class="nav-subitem" onclick="showContent('templates-permitting')">Permitting</div>
-          <div class="nav-subitem" onclick="showContent('templates-photos')">Photos</div>
-          <div class="nav-subitem" onclick="showContent('templates-protocols')">Protocols</div>
-        </div>
-      </div>
+      
+      <!-- Dynamic sections will be loaded here -->
     </nav>
 
     <!-- Content Area -->
@@ -487,15 +525,24 @@
         </div>
       </div>
 
-      <!-- Other content sections will be dynamically loaded -->
-      <div id="content-placeholder" style="display: none;">
+      <!-- Content Placeholder -->
+      <div class="content-section" id="content-placeholder">
         <h1 class="section-title">Content Loading...</h1>
         <p class="section-description">Select a section from the navigation to view its content.</p>
       </div>
     </main>
   </div>
 
+  <script src="https://cdn.jsdelivr.net/npm/marked/marked.min.js"></script>
   <script>
+    // Configure marked.js for better rendering
+    marked.setOptions({
+      breaks: true,
+      gfm: true,
+      headerIds: true,
+      mangle: false
+    });
+    
     // Navigation functionality
     function toggleSection(sectionId) {
       const content = document.getElementById(sectionId + '-content');
@@ -531,14 +578,563 @@
       // Add active class to clicked item
       event.target.classList.add('active');
       
-      // Show content (for now, just show placeholder)
-      document.getElementById('content-placeholder').style.display = 'block';
-      document.getElementById('home').classList.remove('active');
+      // Handle special content cases
+      if (contentId === 'home') {
+        loadContentFromLink('/README.md', 'Welcome to 2FP Open Tools');
+      } else if (contentId === 'about') {
+        loadAbout2FP();
+      } else {
+        // Load and display actual content
+        loadContent(contentId);
+      }
     }
     
-    // Initialize with overview section expanded
+    async function loadContent(contentId) {
+      const contentArea = document.querySelector('.content-area');
+      
+      // Show loading state
+      contentArea.innerHTML = `
+        <div class="content-section active" id="loading">
+          <h1 class="section-title">Loading Content...</h1>
+          <p class="section-description">Please wait while we load the requested content.</p>
+        </div>
+      `;
+      
+      try {
+        let content = '';
+        let title = '';
+        
+        // Determine what content to load based on contentId
+        if (contentId.startsWith('handbook-')) {
+          const section = contentId.replace('handbook-', '');
+          const filename = getHandbookFilename(section);
+          if (filename) {
+            const response = await fetch(`external/2FP-Field-Handbook/${filename}`);
+            if (response.ok) {
+              content = await response.text();
+              title = getHandbookTitle(section);
+            }
+          }
+        } else if (contentId.startsWith('kits-')) {
+          const section = contentId.replace('kits-', '');
+          const filename = getKitsFilename(section);
+          if (filename) {
+            const response = await fetch(`external/2FP-fieldKitsAndProtocols/${filename}/README.md`);
+            if (response.ok) {
+              content = await response.text();
+              title = getKitsTitle(section);
+            }
+          }
+        } else if (contentId.startsWith('hardware-')) {
+          const section = contentId.replace('hardware-', '');
+          const filename = getHardwareFilename(section);
+          if (filename) {
+            const response = await fetch(`external/${filename}/README.md`);
+            if (response.ok) {
+              content = await response.text();
+              title = getHardwareTitle(section);
+            }
+          }
+        } else if (contentId.startsWith('software-')) {
+          const section = contentId.replace('software-', '');
+          const filename = getSoftwareFilename(section);
+          if (filename) {
+            const response = await fetch(`external/${filename}/README.md`);
+            if (response.ok) {
+              content = await response.text();
+              title = getSoftwareTitle(section);
+            }
+          }
+        } else if (contentId.startsWith('templates-')) {
+          const section = contentId.replace('templates-', '');
+          const filename = getTemplatesFilename(section);
+          if (filename) {
+            const response = await fetch(`external/${filename}/README.md`);
+            if (response.ok) {
+              content = await response.text();
+              title = getTemplatesTitle(section);
+            }
+          }
+        }
+        
+        if (content) {
+          // Convert markdown to HTML using marked.js and display
+          const htmlContent = marked.parse(content);
+          contentArea.innerHTML = `
+            <div class="content-section active" id="${contentId}">
+              <h1 class="section-title">${title}</h1>
+              <div class="markdown-content">
+                ${htmlContent}
+              </div>
+            </div>
+          `;
+          
+          // Fix any internal links to point to local files
+          fixInternalLinks(contentId);
+        } else {
+          // Show error if content couldn't be loaded
+          contentArea.innerHTML = `
+            <div class="content-section active" id="error">
+              <h1 class="section-title">Content Not Found</h1>
+              <p class="section-description">The requested content could not be loaded. Please try another section.</p>
+            </div>
+          `;
+        }
+      } catch (error) {
+        console.error('Error loading content:', error);
+        contentArea.innerHTML = `
+          <div class="content-section active" id="error">
+            <h1 class="section-title">Error Loading Content</h1>
+            <p class="section-description">There was an error loading the requested content. Please try again.</p>
+          </div>
+        `;
+      }
+    }
+    
+    // Helper functions to map content IDs to filenames and titles
+    function getHandbookFilename(section) {
+      const mapping = {
+        'about': '01-about-this-handbook.md',
+        'planning': '02-expedition-planning.md',
+        'identifiers': '03-sample-identifiers-and-site-metadata.md',
+        'preparation': '04-preparation-for-sample-collection.md',
+        'lab': '05-setting-up-a-field-processing-lab.md',
+        'collection': '06-sample-collection.md',
+        'checkin': '07-sample-check-in.md',
+        'processing': '08-sample-processing-and-preservation.md',
+        'transport': '09-sample-transportation.md',
+        'debrief': '10-post-sampling-reset-and-team-debrief.md'
+      };
+      return mapping[section];
+    }
+    
+    function getHandbookTitle(section) {
+      const mapping = {
+        'about': 'About This Handbook',
+        'planning': 'Expedition Planning',
+        'identifiers': 'Sample Identifiers and Site Metadata',
+        'preparation': 'Preparation for Sample Collection',
+        'lab': 'Setting Up a Field Processing Lab',
+        'collection': 'Sample Collection',
+        'checkin': 'Sample Check-in',
+        'processing': 'Sample Processing and Preservation',
+        'transport': 'Sample Transportation',
+        'debrief': 'Post-Sampling Reset and Team Debrief'
+      };
+      return mapping[section];
+    }
+    
+    function getKitsFilename(section) {
+      const mapping = {
+        'citizen': 'citizen_science_extremophiles_in_the_home',
+        '10sample': 'kit_10sample_collection-nobanking'
+      };
+      return mapping[section];
+    }
+    
+    function getKitsTitle(section) {
+      const mapping = {
+        'citizen': 'Citizen Science Extremophiles in the Home',
+        '10sample': '10-Sample Collection Kit'
+      };
+      return mapping[section];
+    }
+    
+    function getHardwareFilename(section) {
+      const mapping = {
+        'od600': '2FP-fieldworkToolsGeneral/OD600',
+        'cuvette': '2FP-cuvette_holder',
+        '3dprinting': '2FP-3dPrinting',
+        'puma': '2FP-PUMA',
+        'xtree': '2FP-XTree'
+      };
+      return mapping[section];
+    }
+    
+    function getHardwareTitle(section) {
+      const mapping = {
+        'od600': 'OD600 Measurement',
+        'cuvette': 'Cuvette Holder',
+        '3dprinting': '3D Printing',
+        'puma': 'PUMA',
+        'xtree': 'XTree'
+      };
+      return mapping[section];
+    }
+    
+    function getSoftwareFilename(section) {
+      const mapping = {
+        'magus': '2FP_MAGUS'
+      };
+      return mapping[section];
+    }
+    
+    function getSoftwareTitle(section) {
+      const mapping = {
+        'magus': 'MAGUS'
+      };
+      return mapping[section];
+    }
+    
+    function getTemplatesFilename(section) {
+      const mapping = {
+        'expedition': '2FP-expedition-template',
+        'field': '2FP-Field-Handbook'
+      };
+      return mapping[section];
+    }
+    
+    function getTemplatesTitle(section) {
+      const mapping = {
+        'expedition': 'Expedition Template',
+        'field': 'Field Handbook'
+      };
+      return mapping[section];
+    }
+    
+    // Fix internal links to point to local files
+    function fixInternalLinks(contentId) {
+      const contentDiv = document.querySelector('.markdown-content');
+      if (!contentDiv) return;
+      
+      // Fix links to handbook files
+      const handbookLinks = contentDiv.querySelectorAll('a[href*="github.com/two-frontiers-project/2FP-Field-Handbook"]');
+      handbookLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href.includes('blob/main/')) {
+          const filename = href.split('blob/main/')[1];
+          link.href = `external/2FP-Field-Handbook/${filename}`;
+          link.target = '_blank';
+        }
+      });
+      
+      // Fix relative links to other markdown files
+      const relativeLinks = contentDiv.querySelectorAll('a[href$=".md"]');
+      relativeLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (!href.startsWith('http') && !href.startsWith('#')) {
+          if (contentId.startsWith('handbook-')) {
+            link.href = `external/2FP-Field-Handbook/${href}`;
+          }
+          link.target = '_blank';
+        }
+      });
+    }
+    
+    // Load navigation from _sidebar.md
+    async function loadNavigation() {
+      try {
+        const response = await fetch('_sidebar.md');
+        const sidebarContent = await response.text();
+        
+        // Parse the markdown to extract sections and items
+        const sections = parseSidebarMarkdown(sidebarContent);
+        
+
+        
+        // Generate navigation HTML
+        const navSidebar = document.getElementById('nav-sidebar');
+        const overviewSection = navSidebar.querySelector('.nav-section');
+        
+        // Add dynamic sections after the overview section
+        sections.forEach(section => {
+          if (section.title !== 'Overview') {
+            const sectionHtml = createNavigationSection(section);
+            navSidebar.appendChild(sectionHtml);
+          }
+        });
+        
+        // Expand overview section by default
+        toggleSection('overview');
+        
+      } catch (error) {
+        console.error('Error loading navigation:', error);
+      }
+    }
+    
+    // Parse _sidebar.md content into structured data
+    function parseSidebarMarkdown(content) {
+      const lines = content.split('\n');
+      const sections = [];
+      let currentSection = null;
+      let currentItem = null;
+      
+      for (let i = 0; i < lines.length; i++) {
+        const line = lines[i];
+        const trimmed = line.trim();
+        
+        // Check for section headers (## Title)
+        if (trimmed.startsWith('## ')) {
+          const title = trimmed.substring(3);
+          currentSection = {
+            title: title,
+            items: []
+          };
+          sections.push(currentSection);
+          currentItem = null;
+        }
+        // Check for main items (- [Title](link))
+        else if (trimmed.startsWith('- [') && currentSection) {
+          const match = trimmed.match(/- \[([^\]]+)\]\(([^)]+)\)/);
+          if (match) {
+            const itemTitle = match[1];
+            const itemLink = match[2];
+            
+            currentItem = {
+              title: itemTitle,
+              link: itemLink,
+              subItems: []
+            };
+            currentSection.items.push(currentItem);
+          }
+        }
+        // Check for sub-items (indented with 2 spaces:   - [Title](link))
+        else if (trimmed.startsWith('  - [') && currentItem) {
+          const subMatch = trimmed.match(/  - \[([^\]]+)\]\(([^)]+)\)/);
+          if (subMatch) {
+            currentItem.subItems.push({
+              title: subMatch[1],
+              link: subMatch[2],
+              isSubdirectory: true
+            });
+          }
+        }
+      }
+      
+      return sections;
+    }
+    
+    // Create navigation section HTML
+    function createNavigationSection(section) {
+      const sectionDiv = document.createElement('div');
+      sectionDiv.className = 'nav-section';
+      
+      const headerDiv = document.createElement('div');
+      headerDiv.className = 'nav-section-header';
+      headerDiv.onclick = () => toggleSection(section.title.toLowerCase().replace(/\s+/g, '-'));
+      headerDiv.innerHTML = `
+        ${section.title}
+        <span class="toggle-icon">▼</span>
+      `;
+      
+      const contentDiv = document.createElement('div');
+      contentDiv.className = 'nav-section-content';
+      contentDiv.id = section.title.toLowerCase().replace(/\s+/g, '-') + '-content';
+      
+      // Add main items
+      section.items.forEach((item, index) => {
+        
+        const itemDiv = document.createElement('div');
+        itemDiv.className = 'nav-item';
+        itemDiv.onclick = () => showContentFromLink(item.link, item.title);
+        itemDiv.textContent = item.title;
+        contentDiv.appendChild(itemDiv);
+        
+        // Add sub-items if they exist
+        if (item.subItems && item.subItems.length > 0) {
+          item.subItems.forEach((subItem, subIndex) => {
+            
+            const subItemDiv = document.createElement('div');
+            subItemDiv.className = 'nav-subitem';
+            subItemDiv.onclick = () => showContentFromLink(subItem.link, subItem.title);
+            subItemDiv.textContent = subItem.title;
+            contentDiv.appendChild(subItemDiv);
+          });
+        }
+      });
+      
+      sectionDiv.appendChild(headerDiv);
+      sectionDiv.appendChild(contentDiv);
+      return sectionDiv;
+    }
+    
+    // Show content from a link (instead of contentId)
+    function showContentFromLink(link, title) {
+      // Remove active class from all nav items
+      document.querySelectorAll('.nav-item, .nav-subitem').forEach(item => {
+        item.classList.remove('active');
+      });
+      
+      // Add active class to clicked item
+      event.target.classList.add('active');
+      
+      // Load content directly from the link
+      loadContentFromLink(link, title);
+    }
+    
+    // Load content from a specific link
+    async function loadContentFromLink(link, title) {
+      const contentArea = document.querySelector('.content-area');
+      
+      // Show loading state
+      contentArea.innerHTML = `
+        <div class="content-section active" id="loading">
+          <h1 class="section-title">Loading Content...</h1>
+          <p class="section-description">Please wait while we load the requested content.</p>
+        </div>
+      `;
+      
+      try {
+        // Handle different link types
+        let content = '';
+        let actualTitle = title;
+        
+        if (link.startsWith('external/')) {
+          const response = await fetch(link);
+          if (response.ok) {
+            content = await response.text();
+          }
+        } else if (link === '/README.md') {
+          const response = await fetch('README.md');
+          if (response.ok) {
+            content = await response.text();
+            actualTitle = 'Welcome to 2FP Open Tools';
+          }
+        }
+        
+        if (content) {
+          // Convert markdown to HTML using marked.js and display
+          const htmlContent = marked.parse(content);
+          contentArea.innerHTML = `
+            <div class="content-section active" id="content-loaded">
+              <h1 class="section-title">${actualTitle}</h1>
+              <div class="markdown-content">
+                ${htmlContent}
+              </div>
+            </div>
+          `;
+          
+          // Fix any internal links
+          fixInternalLinksFromContent(link);
+        } else {
+          contentArea.innerHTML = `
+            <div class="content-section active" id="error">
+              <h1 class="section-title">Content Not Found</h1>
+              <p class="section-description">The requested content could not be loaded. Please try another section.</p>
+            </div>
+          `;
+        }
+      } catch (error) {
+        console.error('Error loading content:', error);
+        contentArea.innerHTML = `
+          <div class="content-section active" id="error">
+            <h1 class="section-title">Error Loading Content</h1>
+            <p class="section-description">There was an error loading the requested content. Please try again.</p>
+          </div>
+        `;
+      }
+    }
+    
+    // Load About 2FP content
+    function loadAbout2FP() {
+      const contentArea = document.querySelector('.content-area');
+      
+      const aboutContent = `
+        <div class="content-section active" id="about">
+          <h1 class="section-title">About Two Frontiers Project</h1>
+          <div class="markdown-content">
+            <h2>Our Mission</h2>
+            <p>The Two Frontiers Project (2FP) is dedicated to advancing scientific research through open-source collaboration and standardized methodologies. We work at the intersection of cutting-edge biological research and accessible, reproducible science.</p>
+            
+            <h2>What We Do</h2>
+            <p>We develop and maintain:</p>
+            <ul>
+              <li><strong>Open-source research tools</strong> - Hardware and software solutions for biological and environmental research</li>
+              <li><strong>Standardized protocols</strong> - Field-tested methodologies that ensure reproducibility across research teams</li>
+              <li><strong>Educational resources</strong> - Comprehensive documentation and training materials</li>
+              <li><strong>Community platforms</strong> - Tools that enable collaboration between researchers worldwide</li>
+            </ul>
+            
+            <h2>Our Approach</h2>
+            <p>We believe that science advances fastest when tools, protocols, and knowledge are freely shared. Our comprehensive Field Handbook sets the gold standard for environmental sampling and processing, enabling unprecedented interoperability across research teams worldwide.</p>
+            
+            <h2>Research Areas</h2>
+            <ul>
+              <li><strong>Environmental Microbiology</strong> - Studying microbial communities in diverse environments</li>
+              <li><strong>Genomic Analysis</strong> - Tools for DNA sequencing and phylogenetic analysis</li>
+              <li><strong>Field Instrumentation</strong> - Portable devices for real-time environmental monitoring</li>
+              <li><strong>Data Standards</strong> - Protocols for sample identification, metadata, and data sharing</li>
+            </ul>
+            
+            <h2>Open Science Philosophy</h2>
+            <p>All our tools, protocols, and resources are freely available under open-source licenses. We believe that removing barriers to scientific tools and knowledge accelerates discovery and enables more researchers to contribute to our understanding of the natural world.</p>
+            
+            <h2>Get Involved</h2>
+            <p>Whether you're a researcher, student, or citizen scientist, there are many ways to engage with the Two Frontiers Project:</p>
+            <ul>
+              <li>Use our open-source tools and protocols in your research</li>
+              <li>Contribute improvements and new features to our repositories</li>
+              <li>Share your field experiences and help refine our methodologies</li>
+              <li>Join our community of researchers working on environmental and biological questions</li>
+            </ul>
+            
+            <p>Visit <a href="https://twofrontiers.org" target="_blank">twofrontiers.org</a> to learn more about our mission and current projects.</p>
+          </div>
+        </div>
+      `;
+      
+      contentArea.innerHTML = aboutContent;
+    }
+    
+    // Fix internal links in loaded content
+    function fixInternalLinksFromContent(link) {
+      const contentDiv = document.querySelector('.markdown-content');
+      if (!contentDiv) return;
+      
+      // Determine the base path for the content
+      let basePath = '';
+      if (link && link.startsWith('external/')) {
+        const pathParts = link.split('/');
+        if (pathParts.length >= 3) {
+          basePath = pathParts.slice(0, -1).join('/') + '/';
+        }
+      }
+      
+      // Fix image sources
+      const images = contentDiv.querySelectorAll('img');
+      images.forEach(img => {
+        const src = img.getAttribute('src');
+        if (src && !src.startsWith('http') && !src.startsWith('/') && !src.startsWith('data:')) {
+          // Handle handbook images specifically
+          if (link && link.includes('2FP-Field-Handbook')) {
+            // For handbook content, images should be relative to the handbook directory
+            img.src = `external/2FP-Field-Handbook/${src}`;
+          } else if (basePath) {
+            // For other content, use the base path
+            img.src = basePath + src;
+          }
+        }
+      });
+      
+      // Fix links to handbook files
+      const handbookLinks = contentDiv.querySelectorAll('a[href*="github.com/two-frontiers-project/2FP-Field-Handbook"]');
+      handbookLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (href.includes('blob/main/')) {
+          const filename = href.split('blob/main/')[1];
+          link.href = `external/2FP-Field-Handbook/${filename}`;
+          link.target = '_blank';
+        }
+      });
+      
+      // Fix relative links to other markdown files
+      const relativeLinks = contentDiv.querySelectorAll('a[href$=".md"]');
+      relativeLinks.forEach(link => {
+        const href = link.getAttribute('href');
+        if (!href.startsWith('http') && !href.startsWith('#')) {
+          if (basePath) {
+            link.href = basePath + href;
+          } else {
+            link.href = `external/2FP-Field-Handbook/${href}`;
+          }
+          link.target = '_blank';
+        }
+      });
+    }
+    
+    // Initialize with overview section expanded and load navigation
     document.addEventListener('DOMContentLoaded', function() {
-      toggleSection('overview');
+      loadNavigation();
     });
   </script>
 </body>

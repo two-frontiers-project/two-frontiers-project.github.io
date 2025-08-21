@@ -1,4 +1,4 @@
-# The Two Frontiers Handbook
+# 2FP Field Handbook and Standards
 
 > **Repository:** [2FP-Field-Handbook](https://github.com/two-frontiers-project/2FP-Field-Handbook)
 
@@ -30,17 +30,17 @@ The purpose of this protocol is to collect samples for downstream metagenomic se
 - **Plants:** Includes plant biomass (above or below ground) and soil containing roots
 - **Invertebrates:** Occasional organisms, often marine benthic
 
-1. [About this handbook](https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/01-about-this-handbook.md)
-2. [Expedition Planning](https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/02-expedition-planning.md)
-3. [Sample Identifiers and Site Metadata](https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/03-sample-identifiers-and-site-metadata.md)
-4. [Preparation for Sample Collection](https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/04-preparation-for-sample-collection.md)
-5. [Setting up a Field Lab](https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/05-setting-up-a-field-processing-lab.md)
-6. [Sample Collection](https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/(06-sample-collection.md))
-7. [Sample Check-In Area](https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/07-sample-check-in.md)
-8. [Sample Collection](https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/06-sample-collection.md)
-9. [Sample Processing and Preservation](https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/08-sample-processing-and-preservation.md)
-10. [Sample Transportation](https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/09-sample-transportation.md)
-11. [Post-Sample Collection Reset and Team Debrief](https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/10-post-sampling-reset-and-team-debrief.md)
-
+1. About this handbook
+2. Expedition Planning
+3. Sample Identifiers and Site Metadata
+4. Preparation for Sample Collection
+5. Setting up a Field Lab
+6. Sample Collection
+7. Sample Check-In Area
+8. Sample Collection
+9. Sample Processing and Preservation
+10. Sample Transportation
+11. Post-Sample Collection Reset and Team Debrief
+    
 ## Contact: 
 Email: info at two frontiers dot org

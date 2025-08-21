@@ -93,17 +93,17 @@ function extractHeadersFromMarkdown(content) {
 - [Home](/README.md)
 
 ## The Two Frontiers Handbook
-- [The Two Frontiers Handbook](external/2FP-Field-Handbook/README.md)
+- [2FP Field Handbook and Standards](external/2FP-Field-Handbook/README.md)
   - [About This Handbook](external/2FP-Field-Handbook/01-about-this-handbook.md)
   - [Expedition Planning](external/2FP-Field-Handbook/02-expedition-planning.md)
-  - [Sample Identifiers And Site Metadata](external/2FP-Field-Handbook/03-sample-identifiers-and-site-metadata.md)
-  - [Preparation For Sample Collection](external/2FP-Field-Handbook/04-preparation-for-sample-collection.md)
-  - [Setting Up A Field Processing Lab](external/2FP-Field-Handbook/05-setting-up-a-field-processing-lab.md)
+  - [Sample Identifiers and Site Metadata](external/2FP-Field-Handbook/03-sample-identifiers-and-site-metadata.md)
+  - [Preparation for Sample Collection](external/2FP-Field-Handbook/04-preparation-for-sample-collection.md)
+  - [Setting Up a Field Processing Lab](external/2FP-Field-Handbook/05-setting-up-a-field-processing-lab.md)
   - [Sample Collection](external/2FP-Field-Handbook/06-sample-collection.md)
-  - [Sample Check-In](external/2FP-Field-Handbook/07-sample-check-in.md)
-  - [Sample Processing And Preservation](external/2FP-Field-Handbook/08-sample-processing-and-preservation.md)
+  - [Sample Check-in](external/2FP-Field-Handbook/07-sample-check-in.md)
+  - [Sample Processing and Preservation](external/2FP-Field-Handbook/08-sample-processing-and-preservation.md)
   - [Sample Transportation](external/2FP-Field-Handbook/09-sample-transportation.md)
-  - [Post-Sampling Reset And Team Debrief](external/2FP-Field-Handbook/10-post-sampling-reset-and-team-debrief.md)
+  - [Post-Sampling Reset and Team Debrief](external/2FP-Field-Handbook/10-post-sampling-reset-and-team-debrief.md)
 
 ## Speciality Kits
 - [Speciality Kits](external/2FP-fieldKitsAndProtocols/README.md)
@@ -113,19 +113,19 @@ function extractHeadersFromMarkdown(content) {
 ## Hardware
 - [General 3D Printing](external/2FP-3dPrinting/README.md)
   - [Dremelfuge](external/2FP-3dPrinting/dremelfuge/README.md)
-  - [Eyeglasses Divemask Mount](external/2FP-3dPrinting/eyeglasses_divemask_mount/README.md)
-  - [Fluorometer Collimating Lens Mount](external/2FP-3dPrinting/fluorometer_collimating_lens_mount/README.md)
-  - [Laser Cutter Racks](external/2FP-3dPrinting/laser_cutter_racks/README.md)
-  - [Microscope Mount For Fiber Spectrophotometer](external/2FP-3dPrinting/microscope_mount_for_fiber_spectrophotometer/README.md)
-  - [Ph Bottle Holder](external/2FP-3dPrinting/pH_bottle_holder/README.md)
-  - [Spec Adapters](external/2FP-3dPrinting/spec_adapters/README.md)
   - [Turbidometer Adapters](external/2FP-3dPrinting/turbidometer_adapters/README.md)
+  - [Spec Adapters](external/2FP-3dPrinting/spec_adapters/README.md)
+  - [Eyeglasses Divemask Mount](external/2FP-3dPrinting/eyeglasses_divemask_mount/README.md)
+  - [Ph Bottle Holder](external/2FP-3dPrinting/pH_bottle_holder/README.md)
+  - [Microscope Mount For Fiber Spectrophotometer](external/2FP-3dPrinting/microscope_mount_for_fiber_spectrophotometer/README.md)
+  - [Laser Cutter Racks](external/2FP-3dPrinting/laser_cutter_racks/README.md)
+  - [Fluorometer Collimating Lens Mount](external/2FP-3dPrinting/fluorometer_collimating_lens_mount/README.md)
 - [PUMA Scope](external/2FP-PUMA/README.md)
   - [Freecad](external/2FP-PUMA/FreeCAD/README.md)
 - [Cuvette Holder](external/2FP-cuvette_holder/README.md)
 - [General Field Tools](external/2FP-fieldworkToolsGeneral/README.md)
-  - [Od600](external/2FP-fieldworkToolsGeneral/OD600/README.md)
   - [Uvspec](external/2FP-fieldworkToolsGeneral/UVspec/README.md)
+  - [Od600](external/2FP-fieldworkToolsGeneral/OD600/README.md)
 - [Open Colorimeter](external/2FP-open_colorimeter/README.md)
 
 ## Software
@@ -134,12 +134,12 @@ function extractHeadersFromMarkdown(content) {
 
 ## Templates
 - [Expedition Template](external/2FP-expedition-template/README.md)
-  - [Additional Data](external/2FP-expedition-template/ADDITIONAL_DATA/README.md)
+  - [Maps](external/2FP-expedition-template/MAPS/README.md)
   - [Background Research](external/2FP-expedition-template/BACKGROUND_RESEARCH/README.md)
   - [Forms](external/2FP-expedition-template/FORMS/README.md)
-  - [Maps](external/2FP-expedition-template/MAPS/README.md)
-  - [Permitting](external/2FP-expedition-template/PERMITTING/README.md)
+  - [Additional Data](external/2FP-expedition-template/ADDITIONAL_DATA/README.md)
+  - [Receipts Tickets Confirmations](external/2FP-expedition-template/RECEIPTS_TICKETS_CONFIRMATIONS/README.md)
   - [Photos](external/2FP-expedition-template/PHOTOS/README.md)
   - [Protocols](external/2FP-expedition-template/PROTOCOLS/README.md)
-  - [Receipts Tickets Confirmations](external/2FP-expedition-template/RECEIPTS_TICKETS_CONFIRMATIONS/README.md)
+  - [Permitting](external/2FP-expedition-template/PERMITTING/README.md)
 

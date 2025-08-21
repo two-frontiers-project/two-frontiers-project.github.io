@@ -345,6 +345,72 @@ def download_field_handbook_files(repo, branch='main'):
                         print(f"📄 Skipped: {item['name']} (no changes)")
                     
                     downloaded_files.append(item['name'])
+            
+            # Also download media files (images, etc.)
+            elif item['type'] == 'file' and any(item['name'].lower().endswith(ext) for ext in ['.png', '.jpg', '.jpeg', '.gif', '.svg', '.pdf']):
+                # Download media file
+                file_url = f"https://raw.githubusercontent.com/{ORG}/{repo}/{branch}/{item['name']}"
+                file_response = requests.get(file_url)
+                if file_response.status_code == 200:
+                    # Create repo directory
+                    repo_dir = os.path.join(EXTERNAL_DIR, repo)
+                    os.makedirs(repo_dir, exist_ok=True)
+                    
+                    # Check if file already exists and is the same
+                    file_path = os.path.join(repo_dir, item['name'])
+                    should_write = True
+                    if os.path.exists(file_path):
+                        # For binary files, check file size instead of content
+                        if os.path.getsize(file_path) == len(file_response.content):
+                            should_write = False
+                            print(f"⏭️  {item['name']} is up to date")
+                    
+                    if should_write:
+                        # Write the media file as binary
+                        with open(file_path, 'wb') as f:
+                            f.write(file_response.content)
+                        print(f"🖼️  Updated: {item['name']}")
+                    else:
+                        print(f"🖼️  Skipped: {item['name']} (no changes)")
+                    
+                    downloaded_files.append(item['name'])
+            
+            # Download media directories (like 'media' folder)
+            elif item['type'] == 'dir' and item['name'] in ['media', 'images', 'img']:
+                print(f"📁 Found media directory: {item['name']}")
+                # Download contents of media directory
+                media_url = f"https://api.github.com/repos/{ORG}/{repo}/contents/{item['name']}?ref={branch}"
+                media_response = requests.get(media_url, headers=headers)
+                if media_response.status_code == 200:
+                    media_contents = media_response.json()
+                    for media_item in media_contents:
+                        if media_item['type'] == 'file' and any(media_item['name'].lower().endswith(ext) for ext in ['.png', '.jpg', '.jpeg', '.gif', '.svg', '.pdf']):
+                            # Download media file
+                            media_file_url = f"https://raw.githubusercontent.com/{ORG}/{repo}/{branch}/{item['name']}/{media_item['name']}"
+                            media_file_response = requests.get(media_file_url)
+                            if media_file_response.status_code == 200:
+                                # Create media directory
+                                repo_dir = os.path.join(EXTERNAL_DIR, repo)
+                                media_dir = os.path.join(repo_dir, item['name'])
+                                os.makedirs(media_dir, exist_ok=True)
+                                
+                                # Check if file already exists and is the same
+                                media_file_path = os.path.join(media_dir, media_item['name'])
+                                should_write = True
+                                if os.path.exists(media_file_path):
+                                    if os.path.getsize(media_file_path) == len(media_file_response.content):
+                                        should_write = False
+                                        print(f"⏭️  {item['name']}/{media_item['name']} is up to date")
+                                
+                                if should_write:
+                                    # Write the media file as binary
+                                    with open(media_file_path, 'wb') as f:
+                                        f.write(media_file_response.content)
+                                    print(f"🖼️  Updated: {item['name']}/{media_item['name']}")
+                                else:
+                                    print(f"🖼️  Skipped: {item['name']}/{media_item['name']} (no changes)")
+                                
+                                downloaded_files.append(f"{item['name']}/{media_item['name']}")
         
         return downloaded_files
         
@@ -484,7 +550,7 @@ def get_flat_markdown_files(repo_path):
                 
                 markdown_files.append({
                     'filename': item,
-                    'title': title.title()
+                    'title': title
                 })
     return sorted(markdown_files, key=lambda x: x['filename'])
 
@@ -682,6 +748,32 @@ def fix_handbook_readme_links(readme_path, repo):
             content = f.read()
         
         original_content = content
+        
+        # Fix GitHub URLs to point to local files
+        # Pattern: [text](https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/filename.md)
+        github_pattern = r'\[([^\]]+)\]\(https://github\.com/two-frontiers-project/2FP-Field-Handbook/blob/main/([^)]+)\)'
+        github_links = re.findall(github_pattern, content)
+        
+        for link_text, filename in github_links:
+            # Create the local path
+            local_path = f"external/{repo}/{filename}"
+            old_pattern = f'[{re.escape(link_text)}](https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/{re.escape(filename)})'
+            new_pattern = f'[{link_text}]({local_path})'
+            content = content.replace(old_pattern, new_pattern)
+            print(f"🔗 Fixed GitHub link: {filename} -> {local_path}")
+        
+        # Also fix the numbered list links that might have different formatting
+        numbered_link_pattern = r'(\d+\.\s*\[[^\]]+\]\(https://github\.com/two-frontiers-project/2FP-Field-Handbook/blob/main/([^)]+)\))'
+        numbered_links = re.findall(numbered_link_pattern, content)
+        
+        for full_match, filename in numbered_links:
+            # Create the local path
+            local_path = f"external/{repo}/{filename}"
+            old_pattern = re.escape(full_match)
+            new_match = full_match.replace(f"https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/{filename}", local_path)
+            new_pattern = re.escape(new_match)
+            content = re.sub(old_pattern, new_match, content)
+            print(f"🔗 Fixed numbered link: {filename} -> {local_path}")
         
         # Find all internal links to markdown files
         # Pattern: [text](filename.md) or [text](filename)
