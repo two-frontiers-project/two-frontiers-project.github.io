@@ -563,15 +563,25 @@
     }
     
     async function loadContent(contentId) {
-      const contentArea = document.querySelector('.content-area');
+      // Hide all existing content sections first
+      document.querySelectorAll('.content-section').forEach(section => {
+        section.classList.remove('active');
+      });
+      
+      // Create a new content section for the loaded content
+      const newContentSection = document.createElement('div');
+      newContentSection.className = 'content-section active';
+      newContentSection.id = 'dynamic-content';
       
       // Show loading state
-      contentArea.innerHTML = `
-        <div class="content-section active" id="loading">
-          <h1 class="section-title">Loading Content...</h1>
-          <p class="section-description">Please wait while we load the requested content.</p>
-        </div>
+      newContentSection.innerHTML = `
+        <h1 class="section-title">Loading Content...</h1>
+        <p class="section-description">Please wait while we load the requested content.</p>
       `;
+      
+      // Add the new section to the content area
+      const contentArea = document.querySelector('.content-area');
+      contentArea.appendChild(newContentSection);
       
       try {
         let content = '';
@@ -633,12 +643,10 @@
         if (content) {
           // Convert markdown to HTML using marked.js and display
           const htmlContent = marked.parse(content);
-          contentArea.innerHTML = `
-            <div class="content-section active" id="${contentId}">
-              <h1 class="section-title">${title}</h1>
-              <div class="markdown-content">
-                ${htmlContent}
-              </div>
+          newContentSection.innerHTML = `
+            <h1 class="section-title">${title}</h1>
+            <div class="markdown-content">
+              ${htmlContent}
             </div>
           `;
           
@@ -646,20 +654,16 @@
           fixInternalLinks(contentId);
         } else {
           // Show error if content couldn't be loaded
-          contentArea.innerHTML = `
-            <div class="content-section active" id="error">
-              <h1 class="section-title">Content Not Found</h1>
-              <p class="section-description">The requested content could not be loaded. Please try another section.</p>
-            </div>
+          newContentSection.innerHTML = `
+            <h1 class="section-title">Content Not Found</h1>
+            <p class="section-description">The requested content could not be loaded. Please try another section.</p>
           `;
         }
       } catch (error) {
         console.error('Error loading content:', error);
-        contentArea.innerHTML = `
-          <div class="content-section active" id="error">
-            <h1 class="section-title">Error Loading Content</h1>
-            <p class="section-description">There was an error loading the requested content. Please try again.</p>
-          </div>
+        newContentSection.innerHTML = `
+          <h1 class="section-title">Error Loading Content</h1>
+          <p class="section-description">There was an error loading the requested content. Please try again.</p>
         `;
       }
     }
@@ -1267,8 +1271,6 @@
     
     // Simple function to load README.md directly when Welcome is clicked
     function loadWelcomeDirectly() {
-      console.log('loadWelcomeDirectly called');
-      
       // Remove active class from all nav items
       document.querySelectorAll('.nav-item, .nav-subitem').forEach(item => {
         item.classList.remove('active');
@@ -1284,27 +1286,18 @@
       
       // Show the welcome section
       const welcomeSection = document.getElementById('welcome');
-      console.log('Welcome section element:', welcomeSection);
       if (welcomeSection) {
         welcomeSection.classList.add('active');
       }
       
       // Load README.md directly into the welcome content area
-      console.log('Fetching README.md...');
       fetch('README.md')
-        .then(response => {
-          console.log('Response status:', response.status);
-          return response.text();
-        })
+        .then(response => response.text())
         .then(content => {
-          console.log('Content loaded, length:', content.length);
           const welcomeContent = document.getElementById('welcome-content-separate');
-          console.log('Welcome content element:', welcomeContent);
           if (welcomeContent) {
             const htmlContent = marked.parse(content);
-            console.log('HTML content generated, length:', htmlContent.length);
             welcomeContent.innerHTML = htmlContent;
-            console.log('Content set to welcome-content-separate');
             
             // Apply button styling to the download link
             setTimeout(() => {
@@ -1329,8 +1322,6 @@
                 `;
               }
             }, 100);
-          } else {
-            console.error('welcome-content-separate element not found!');
           }
         })
         .catch(error => {
