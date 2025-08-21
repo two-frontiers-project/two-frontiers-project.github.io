@@ -9,16 +9,11 @@ The Two Frontiers Project (2FP) is a collaborative research initiative focused o
 
 ## The Two Frontiers Field Handbook
 
-**Download the complete Field Handbook:** [2FP Handbook V11 (PDF)](https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/2FP_handbook_V11.pdf?raw=1)
+**Download the complete Field Handbook:**
 
-The Two Frontiers Field Handbook is our comprehensive guide that sets the gold standard for field research methodology and enables unprecedented interoperability across research teams worldwide. This handbook represents the culmination of years of collaborative research and field experience, providing standardized protocols that ensure data quality and comparability across diverse research environments.
+<a href="https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/2FP_handbook_V11.pdf?raw=1" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #1f6feb, #388bfd); color: white; padding: 1.5rem 3rem; border-radius: 14px; text-decoration: none; font-weight: 700; font-size: 1.3rem; transition: all 0.3s ease; box-shadow: 0 6px 24px rgba(31, 110, 235, 0.4); border: 2px solid rgba(255, 255, 255, 0.1); text-align: center; min-width: 350px;">📖 Download The Two Frontiers Field Handbook V11 (PDF)</a>
 
-### Why the Handbook Matters
-
-- **Standardization**: Establishes consistent methodologies that enable data comparison across different research teams and locations
-- **Interoperability**: Allows researchers to work with us using compatible protocols, ensuring their data integrates seamlessly with our global network
-- **Quality Assurance**: Provides proven, field-tested procedures that minimize errors and maximize data reliability
-- **Collaboration**: Enables teams worldwide to contribute to and benefit from our collective research infrastructure
+The Two Frontiers Field Handbook is our comprehensive guide that defines our standards and practices for field research methodology and enables  interoperability across research teams worldwide. This handbook represents the culmination of years of collaborative research and field experience, providing standardized protocols that ensure data quality and comparability across diverse research environments. In addition to downloading it, you can work with the embedded version directly in this site.
 
 ### What's Inside the Handbook
 
@@ -87,7 +82,7 @@ Standardized templates and resources for research organization:
 
 ## Getting Started
 
-1. **Start with the Handbook**: Download and review the [Field Handbook PDF](https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/2FP_handbook_V11.pdf?raw=1) to understand our standardized protocols
+1. **Start with the Handbook**: Download and review the [Field Handbook PDF](https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/2FP_handbook_V11.pdf?raw=1) to understand our standardized protocols (or look at its embedded for on this site)
 2. **Navigate the Repository**: Use the sidebar to explore specific tools and protocols
 3. **Choose Your Tools**: Select hardware, software, or templates that fit your research needs
 4. **Follow Protocols**: Implement our standardized methodologies to ensure data compatibility
