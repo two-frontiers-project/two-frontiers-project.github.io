@@ -1177,6 +1177,118 @@
           contentArea.innerHTML = aboutContent;
         }
     
+    // Load welcome content function - raw HTML like About 2FP
+    function loadWelcomeHTML() {
+      const contentArea = document.querySelector('.content-area');
+      
+      const welcomeContent = `
+        <div class="content-section active" id="welcome">
+          <h1 class="section-title">Two Frontiers Project (2FP) - Open Tools & Protocols</h1>
+          <div class="markdown-content">
+            <h2>The Two Frontiers Field Handbook</h2>
+            
+            <a href="https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/2FP_handbook_V11.pdf?raw=1" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #1f6feb, #388bfd); color: white; padding: 1.5rem 3rem; border-radius: 14px; text-decoration: none; font-weight: 700; font-size: 1.3rem; transition: all 0.3s ease; box-shadow: 0 6px 24px rgba(31, 110, 235, 0.4); border: 2px solid rgba(255, 255, 255, 0.1); text-align: center; min-width: 350px;">Download the 2FP Handbook</a>
+            
+            <p>The Two Frontiers Field Handbook is our comprehensive guide that defines our standards and practices for field research methodology and enables  interoperability across research teams worldwide. This handbook represents the culmination of years of collaborative research and field experience, providing standardized protocols that ensure data quality and comparability across diverse research environments. In addition to downloading it, you can work with the embedded version directly in this site.</p>
+            
+            <h3>What's Inside the Handbook</h3>
+            
+            <p>The handbook covers the complete research workflow from expedition planning to post-sampling analysis:</p>
+            
+            <ol>
+              <li><strong>About This Handbook</strong> - Introduction, scope, and how to use this resource</li>
+              <li><strong>Expedition Planning</strong> - Comprehensive planning guidelines and checklists</li>
+              <li><strong>Sample Identifiers & Site Metadata</strong> - Standardized data collection protocols</li>
+              <li><strong>Preparation for Sample Collection</strong> - Pre-fieldwork setup and equipment preparation</li>
+              <li><strong>Field Lab Setup</strong> - Establishing processing facilities in remote locations</li>
+              <li><strong>Sample Collection</strong> - Detailed collection protocols and best practices</li>
+              <li><strong>Sample Check-in</strong> - Documentation and initial processing procedures</li>
+              <li><strong>Sample Processing & Preservation</strong> - Laboratory protocols and storage methods</li>
+              <li><strong>Sample Transportation</strong> - Safe transport and chain of custody procedures</li>
+              <li><strong>Post-Sampling Reset & Team Debrief</strong> - Expedition closure and data review</li>
+            </ol>
+            
+            <h2>What You'll Find on the rest of This Site</h2>
+            
+            <p>The rest of the 2FP Open Tools resource aggregates our software, protocols, and repositories in a structured format. The goal here is that you reproduce our field sampling, sequencing, and analysis according to our standards such that your data lines up with the network of teams using 2FP protocols, enabling easier analysis.</p>
+            
+            <p><em>Please note:</em> We did NOT make all of these tools ourselves -- most of the hardware, for example, is from forked and/or lightly modified repositories. Please see individual repositories for correct attribution and, if you use these specific tools in your work, cite the authors.</p>
+            
+            <h2>Repository Categories</h2>
+            
+            <h3>The Two Frontiers Handbook</h3>
+            <p>Our flagship documentation containing comprehensive field protocols and research standards. This is the primary resource for teams working with 2FP methodologies.</p>
+            
+            <h3>Speciality Kits</h3>
+            <p>Specialized field kits and protocols for specific research applications:</p>
+            <ul>
+              <li><strong>Field Kits & Protocols</strong> - Comprehensive field kit documentation and protocols</li>
+            </ul>
+            
+            <h3>Hardware</h3>
+            <p>Open-source hardware designs and modifications for field research:</p>
+            <ul>
+              <li><strong>General 3D Printing</strong> - 3D printable components including:
+                <ul>
+                  <li><strong>Dremelfuge</strong> - Centrifuge adapters for field use</li>
+                  <li><strong>Eyeglasses Divemask Mount</strong> - Custom mounting solutions</li>
+                  <li><strong>Fluorometer Collimating Lens Mount</strong> - Optical equipment modifications</li>
+                  <li><strong>Laser Cutter Racks</strong> - Sample organization and transport solutions</li>
+                  <li><strong>Microscope Mount for Fiber Spectrophotometer</strong> - Equipment integration</li>
+                  <li><strong>pH Bottle Holder</strong> - Sample container solutions</li>
+                  <li><strong>Spec Adapters</strong> - Spectrophotometer modifications</li>
+                  <li><strong>Turbidometer Adapters</strong> - Water quality measurement tools</li>
+                </ul>
+              </li>
+              <li><strong>PUMA Scope</strong> - Field microscopy solutions with FreeCAD designs</li>
+              <li><strong>Cuvette Holder</strong> - Sample holder designs</li>
+              <li><strong>General Field Tools</strong> - Various field equipment including:
+                <ul>
+                  <li><strong>UVspec</strong> - Ultraviolet spectroscopy tools</li>
+                  <li><strong>OD600</strong> - Optical density measurement equipment</li>
+                  <li><strong>Open Colorimeter</strong> - Open-source colorimetric analysis tools</li>
+                </ul>
+              </li>
+            </ul>
+            
+            <h3>Software</h3>
+            <p>Open-source software tools for data analysis and research:</p>
+            <ul>
+              <li><strong>XTree</strong> - Fast and accurate pan-domain alignment software</li>
+              <li><strong>MAGUS</strong> - Single-shot multi-domain genomic assembly, binning, and annotation</li>
+            </ul>
+            
+            <h3>Templates</h3>
+            <p>Standardized templates and resources for research organization:</p>
+            <ul>
+              <li><strong>Expedition Template</strong> - Complete expedition planning resources including:
+                <ul>
+                  <li><strong>Maps</strong> - Geographic and site planning resources</li>
+                  <li><strong>Background Research</strong> - Literature review and preparation materials</li>
+                  <li><strong>Forms</strong> - Standardized documentation templates</li>
+                  <li><strong>Additional Data</strong> - Supplementary research materials</li>
+                  <li><strong>Receipts, Tickets & Confirmations</strong> - Administrative documentation</li>
+                  <li><strong>Permitting</strong> - Regulatory compliance resources</li>
+                  <li><strong>Photos</strong> - Documentation standards and templates</li>
+                  <li><strong>Protocols</strong> - Standard operating procedures</li>
+                </ul>
+              </li>
+            </ul>
+            
+            <h2>Contributing</h2>
+            
+            <p>This is an active research project. For questions, suggestions, or contributions, please contact the 2FP team or submit issues to the relevant repository.</p>
+            
+            <hr>
+            
+            <p><em>Two Frontiers Project - Open research tools and protocols</em></p>
+          </div>
+        </div>
+      `;
+      
+      contentArea.innerHTML = welcomeContent;
+    }
+    
     // Load welcome content function
     function loadWelcomeContent() {
       const welcomeContent = document.getElementById('welcome-content');
