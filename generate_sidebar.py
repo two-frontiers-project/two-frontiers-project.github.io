@@ -649,7 +649,6 @@ def generate_sidebar(downloaded_content):
         '</style>',
         "",
         "## Overview", 
-        "- [Home](/README.md)", 
         ""
     ]
     
