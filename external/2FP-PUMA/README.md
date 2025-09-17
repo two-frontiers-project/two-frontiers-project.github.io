@@ -7,9 +7,11 @@
 PUMA 3D PRINTED MULTIMODALITY MICROSCOPE 
 ========================================
 
+PLEASE NOTE: THIS SCOPE WAS FORKED FROM https://github.com/TadPath/PUMA. IF YOU USE THIS TOOL, PLEASE CITE THE ORIGINAL CREATOR'S REPOSITORY.
+
 ![PUMA Example Scopes](https://raw.githubusercontent.com/two-frontiers-project/2FP-PUMA/main/Images/ReadMe_Sm_Scopes.png)
 ---
-:boom: **New** :arrow_right: **Quick Start Guide** : By popular demand I have released the first [PUMA Quick Start Guide PDF document](https://github.com/two-frontiers-project/2FP-PUMA/blob/main/docs/QuickStartGuide.pdf)  which guides you through the process of making your first PUMA microscope. It tells you exactly what models to print and what hardware to get with extra links to example sellers online.
+By popular demand I have released the first [PUMA Quick Start Guide PDF document](https://github.com/two-frontiers-project/2FP-PUMA/blob/main/docs/QuickStartGuide.pdf)  which guides you through the process of making your first PUMA microscope. It tells you exactly what models to print and what hardware to get with extra links to example sellers online.
 
 
 ----------------------- ------------------------------------

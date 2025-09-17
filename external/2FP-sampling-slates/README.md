@@ -10,6 +10,8 @@ This repository collects the field sampling slates that the Two Frontiers Projec
 
 The layouts follow the PADI® instructor slate system and are intended to be printed on waterproof plastic stock. Print them at 7.14″×4.8,″ punch a hole in the top left corner, and clip the sheets together with a ring or carabiner to take them into the field.
 
+If you're accessing this on the 2FP Open Tools Website, click through to the GitHub repository (linked at the top of the page) to see the slates themselves.
+
 ## Available slates
 
 - `2fp_handbook_slate_metadata-collection_v1.0.pdf` — metadata collection process for every sample.
