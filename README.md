@@ -1,13 +1,19 @@
 
 # Two Frontiers Project (2FP) - Open Tools & Protocols
 
-## The Two Frontiers Field Handbook
+This resource contains (1) our Field Handbook for standardizing and streamling environmental microbiome sampling as well as (2) a series of hardware and software tools we commonly use as part of our work. Anyone should be able to use this resource to reproduce how 2FP operates in field setting, collecting samples for a combination of sequencing, high-throughput culturing, and downstream bioinformatics.
+
+No commercial use of any Two Frontiers Project-developed assets are permitted without explicit permission. The resources here are explicitly for research use only; for tools aggregated here not developed by 2FP, follow the creator's licensing instructions. 
+
+## Site Contents
+
+### The Two Frontiers Project Handbook
 
 <a href="https://github.com/two-frontiers-project/2FP-Field-Handbook/blob/main/2FP_handbook_V11.pdf?raw=1" target="_blank" style="display: inline-block; background: linear-gradient(135deg, #1f6feb, #388bfd); color: white; padding: 1.5rem 3rem; border-radius: 14px; text-decoration: none; font-weight: 700; font-size: 1.3rem; transition: all 0.3s ease; box-shadow: 0 6px 24px rgba(31, 110, 235, 0.4); border: 2px solid rgba(255, 255, 255, 0.1); text-align: center; min-width: 350px;">Download the 2FP Handbook</a>
 
 The Two Frontiers Field Handbook is our comprehensive guide that defines our standards and practices for field research methodology and enables  interoperability across research teams worldwide. This handbook represents the culmination of years of collaborative research and field experience, providing standardized protocols that ensure data quality and comparability across diverse research environments. In addition to downloading it, you can work with the embedded version directly in this site.
 
-### What's Inside the Handbook
+### What's Inside
 
 The handbook covers the complete research workflow from expedition planning to post-sampling analysis:
 
@@ -21,17 +27,6 @@ The handbook covers the complete research workflow from expedition planning to p
 8. **Sample Processing & Preservation** - Laboratory protocols and storage methods
 9. **Sample Transportation** - Safe transport and chain of custody procedures
 10. **Post-Sampling Reset & Team Debrief** - Expedition closure and data review
-
-## What You'll Find on the rest of This Site
-
-The rest of the 2FP Open Tools resource aggregates our software, protocols, and repositories in a structured format. The goal here is that you reproduce our field sampling, sequencing, and analysis according to our standards such that your data lines up with the network of teams using 2FP protocols, enabling easier analysis.
-
-*Please note:* We did NOT make all of these tools ourselves -- most of the hardware, for example, is from forked and/or lightly modified repositories. Please see individual repositories for correct attribution and, if you use these specific tools in your work, cite the authors.
-
-## Repository Categories
-
-### The Two Frontiers Handbook
-Our flagship documentation containing comprehensive field protocols and research standards. This is the primary resource for teams working with 2FP methodologies.
 
 ### Speciality Kits
 Specialized field kits and protocols for specific research applications:
